@@ -1,0 +1,86 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-image: url('../Photos/hostel-login.jpg');
+    background-size: cover;
+    background-position: center;
+    transition: background-image 0.5s ease-in-out;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+    overflow: hidden;
+}
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    width: auto;
+    min-width: 300px;
+    max-width: 500px;
+    background-color: #f8f9fa;
+    padding: 30px 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.login-form {
+    background: #ffffff;
+    padding: 20px 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(53, 51, 51, 0.1);
+    width: 100%;
+    max-width: 900px;
+}
+
+.login-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #9dab59;
+    text-align: center;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    font-size: 14px;
+    color: #555555;
+    margin-bottom: 5px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+input:focus {
+    border-color: #007bff;
+}
+
+.login-button {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.login-button:hover {
+    background-color: #0056b3;
+}
