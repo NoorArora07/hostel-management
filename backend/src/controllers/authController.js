@@ -36,7 +36,7 @@ export const signup2 = async (request, response) => {
     //params has sid
     try {
         let sid = request.params.sid;
-        const existingSid = await User.findOne({ sid: sid });
+        const existingSid = await UserDetail.findOne({ sid: sid });
         if (existingSid) {
             console.log("A User with this sid already exists!");
             return response.status(400).send("A User with this sid already exists!");
