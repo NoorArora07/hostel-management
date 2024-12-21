@@ -1,24 +1,33 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "./SignUp.css";
+import axios from 'axios';
 
 const SignUp = () => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [name, setName] = useState("");
-    const [SID, setSID] = useState("");
-    const [branch, setBranch] = useState("");
-    const [phoneNumber, setPhoneNumber] = useState("");
-    const [parentNumber, setParentNumber] = useState("");
+    const [formData, setFormData] = useState({
+        name: '',
+        sid: '',
+        email: '',
+        password: ''
+    });
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        console.log("Name:", name);
-        console.log("Email:", email);
-        console.log("Password:", password);
-        console.log("SID:", SID);
-        console.log("Branch:", branch);
-        console.log("Phone Number:", phoneNumber);
-        console.log("Parent's Phone Number:", parentNumber);
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await axios.post('http://127.0.0.1:5090/api/auth/signup', formData);
+            alert(response.data.message);
+        } catch (error) {
+            console.error(error.response?.data || 'Signup failed');
+            alert('Signup failed');
+        }
+
+        console.log("Name:", formData.name);
+        console.log("Email:", formData.email);
+        console.log("Password:", formData.password);
+        console.log("SID:", formData.sid);
     };
 
     return (
@@ -31,8 +40,9 @@ const SignUp = () => {
                     <input
                         type="text"
                         id="name"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
                         placeholder="Enter your name"
                         required
                     />
@@ -43,8 +53,9 @@ const SignUp = () => {
                     <input
                         type="email"
                         id="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
                         placeholder="Enter your email"
                         required
                     />
@@ -55,8 +66,9 @@ const SignUp = () => {
                     <input
                         type="password"
                         id="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        name="password"
+                        value={formData.password}
+                        onChange={handleChange}
                         placeholder="Enter your password"
                         required
                     />
@@ -67,45 +79,10 @@ const SignUp = () => {
                     <input
                         type="text"
                         id="sid"
-                        value={SID}
-                        onChange={(e) => setSID(e.target.value)}
+                        name="sid"
+                        value={formData.sid}
+                        onChange={handleChange}
                         placeholder="Enter your SID"
-                        required
-                    />
-                </div>
-
-                <div className="input-group">
-                    <label htmlFor="branch">Branch:</label>
-                    <input
-                        type="text"
-                        id="branch"
-                        value={branch}
-                        onChange={(e) => setBranch(e.target.value)}
-                        placeholder="Enter your branch"
-                        required
-                    />
-                </div>
-
-                <div className="input-group">
-                    <label htmlFor="phoneNumber">Phone Number:</label>
-                    <input
-                        type="text"
-                        id="phoneNumber"
-                        value={phoneNumber}
-                        onChange={(e) => setPhoneNumber(e.target.value)}
-                        placeholder="Enter your phone number"
-                        required
-                    />
-                </div>
-
-                <div className="input-group">
-                    <label htmlFor="parentNumber">Parent's Number:</label>
-                    <input
-                        type="text"
-                        id="parentNumber"
-                        value={parentNumber}
-                        onChange={(e) => setParentNumber(e.target.value)}
-                        placeholder="Enter your parent's phone number"
                         required
                     />
                 </div>

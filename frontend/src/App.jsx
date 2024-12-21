@@ -1,5 +1,7 @@
 import React from 'react';
 import Login from './Components/Login/Login';
+import SignUp from './Components/Login/SignUp';
+import SignUp2 from './Components/Login/SignUp2';
 
 function App() {
     return (
@@ -9,7 +11,7 @@ function App() {
     </div>
         <div>
             <h1>Authentication System</h1>
-            <Login />
+            <SignUp2 />
         </div>
       </div>
     );
