@@ -11,7 +11,11 @@ const app = express();
 app.use(express.json());
 
 //middleware to enable cors
-app.use(cors());
+app.use(cors(
+    {
+        origin: 'http://localhost:5173/' // Allow requests from frontend
+    }
+));
 
 //routes
 app.use("/api/auth", authRoutes);

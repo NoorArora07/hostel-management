@@ -1,15 +1,50 @@
 import { useState } from "react";
+import axios from 'axios';
 import "./Login.css";
 
-const Login = () => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+const Login = async () => {
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        console.log("Email:", email);
-        console.log("Password:", password);
-    };
+    // const Login = () => {
+        const [formData, setFormData] = useState({
+            email: '',
+            password: ''
+        });
+    
+        const handleChange = (e) => {
+            setFormData({ ...formData, [e.target.name]: e.target.value });
+        };
+    
+        const handleSubmit = async (e) => {
+            e.preventDefault();
+            try {
+                const response = await axios.post('http://127.0.0.1:5090/api/auth/login', formData);
+                alert('Login successful');
+            } catch (error) {
+                console.error(error.response?.data || 'Login failed');
+                alert('Login failed');
+            }
+        };
+    
+    // const [email, setEmail] = useState("");
+    // const [password, setPassword] = useState("");
+
+    // const handleSubmit = (event) => {
+    //     event.preventDefault();
+    //     console.log("Email:", email);
+    //     console.log("Password:", password);
+    // };
+
+    // const payload = {
+    //     email: 'user@example.com',
+    //     password: 'password123'
+    // };
+
+    // try {
+    //     const response = await axios.post('http://127.0.0.1:5090/api/auth/login', payload);
+    //     console.log('Login Successful:', response.data);
+    // } catch (error) {
+    //     console.error('Login Error:', error.response?.data || error.message);
+    // };
 
     return (
         <div className="login-container">
@@ -22,7 +57,7 @@ const Login = () => {
                             type="email"
                             id="email"
                             value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            onChange={handleChange}
                             placeholder="Enter your email"
                             required
                         />
@@ -33,7 +68,7 @@ const Login = () => {
                             type="password"
                             id="password"
                             value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            onChange={handleChange}
                             placeholder="Enter your password"
                             required
                         />
