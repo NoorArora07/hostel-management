@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios"; // Import axios
+import axios from "axios";
 import "./SignUp2.css";
 
 const SignUp2 = () => {
@@ -20,7 +20,7 @@ const SignUp2 = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://127.0.0.1:5090/api/auth/signup', formData);
+            const response = await axios.post('http://127.0.0.1:5090/api/auth/signup2', formData);
             alert(response.data.message);
         } catch (error) {
             const errorMessage = error.response?.data?.message || 'Signup failed';
@@ -44,7 +44,7 @@ const SignUp2 = () => {
                     <input
                         type="text"
                         id="branch"
-                        name="branch" // Add name attribute
+                        name="branch"
                         value={formData.branch}
                         onChange={handleChange}
                         placeholder="Enter your branch"
@@ -57,7 +57,7 @@ const SignUp2 = () => {
                     <input
                         type="text"
                         id="phoneNumber"
-                        name="phoneNumber" // Add name attribute
+                        name="phoneNumber"
                         value={formData.phoneNumber}
                         onChange={handleChange}
                         placeholder="Enter your phone number"
@@ -70,7 +70,7 @@ const SignUp2 = () => {
                     <input
                         type="text"
                         id="parentNumber"
-                        name="parentNumber" // Add name attribute
+                        name="parentNumber"
                         value={formData.parentNumber}
                         onChange={handleChange}
                         placeholder="Enter your parent's phone number"

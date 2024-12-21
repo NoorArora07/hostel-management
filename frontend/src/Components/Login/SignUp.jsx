@@ -1,8 +1,11 @@
 import { useState } from "react";
 import "./SignUp.css";
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
+    const navigate = useNavigate(); // For redirection
+    
     const [formData, setFormData] = useState({
         name: '',
         sid: '',
@@ -16,18 +19,21 @@ const SignUp = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        try {
-            const response = await axios.post('http://127.0.0.1:5090/api/auth/signup', formData);
-            alert(response.data.message);
-        } catch (error) {
-            console.error(error.response?.data || 'Signup failed');
-            alert('Signup failed');
-        }
 
-        console.log("Name:", formData.name);
-        console.log("Email:", formData.email);
-        console.log("Password:", formData.password);
-        console.log("SID:", formData.sid);
+        try {
+            const response = await axios.post("http://127.0.0.1:5090/signup", formData);
+
+            if (response.status === 201) {
+                alert("Signup successful!");
+                navigate('/signup2'); // Updated route
+            }
+        } catch (error) {
+            if (error.response) {
+                alert(error.response.data); // Display server error message
+            } else {
+                console.error("Error during signup:", error);
+            }
+        }
     };
 
     return (
