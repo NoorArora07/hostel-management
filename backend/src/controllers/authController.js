@@ -2,31 +2,13 @@ import {request, response} from 'express';
 import dotenv from 'dotenv';
 import User from '../models/users.model.js';
 import UserDetail from '../models/userDetail.model.js';
-// import cors from 'cors';
 dotenv.config();
-
-// app.use(cors());
-// app.get('/', (request, response) => {
-//     // response.render('home');
-//     response.send('home page');
-// })
-
-// app.get('/login', (request, response) => {
-//     // response.render('login');
-//     response.send(`login page! if you haven't made an account yet, sign up!`);
-    
-// })
-
-// app.get('/signup', (request, response) => {
-//     // response.render('signup');
-//     response.send(`creating a new account! this is the signup page`);
-// })
 
 export const signup1 =  async (request, response) => {
     console.log("Request Body:", request.body);
 
     try {
-        const existingSid = await User.findOne({ name: request.body.sid });
+        const existingSid = await User.findOne({sid: request.body.sid });
         if (existingSid) {
             console.log("A User with this sid already exists!");
             return response.status(400).send("A User with this sid already exists!");
@@ -54,6 +36,12 @@ export const signup2 = async (request, response) => {
     //params has sid
     try {
         let sid = request.params.sid;
+        const existingSid = await User.findOne({ sid: sid });
+        if (existingSid) {
+            console.log("A User with this sid already exists!");
+            return response.status(400).send("A User with this sid already exists!");
+        }
+
         const data = new UserDetail({
             sid: sid,
             branch: request.body.branch,
