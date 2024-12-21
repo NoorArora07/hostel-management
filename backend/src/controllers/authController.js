@@ -1,6 +1,7 @@
 import {request, response} from 'express';
 import dotenv from 'dotenv';
 import User from '../models/users.model.js';
+import UserDetail from '../models/userDetail.model.js';
 // import cors from 'cors';
 dotenv.config();
 
@@ -21,44 +22,64 @@ dotenv.config();
 //     response.send(`creating a new account! this is the signup page`);
 // })
 
-export const signup =  async (request, response) => {
+export const signup1 =  async (request, response) => {
     console.log("Request Body:", request.body);
 
     try {
-        const existingName = await User.findOne({ name: request.body.name });
-        if (existingName) {
-            console.log("A User with this name already exists!");
-            return response.status(400).send("A User with this name already exists!");
+        const existingSid = await User.findOne({ name: request.body.sid });
+        if (existingSid) {
+            console.log("A User with this sid already exists!");
+            return response.status(400).send("A User with this sid already exists!");
         }
 
         const existingEmail = await User.findOne({ email: request.body.email });
         if (existingEmail) {
             console.log("Cannot use the same email more than once!");
-            return response.status(400).send("Cannot use the same email more than once!");
+            return response.status(400).send("This email is already in use!");
         }
 
         const data = new User(request.body);
         const result = await data.save();
-        console.log("User saved successfully:", result);
-
+        // console.log("User saved successfully:", result);
+        response.status(201).json({ message: "Part one of signup successful!", sid: result.sid });
         // response.render('home');
-        response.send('home page');
+        // response.send('home page');
     } catch (error) {
         console.error("Error during signup:", error);
         response.status(500).send("An error occurred during signup.");
     }
 };
 
+export const signup2 = async (request, response) => {
+    //params has sid
+    try {
+        let sid = request.params.sid;
+        const data = new UserDetail({
+            sid: sid,
+            branch: request.body.branch,
+            phoneNumber: request.body.phoneNumber,
+            parentsNumber: request.body.parentsNumber
+        })
+
+        const result = await data.save();
+        response.status(201).json({ message: "Signup complete!", sid: result.sid});
+    }
+    catch (error) {
+        console.error("Error during signup:", error);
+        response.status(500).send("An error occurred during signup.");
+    }
+
+}
+
 export const login = async (request, response) => {
     try {
-        const existingName = await User.findOne({name : request.body.name });
-        if (!existingName) {
+        const existingEmail = await User.findOne({email : request.body.email });
+        if (!existingEmail) {
             console.log("No such User on platform! You should sign up");
             return response.status(400).send("No such User on platform! You should sign up");
         }
 
         let result = await User.findOne({
-            name: request.body.name,
             email: request.body.email,
             password: request.body.password
         });
