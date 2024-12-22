@@ -6,7 +6,7 @@ import { viewAcceptedLongLeaves } from '../controllers/longLeaveController.js';
 const router = express.Router();
 
 router.post('/longLeave/:sid', sendLongLeave);
-router.get('/longLeaves/:sid', viewPendingLongLeaves);
-router.get('/longLeaves/:sid', viewAcceptedLongLeaves);
+router.get('/longLeave/pending/:sid', viewPendingLongLeaves);
+router.get('/longLeave/accepted/:sid', viewAcceptedLongLeaves);
 
 export default router
