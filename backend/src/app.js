@@ -4,7 +4,9 @@ import { connectDb } from './config/db.js';
 import User from './models/users.model.js';
 import cors from 'cors';
 import authRoutes from './routes/authRoutes.js';
+dotenv.config();
 
+console.log("MONGO URI: ", process.env.MONGO_URI);
 const app = express();
 
 //middleware to parse json from requests i think
