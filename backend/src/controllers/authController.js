@@ -22,10 +22,7 @@ export const signup1 =  async (request, response) => {
 
         const data = new User(request.body);
         const result = await data.save();
-        // console.log("User saved successfully:", result);
         response.status(201).json({ message: "Part one of signup successful!", sid: result.sid });
-        // response.render('home');
-        // response.send('home page');
     } catch (error) {
         console.error("Error during signup:", error);
         response.status(500).send("An error occurred during signup.");
