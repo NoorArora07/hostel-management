@@ -20,6 +20,10 @@ const longLeaveApplication = mongoose.Schema( {
         roomNumber: {
             type: String,
             required: true
+        },
+        approved: {
+            type: Boolean,
+            required: true
         }
     }
 )
