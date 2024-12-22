@@ -1,0 +1,66 @@
+.homepage-navbar {
+    background-color: #3fa5a5; /* Darker Teal */
+    padding: 10px; /* Adjust padding as needed */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0; /* Ensure no external margin */
+    width: 99%; /* Ensure it spans the full width */
+    position: fixed; /* Stick to the top of the page */
+    top: 0; /* Align with the top edge */
+    left: 0; /* Align with the left edge */
+    right: 0; /* Align with the right edge */
+    z-index: 1000; /* Ensure it stays on top */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for better look */
+}
+
+.homepage-navbar .logo-name {
+    display: flex;
+    align-items: center;
+    font-family: 'Serif', serif;
+}
+
+.homepage-navbar .logo-name img {
+    width: 40px; /* Adjust the logo size */
+    height: auto;
+    margin-right: 10px;
+}
+
+.homepage-navbar .logo-name h1 {
+    font-size: 24px;
+    color: #333;
+    margin: 0;
+    font-family: 'Serif', serif;
+}
+
+.homepage-navbar ul {
+    list-style-type: none;
+    display: flex;
+    gap: 20px;
+}
+
+.homepage-navbar li {
+    display: inline;
+}
+
+.homepage-navbar a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    padding: 8px 15px; /* Add padding for better button visibility */
+    border-radius: 5px; /* Add border radius for rounded corners */
+    font-family: 'Arial', sans-serif;
+}
+
+.homepage-navbar a:hover {
+    background-color: #3a9f9f; /* Change background color on hover */
+    color: #ddd;
+}
+
+/* Responsive Navbar */
+@media screen and (max-width: 768px) {
+    .homepage-navbar ul {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
