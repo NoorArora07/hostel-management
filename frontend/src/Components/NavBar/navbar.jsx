@@ -5,7 +5,7 @@ const Navbar = () => {
   return (
     <nav className="homepage-navbar">
       <div className="logo-name">
-        <img src="./Photos/dormify-logo.jpg" alt="Logo" />
+        <img src='../../Photos/dormify-logo.jpg' alt="Logo" />
         <h1>DORMIFY</h1>
       </div>
       <ul>

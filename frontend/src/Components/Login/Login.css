@@ -1,4 +1,4 @@
-body {
+body.Login {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
@@ -11,6 +11,7 @@ body {
     align-items: center;
     min-height: 100vh;  /* Adjust to take the full height */
     overflow: auto;  /* Enable scroll if the content overflows */
+    background-repeat: repeat-y;
 }
 
 .login-container {

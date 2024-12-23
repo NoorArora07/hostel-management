@@ -2,8 +2,7 @@ import React from 'react';
 import Login from './Components/Login/Login';
 import SignUp from './Components/Login/SignUp';
 import SignUp2 from './Components/Login/SignUp2';
-import Home from './Components/HomePage/HomePage';
-import Homepage from './Components/HomePage/HomePage';
+import Homepage from './Components/HomePage/homepage';
 
 function App() {
   return (
