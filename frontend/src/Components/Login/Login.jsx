@@ -111,7 +111,7 @@ const Login = () => {
         e.preventDefault();
         try {
             const response = await axios.post('http://127.0.0.1:5090/api/auth/login', formData);
-            alert('Login successful');
+            // alert('Login successful');
             navigate("/Homepage");
         } catch (error) {
             console.error(error.response?.data || 'Login failed');
