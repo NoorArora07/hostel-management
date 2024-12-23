@@ -7,7 +7,7 @@ import Homepage from './Components/HomePage/homepage';;
 import Mess from './Components/Mess/Mess';
 import Leaves from './Components/Leaves/Leaves';
 import Complaints from './Components/Complaints/Complaints';
-import ProfilePage from './Components/Profile/Profile';
+import Profile from './Components/Profile/Profile';
 import NoPage from './Components/Login/NoPage';
 import Navbar from './Components/Navbar/Navbar';
 
@@ -34,7 +34,7 @@ function App() {
       element: <><Navbar /><Mess /></>
     },
     {
-      path: "/about",
+      path: "/leaves",
       element: <><Navbar /><Leaves /></>
     },
     {
@@ -43,7 +43,7 @@ function App() {
     },
     {
       path: "/profile",
-      element: <><Navbar /><ProfilePage /></>
+      element: <><Navbar /><Profile /></>
     },
     {
       path: "*",
