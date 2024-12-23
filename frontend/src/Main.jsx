@@ -6,7 +6,7 @@ import Login from './Components/Login/Login.jsx'
 import SignIn from './Components/Login/SignUp.jsx'
 import SignUp from './Components/Login/SignUp.jsx'
 import SignUp2 from './Components/Login/SignUp2.jsx'
-import Homepage from './Components/HomePage/HomePage.jsx'
+import Homepage from './Components/HomePage/homepage.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
