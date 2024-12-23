@@ -1,10 +1,10 @@
-const Mess = () => {
+const Leaves = () => {
 
     return (
         <div className="login-container">
-           <h2>MESS KA KAAM</h2>
+           <h2>LEAVES KA KAAM</h2>
         </div>
     );
 };
 
-export default Mess;
+export default Leaves;

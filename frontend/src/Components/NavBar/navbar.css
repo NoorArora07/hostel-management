@@ -24,7 +24,7 @@
     background-image: url('../../Photos/dormify-logo.jpg');
     background-size: cover;
     background-position: center;
-    width: 40px; /* Adjust the logo size */
+    width: 40px; 
     height: auto;
     margin-right: 10px;
 }
@@ -46,7 +46,7 @@
     display: inline;
 }
 
-.homepage-navbar a {
+.homepage-navbar NavLink {
     color: white;
     text-decoration: none;
     font-size: 18px;
@@ -55,7 +55,7 @@
     font-family: 'Arial', sans-serif;
 }
 
-.homepage-navbar a:hover {
+.homepage-navbar NavLink:hover {
     background-color: #3a9f9f; /* Change background color on hover */
     color: #ddd;
 }

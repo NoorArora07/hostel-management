@@ -1,21 +1,21 @@
-import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+// import React from 'react';
+// import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+// import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 function ProfilePage() {
   
-  const userProfile = {
-    username: "JohnDoe",
-    email: "johndoe@example.com",
-    sid: "S12345",
-    branch: "Computer Science",
-    phoneNumber: "+1 (555) 123-4567",
-    parentNumber: "+1 (555) 987-6543"
-  };
+//   const userProfile = {
+//     username: "JohnDoe",
+//     email: "johndoe@example.com",
+//     sid: "S12345",
+//     branch: "Computer Science",
+//     phoneNumber: "+1 (555) 123-4567",
+//     parentNumber: "+1 (555) 987-6543"
+//   };
 
   return (
     <div className="container mx-auto py-8">
-      <Card className="max-w-2xl mx-auto">
+      {/* <Card className="max-w-2xl mx-auto">
         <CardHeader className="flex flex-row items-center gap-4">
           <Avatar className="w-20 h-20">
             <AvatarImage src="/placeholder.svg" alt={userProfile.username} />
@@ -40,7 +40,8 @@ function ProfilePage() {
             ))}
           </dl>
         </CardContent>
-      </Card>
+      </Card> */}
+      <h2>PROFILE PAGE</h2>
     </div>
   );
 }

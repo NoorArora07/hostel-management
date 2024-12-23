@@ -1,6 +1,6 @@
 import React from 'react';
 import './Homepage.css';
-import Navbar from '../NavBar/navbar'; // Import the Navbar component
+import Navbar from '../Navbar/Navbar'; // Import the Navbar component
 
 const Homepage = () => {
   return (
