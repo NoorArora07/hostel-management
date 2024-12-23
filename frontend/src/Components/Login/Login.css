@@ -11,7 +11,6 @@ body.Login {
     align-items: center;
     min-height: 100vh;  /* Adjust to take the full height */
     overflow: auto;  /* Enable scroll if the content overflows */
-    background-repeat: repeat-y;
 }
 
 .login-container {

@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
+import './index.css'
 import Login from './Components/Login/Login.jsx'
 import SignIn from './Components/Login/SignUp.jsx'
 import SignUp from './Components/Login/SignUp.jsx'
