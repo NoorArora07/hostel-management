@@ -21,6 +21,9 @@
 }
 
 .homepage-navbar .logo-name img {
+    background-image: url('../../Photos/dormify-logo.jpg');
+    background-size: cover;
+    background-position: center;
     width: 40px; /* Adjust the logo size */
     height: auto;
     margin-right: 10px;

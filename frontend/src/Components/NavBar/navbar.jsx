@@ -1,11 +1,12 @@
 import React from 'react';
 import './Navbar.css';
+import logo from '../../Photos/dormify-logo.jpg';
 
 const Navbar = () => {
   return (
     <nav className="homepage-navbar">
       <div className="logo-name">
-        <img src='../../Photos/dormify-logo.jpg' alt="Logo" />
+        <img src={logo} alt="Logo"/>
         <h1>DORMIFY</h1>
       </div>
       <ul>
@@ -18,4 +19,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default Navbar;
