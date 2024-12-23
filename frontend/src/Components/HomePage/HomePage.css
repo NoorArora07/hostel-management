@@ -4,6 +4,7 @@
     justify-content: space-between;
     align-items: center;
     flex: 1; /* Allow content area to expand */
+    background-color: aqua;
 }
 
 .homepage-banner {
@@ -25,14 +26,14 @@
 
 .homepage-description p {
     font-size: 18px;
-    color: #666;
+    color: #989797;
     line-height: 1.6;
 }
 
 .homepage-image-container {
     max-width: 50%;
-    height: 300px; /* Adjust height based on your needs */
-    background-image: url('./photos/hostel-image.jpg'); /* Use the image file path */
+    height: 300px;
+    background-image: url('../../Photos/dormify-logo.jpg');
     background-size: cover;
     background-position: center;
     border-radius: 8px;
