@@ -1,7 +1,5 @@
 import React from 'react';
 import './Navbar.css';
-import React from 'react';
-import './Navbar.css';
 import logo from '../../Photos/dormify-logo.jpg';
 
 const Navbar = () => {
