@@ -1,6 +1,6 @@
 .homepage-navbar {
     background-color: #108080; /* Darker Teal */
-    padding: 10px; /* Adjust padding as needed */
+    padding: 0px 8px; /* Adjust padding as needed */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -24,7 +24,7 @@
     background-image: url('../../Photos/dormify-logo.jpg');
     background-size: cover;
     background-position: center;
-    width: 40px; 
+    width: 40px;
     height: auto;
     margin-right: 10px;
     font-family: 'Times New Roman', serif;
@@ -50,6 +50,11 @@
     display: inline;
 }
 
+.homepage-navbar li:hover a {
+    background-color: #0a4242; /* Change background color on hover */
+    color: #ddd;
+}
+
 .homepage-navbar a {
     color: white;
     text-decoration: none; /* Remove underline */
@@ -59,16 +64,10 @@
     font-family: 'Arial', sans-serif;
 }
 
-.homepage-navbar a:hover {
-    background-color: #0a4242; /* Change background color on hover */
-    color: #ddd;
-}
-
 /* Responsive Navbar */
-@media screen and (max-width: 768px) {
+/* @media screen and (max-width: 768px) {
     .homepage-navbar ul {
         flex-direction: column;
         gap: 10px;
     }
-}
-
+} */

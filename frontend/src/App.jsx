@@ -6,10 +6,12 @@ import SignUp2 from './Components/Login/SignUp2';
 import Homepage from './Components/HomePage/homepage';;
 import Mess from './Components/Mess/Mess';
 import Leaves from './Components/Leaves/Leaves';
+// import LongLeaveForm from './Components/Leaves/LongLeaveForm';
 import Complaints from './Components/Complaints/Complaints';
 import Profile from './Components/Profile/Profile';
 import NoPage from './Components/Login/NoPage';
 import Navbar from './Components/Navbar/Navbar';
+import Footer from './Components/NavBar/Footer';
 
 function App() {
   const router = createBrowserRouter([
@@ -31,19 +33,23 @@ function App() {
     },
     {
       path: "/mess",
-      element: <><Navbar /><Mess /></>
+      element: <><Navbar /><Mess /><Footer /></>
     },
     {
       path: "/leaves",
-      element: <><Navbar /><Leaves /></>
+      element: <><Navbar /><Leaves /><Footer /></>
     },
+    // {
+    //   path: "/create-leave-request",
+    //   element: <><Navbar /><LongLeaveForm /><Footer /></>
+    // },
     {
       path: "/complaints",
-      element: <><Navbar /><Complaints /></>
+      element: <><Navbar /><Complaints /><Footer /></>
     },
     {
       path: "/profile",
-      element: <><Navbar /><Profile /></>
+      element: <><Navbar /><Profile /><Footer /></>
     },
     {
       path: "*",

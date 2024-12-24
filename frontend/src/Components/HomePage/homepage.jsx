@@ -1,6 +1,7 @@
 import React from 'react';
 import './Homepage.css';
 import Navbar from '../Navbar/Navbar'; // Import the Navbar component
+import Footer from '../NavBar/Footer'; // Import the Footer component
 
 const Homepage = () => {
   return (
@@ -17,19 +18,11 @@ const Homepage = () => {
               Your one-stop solution for managing hostel activities such as leaves, mess schedules, complaints, and more.
             </p>
           </div>
-          <div className="homepage-image-container">
-          </div>
+          <div className="homepage-image-container"></div>
         </section>
       </main>
 
-      <footer className="homepage-footer">
-        <div>
-          <p>&copy; 2024 Hostel Management System</p>
-        </div>
-        <div>
-          <p>Contact Warden: warden@example.com</p>
-        </div>
-      </footer>
+      <Footer /> {/* Use the Footer component */}
     </div>
   );
 };
