@@ -4,6 +4,7 @@ export const JWT_SECRET = process.env.JWT_SECRET_KEY
 export const verifyToken = (request, response, next) => {
     const authHeader = request.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
+    console.log(token);
 
     if (!token) return response.status(401).send("Access Denied: No Token Provided!");
 

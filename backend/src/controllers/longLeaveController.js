@@ -76,9 +76,11 @@ export const sendLongLeave = async (request, response) => {
 }
 
 export const viewPendingLongLeaves = async (request, response) => {
+    const usersid = request.user.sid;
+    console.log(usersid);
 
     try {
-        const result = await longLeaveInfo.findOne({ sid: request.params.sid });
+        const result = await longLeaveInfo.findOne({ sid: usersid });
 
         if (!result) {
             console.log("Error! No such user exists!");
@@ -95,9 +97,11 @@ export const viewPendingLongLeaves = async (request, response) => {
 }
 
 export const viewAcceptedLongLeaves = async (request, response) => {
+    const usersid = request.user.sid;
+    console.log(usersid);
 
     try {
-        const result = await longLeaveInfo.findOne({ sid: request.params.sid });
+        const result = await longLeaveInfo.findOne({ sid: usersid });
 
         if (!result) {
             console.log("Error! No such user exists!");

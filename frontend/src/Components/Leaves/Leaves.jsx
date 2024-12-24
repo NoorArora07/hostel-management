@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { getFromBackend } from '../../store/fetchdata';
 
 const Leaves = () => {
   const navigate = useNavigate();
@@ -12,8 +13,10 @@ const Leaves = () => {
     const fetchApplications = async () => {
       try {
         // Fetch the data from the backend
-        const sentResponse = await axios.get('http://127.0.0.1:5090/api/leaves/long-leaves/pending/23103053');
-        const approvedResponse = await axios.get('http://127.0.0.1:5090/api/leaves/long-leaves/accepted/23103053');
+        // let sentResponse;
+       
+        const sentResponse = await getFromBackend('http://127.0.0.1:5090/api/leaves/long-leaves/pending');
+        const approvedResponse = await getFromBackend('http://127.0.0.1:5090/api/leaves/long-leaves/accepted/');
   
         console.log('Sent Response:', sentResponse.data); // Should log the array of sent applications
         console.log('Approved Response:', approvedResponse.data); // Should log the array of approved applications
