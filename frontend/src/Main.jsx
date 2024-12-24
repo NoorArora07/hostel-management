@@ -7,9 +7,12 @@ import SignIn from './Components/Login/SignUp.jsx'
 import SignUp from './Components/Login/SignUp.jsx'
 import SignUp2 from './Components/Login/SignUp2.jsx'
 import Homepage from './Components/HomePage/homepage.jsx'
+import { AuthProvider } from './store/auth.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-)
+  <AuthProvider>
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  </AuthProvider>
+);

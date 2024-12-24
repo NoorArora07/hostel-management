@@ -6,4 +6,4 @@ const NoPage = () => {
     );
 };
 
-export default <NoPage></NoPage>;
+export default NoPage;
