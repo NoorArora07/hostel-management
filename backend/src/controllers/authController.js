@@ -54,8 +54,9 @@ export const signup1 =  async (request, response) => {
 };
 
 export const signup2 = async (request, response) => {
+    let sid = request.user.sid;
+    console.log(sid);
     try {
-        let sid = request.user.sid;
         const existingSid = await UserDetail.findOne({ sid: sid });
         if (existingSid) {
             console.log("A User with this sid already exists!");

@@ -26,7 +26,7 @@ const SignUp = () => {
             // alert(response.data.message);
             // navigate("/signup2");
             storeTokeninLS(response.data.token);
-            navigate("/Homepage");
+            navigate("/signup2");
         } catch (error) {
             console.error(error.response?.data || 'Signup failed');
             alert('Signup failed');

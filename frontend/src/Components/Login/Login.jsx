@@ -96,7 +96,7 @@ import "./Login.css";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../store/auth";
 import { getFromBackend } from "../../store/fetchdata";
-import { postFromBackend } from "../../store/fetchdata";
+import { postToBackend } from "../../store/fetchdata";
 
 const Login = () => {
     const [formData, setFormData] = useState({
