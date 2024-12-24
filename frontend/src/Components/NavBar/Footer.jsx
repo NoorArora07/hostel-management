@@ -2,7 +2,7 @@ import React from 'react';
 
 const Footer = () => {
   return (
-    <footer className="bg-dark-gray text-white py-4 mt-8 left-0 bottom-0">
+    <footer className="bg-dark-gray text-white py-4 mt-8 left-0 bottom-0 width-full">
       <div className="container mx-auto flex justify-between items-center">
         <div className="flex flex-col items-center sm:items-start">
           <p>&copy; 2024 Hostel Management System</p>
