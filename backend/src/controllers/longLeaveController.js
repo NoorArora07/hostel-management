@@ -8,8 +8,10 @@ dotenv.config();
 
 export const sendLongLeave = async (request, response) => {
     //request.body has longLeave
-    //temporarily assuming the sid will be visible through the link
 
+    const usersid = request.user.sid;
+    console.log(usersid);
+    
     try {
         const data = new longLeave({
             dateOfLeaving: request.body.dateOfLeaving,
@@ -20,13 +22,13 @@ export const sendLongLeave = async (request, response) => {
         });
         // const data1save = await data.save();
         const userExists = await longLeaveInfo.findOne({
-            sid: request.params.sid
+            sid: usersid
         })
 
         if (userExists) {
             const result = await longLeaveInfo.updateOne(
                 {
-                    sid: request.params.sid,
+                    sid: usersid,
                 },
                 { 
                     $push: { longLeaves: data } 
@@ -37,7 +39,7 @@ export const sendLongLeave = async (request, response) => {
         else {
             //add this new user 
             const user1 = await User.findOne({
-                sid: request.params.sid
+                sid: usersid
             })
             
             if (!user1) {
@@ -46,13 +48,13 @@ export const sendLongLeave = async (request, response) => {
             }
             
             const user2 = await UserDetail.findOne({
-                sid: request.params.sid
+                sid: usersid
             })
             
             const arr = [data];
             let addLLinfo = new longLeaveInfo({
                 name: user1.name,
-                sid: request.params.sid,
+                sid: usersid,
                 branch: user2.branch,
                 longLeaves: arr,
             })
