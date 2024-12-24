@@ -1,8 +1,7 @@
 import dotenv from 'dotenv';
 import { request, response } from 'express';
 import longLeaveInfo from '../models/longLeaves.model.js';
-import longLeave from '../models/longLeaveApplication.model.js'
-import User from '../models/users.model.js';
+import { longLeave } from '../models/longLeaves.model.js';
 import UserDetail from '../models/userDetail.model.js';
 dotenv.config();
 
@@ -11,13 +10,14 @@ export const sendLongLeave = async (request, response) => {
 
     const usersid = request.user.sid;
     console.log(usersid);
-    
+
     try {
         const data = new longLeave({
             dateOfLeaving: request.body.dateOfLeaving,
             dateOfReturn: request.body.dateOfReturn,
             address: request.body.address,
             reason: request.body.reason,
+            roomNumber: request.body.roomNumber,
             approved: false
         });
         // const data1save = await data.save();
@@ -38,14 +38,14 @@ export const sendLongLeave = async (request, response) => {
         }
         else {
             //add this new user 
-            const user1 = await User.findOne({
-                sid: usersid
-            })
+            // const user1 = await User.findOne({
+            //     sid: usersid
+            // })
             
-            if (!user1) {
-                console.log("Error! No such user exists!");
-                return response.status(400).send("Error! No such user exists!");
-            }
+            // if (!user1) {
+            //     console.log("Error! No such user exists!");
+            //     return response.status(400).send("Error! No such user exists!");
+            // }
             
             const user2 = await UserDetail.findOne({
                 sid: usersid
@@ -53,7 +53,7 @@ export const sendLongLeave = async (request, response) => {
             
             const arr = [data];
             let addLLinfo = new longLeaveInfo({
-                name: user1.name,
+                name: request.user.name,
                 sid: usersid,
                 branch: user2.branch,
                 longLeaves: arr,
@@ -118,3 +118,4 @@ export const viewAcceptedLongLeaves = async (request, response) => {
         response.status(500).send("An error occurred while fetching pending long leaves.");
     }
 }
+
