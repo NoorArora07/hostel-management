@@ -86,10 +86,7 @@ export const viewPendingLongLeaves = async (request, response) => {
         }
 
         const pendingLeaves = (result.longLeaves).filter(leave => leave.approved == false);
-        response.status(200).json({
-            message: "Pending long leaves fetched successfully!",
-            pendingLeaves
-        });
+        response.status(200).send(pendingLeaves);
     }
     catch (error) {
         console.log("Error while fetching pending long leaves:", error);
@@ -108,14 +105,10 @@ export const viewAcceptedLongLeaves = async (request, response) => {
         }
 
         const approvedLeaves = result.longLeaves.filter(leave => leave.approved == true);
-        response.status(200).json({
-            message: "approved long leaves fetched successfully!",
-            approvedLeaves
-        });
+        response.status(200).send(approvedLeaves);
     }
     catch (error) {
         console.log("Error while fetching pending long leaves:", error);
         response.status(500).send("An error occurred while fetching pending long leaves.");
     }
 }
-
