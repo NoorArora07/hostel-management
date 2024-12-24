@@ -94,6 +94,7 @@ import { useState } from "react";
 import axios from 'axios';
 import "./Login.css";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../store/auth";
 
 const Login = () => {
     const [formData, setFormData] = useState({
@@ -106,12 +107,14 @@ const Login = () => {
     };
 
     const navigate = useNavigate(); // Initialize useNavigate
+    const {storeTokeninLS} = useAuth();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             const response = await axios.post('http://127.0.0.1:5090/api/auth/login', formData);
             // alert('Login successful');
+            storeTokeninLS(response.data.token);
             navigate("/Homepage");
         } catch (error) {
             console.error(error.response?.data || 'Login failed');

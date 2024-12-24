@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./SignUp.css";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../store/auth";
 
 const SignUp = () => {
     const [formData, setFormData] = useState({
@@ -16,6 +17,7 @@ const SignUp = () => {
     };
 
     const navigate = useNavigate(); // Initialize useNavigate
+    const {storeTokeninLS} = useAuth();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -23,6 +25,7 @@ const SignUp = () => {
             const response = await axios.post('http://127.0.0.1:5090/api/auth/signup', formData);
             // alert(response.data.message);
             // navigate("/signup2");
+            storeTokeninLS(response.data.token);
             navigate("/Homepage");
         } catch (error) {
             console.error(error.response?.data || 'Signup failed');
