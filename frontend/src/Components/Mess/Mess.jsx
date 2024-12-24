@@ -1,10 +1,12 @@
-const Mess = () => {
+import { Button } from "@/components/ui/button"
 
-    return (
-        <div className="login-container">
-           <h2>MESS</h2>
-        </div>
-    );
-};
+const Mess = () => {
+  return (
+    <div className="login-container">
+      <Button>Click me</Button>
+    </div>
+  )
+}
+
 
 export default Mess;
