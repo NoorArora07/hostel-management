@@ -1,5 +1,5 @@
 .homepage-navbar {
-    background-color: #3fa5a5; /* Darker Teal */
+    background-color: #108080; /* Darker Teal */
     padding: 10px; /* Adjust padding as needed */
     display: flex;
     justify-content: space-between;
@@ -27,36 +27,40 @@
     width: 40px; 
     height: auto;
     margin-right: 10px;
+    font-family: 'Times New Roman', serif;
 }
 
 .homepage-navbar .logo-name h1 {
     font-size: 24px;
-    color: #333;
+    color: #f8f8f8;
     margin: 0;
     font-family: 'Serif', serif;
 }
 
 .homepage-navbar ul {
     list-style-type: none;
+    text-decoration: none;
     display: flex;
     gap: 20px;
+    margin: 0;
+    padding: 0;
 }
 
 .homepage-navbar li {
     display: inline;
 }
 
-.homepage-navbar NavLink {
+.homepage-navbar a {
     color: white;
-    text-decoration: none;
+    text-decoration: none; /* Remove underline */
     font-size: 18px;
-    padding: 8px 15px; /* Add padding for better button visibility */
+    padding: 30px 15px; /* Add padding for better button visibility */
     border-radius: 5px; /* Add border radius for rounded corners */
     font-family: 'Arial', sans-serif;
 }
 
-.homepage-navbar NavLink:hover {
-    background-color: #3a9f9f; /* Change background color on hover */
+.homepage-navbar a:hover {
+    background-color: #0a4242; /* Change background color on hover */
     color: #ddd;
 }
 
@@ -67,3 +71,4 @@
         gap: 10px;
     }
 }
+

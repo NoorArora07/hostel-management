@@ -2,7 +2,7 @@ const Mess = () => {
 
     return (
         <div className="login-container">
-           <h2>MESS KA KAAM</h2>
+           <h2>MESS</h2>
         </div>
     );
 };

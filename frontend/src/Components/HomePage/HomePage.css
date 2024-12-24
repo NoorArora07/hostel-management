@@ -4,7 +4,7 @@
     justify-content: space-between;
     align-items: center;
     flex: 1; /* Allow content area to expand */
-    background-color: #3cb9b9;
+    background-color: #0c6262;
 }
 
 .homepage-banner {
@@ -12,6 +12,7 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    padding: 10px;
 }
 
 .homepage-description {
@@ -20,14 +21,14 @@
 
 .homepage-description h1 {
     font-size: 36px;
-    color: #333;
+    color: #ffffff;
     margin-bottom: 20px;
     margin-top: 25px;
 }
 
 .homepage-description p {
     font-size: 18px;
-    color: #414040;
+    color: #bb8484;
     line-height: 1.6;
 }
 
