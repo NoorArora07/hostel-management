@@ -1,4 +1,6 @@
 .red{
-    background-color: red;
-    color: white
+    background-color: rgb(179, 195, 132);
+    color: white;
+    padding: 10px;
+    border-radius: 20px;
   }

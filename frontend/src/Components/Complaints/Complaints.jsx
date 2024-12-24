@@ -2,7 +2,7 @@ const Complaints = () => {
 
     return (
         <div className="login-container">
-           <h2>Complaints KA KAAM</h2>
+           <h2>COMPLAINTS</h2>
         </div>
     );
 };

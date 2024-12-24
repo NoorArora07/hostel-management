@@ -52,7 +52,7 @@ const Profile = () => {
 
   return (
       <div className="login-container">
-         <h2>Profile KA KAAM</h2>
+         <h2>PROFILE</h2>
       </div>
   );
 };
