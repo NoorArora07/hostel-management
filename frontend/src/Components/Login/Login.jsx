@@ -109,14 +109,12 @@ const Login = () => {
     };
 
     const navigate = useNavigate(); // Initialize useNavigate
-    const {storeTokeninLS} = useAuth();
+    const { storeTokeninLS } = useAuth();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             const response = await axios.post('http://127.0.0.1:5090/api/auth/login', formData);
-            // const response = await postFromBackend('http://127.0.0.1:5090/api/auth/login', formData);
-            // alert('Login successful');
             storeTokeninLS(response.data.token);
             navigate("/Homepage");
         } catch (error) {
@@ -160,6 +158,12 @@ const Login = () => {
                     <p>
                         Don't have an account?{" "}
                         <a href="./SignUp" className="signup-link">Sign Up</a>
+                    </p>
+                </div>
+                <div className="warden-login-container">
+                    <p>
+                        Have Warden Access?{" "}
+                        <a href="./WardenLogin" className="warden-link">Login Here</a>
                     </p>
                 </div>
             </div>
