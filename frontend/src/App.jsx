@@ -5,7 +5,8 @@ import SignUp from './Components/Login/SignUp';
 import SignUp2 from './Components/Login/SignUp2';
 import Homepage from './Components/HomePage/homepage';;
 import Mess from './Components/Mess/Mess';
-import Leaves from './Components/Leaves/Leaves';
+import LeavesDash from './Components/Leaves/LeavesDash';
+import LongLeavesView from './Components/Leaves/LongLeavesView';
 import LongLeaveForm from './Components/Leaves/LongLeaveForm';
 import Complaints from './Components/Complaints/Complaints';
 import Profile from './Components/Profile/Profile';
@@ -37,7 +38,11 @@ function App() {
     },
     {
       path: "/leaves",
-      element: <><Navbar /><Leaves /><Footer /></>
+      element: <><Navbar /><LeavesDash /><Footer /></>
+    },
+    {
+      path: "/LongLeavesView",
+      element: <><Navbar /><LongLeavesView /><Footer /></>
     },
     {
       path: "/create-leave-request",
