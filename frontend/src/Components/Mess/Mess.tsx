@@ -1,5 +1,4 @@
-// "use client";
-import React from "react";
+// "use client"
 
 // import { Calendar } from "@/Components/ui/calendar";
 // import { Button } from "@/Components/ui/button";
@@ -43,7 +42,7 @@ import React from "react";
 // }
 
 'use client'
-
+import React from "react";
 import { PencilSquareIcon, LockClosedIcon, ServerIcon } from '@heroicons/react/20/solid';
 import { Button } from "@/Components/ui/button";
 import calender from "@/Photos/calender.jpg";
