@@ -5,6 +5,7 @@ body {
     background-image: url('../../Photos/hostel-login.jpg');
     background-size: cover;
     background-position: center;
+    background-repeat: no-repeat;
     transition: background-image 0.5s ease-in-out;
     display: flex;
     justify-content: center;
