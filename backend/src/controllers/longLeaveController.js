@@ -35,7 +35,10 @@ export const sendLongLeave = async (request, response) => {
                     $push: { longLeaves: data } 
                 }
             )
-            response.status(200).send("long leave application added successfully!!");
+            response.status(200).json({
+                sid: data.sid,
+                object_id: data._id.toString()
+            });
         }
         else {
             //add this new user 
@@ -62,10 +65,10 @@ export const sendLongLeave = async (request, response) => {
 
             let result = await addLLinfo.save();
 
-            response.status(201).json({
-                message: "Successfully added!",
-                sid: result.sid
-            })
+            response.status(200).json({
+                sid: data.sid,
+                object_id: data._id.toString()
+            });
         }
 
 
