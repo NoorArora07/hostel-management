@@ -10,14 +10,15 @@ export const sendLongLeave = async (request, response) => {
 
     const usersid = request.user.sid;
     console.log(usersid);
+    console.log(request.body[0]);
 
     try {
         const data = new longLeave({
-            dateOfLeaving: request.body.dateOfLeaving,
-            dateOfReturn: request.body.dateOfReturn,
-            address: request.body.address,
-            reason: request.body.reason,
-            roomNumber: request.body.roomNumber,
+            dateOfLeaving: request.body[0].dateOfLeaving,
+            dateOfReturn: request.body[0].dateOfReturn,
+            address: request.body[0].address,
+            reason: request.body[0].reason,
+            roomNumber: request.body[0].roomNumber,
             approved: false
         });
         // const data1save = await data.save();

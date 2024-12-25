@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { getFromBackend } from '../../store/fetchdata';
 
-const Leaves = () => {
+const LongLeavesView = () => {
   const navigate = useNavigate();
   const [sentApplications, setSentApplications] = useState([]);
   const [approvedApplications, setApprovedApplications] = useState([]);
@@ -112,4 +112,4 @@ const Leaves = () => {
   );
 };
 
-export default Leaves;
+export default LongLeavesView;

@@ -19,7 +19,7 @@ export const getFromBackend = async (link) => {
   }
 };
 
-export const postFromBackend = async (link, data) => {
+export const postToBackend = async (link, data) => {
     try {
       const token = localStorage.getItem('token'); // Ensure token is retrieved
       if (!token) {
@@ -29,6 +29,7 @@ export const postFromBackend = async (link, data) => {
       const response = await axios.post(link, data, {
         headers: {
           'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
         },
       });
       return response; // Return the full Axios response object

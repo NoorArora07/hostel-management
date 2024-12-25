@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { postToBackend } from '../../store/fetchdata';
 
 const LongLeaveForm = () => {
   const navigate = useNavigate();
@@ -31,10 +32,14 @@ const LongLeaveForm = () => {
 
     try {
       // Send application data to backend
-      await axios.post('/api/applications/create', applicationData);
+      // await axios.post('/api/applications/create', applicationData);
+      const result = await postToBackend('http://127.0.0.1:5090/api/leaves/long-leaves/', applicationData);
+      console.log(`application data`);
+      console.log(applicationData);
+      console.log(result);
 
       // Redirect to the page with the table after submission
-      navigate('/leave-application');
+      navigate('/Homepage');
     } catch (error) {
       console.error('Error submitting leave request:', error);
       setError('There was an error submitting the leave request.');

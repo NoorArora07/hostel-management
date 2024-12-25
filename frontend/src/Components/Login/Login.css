@@ -104,3 +104,19 @@ input:focus {
     text-decoration: underline;
     color: #004288;
 }
+
+.warden-login-container {
+    margin-top: 5px;
+    text-align: center;
+}
+
+.warden-link {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.warden-link:hover {
+    text-decoration: underline;
+    color: #004288;
+}

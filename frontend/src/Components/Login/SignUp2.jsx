@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import axios from "axios";
 import "./SignUp2.css";
 import { useNavigate } from "react-router-dom";
+import { postToBackend } from "../../store/fetchdata";
 
 const SignUp2 = () => {
     const [formData, setFormData] = useState({
         branch: '',
         phoneNumber: '',
-        parentNumber: '',
+        parentsNumber: '',
     });
 
     const handleChange = (e) => {
@@ -22,22 +23,23 @@ const SignUp2 = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        let response;
         try {
-            const response = await axios.post('http://127.0.0.1:5090/api/auth/signup2', formData);
-            // alert(response.data.message);
-            navigate("/Homepage");
+            response = await postToBackend('http://127.0.0.1:5090/api/auth/signup2', formData);
+            alert(response.data.message);
+            navigate("/");
         } catch (error) {
             const errorMessage = error.response?.data?.message || 'Signup failed';
-            console.error("Error:", errorMessage);
+            // console.error("Error:", errorMessage);
             alert(errorMessage);
         }
 
         // Logging form data for debugging
         console.log("Branch:", formData.branch);
         console.log("Phone Number:", formData.phoneNumber);
-        console.log("Parent's Phone Number:", formData.parentNumber);
+        console.log("Parent's Phone Number:", formData.parentsNumber);
     };
-
+    
     return (
         <div className="SignUp-container">
             <form className="SignUp-form" onSubmit={handleSubmit}>
@@ -70,12 +72,12 @@ const SignUp2 = () => {
                 </div>
 
                 <div className="input-group">
-                    <label htmlFor="parentNumber">Parent's Number:</label>
+                    <label htmlFor="parentsNumber">Parent's Number:</label>
                     <input
                         type="text"
-                        id="parentNumber"
-                        name="parentNumber"
-                        value={formData.parentNumber}
+                        id="parentsNumber"
+                        name="parentsNumber"
+                        value={formData.parentsNumber}
                         onChange={handleChange}
                         placeholder="Enter your parent's phone number"
                         required
