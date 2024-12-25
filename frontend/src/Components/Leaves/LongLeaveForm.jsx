@@ -8,14 +8,14 @@ const LongLeaveForm = () => {
   const [dateOfLeaving, setDateOfLeaving] = useState('');
   const [dateOfReturn, setDateOfReturn] = useState('');
   const [reason, setReason] = useState('');
-  const [roomNo, setRoomNo] = useState('');
+  const [roomNumber, setroomNumber] = useState('');
   const [address, setAddress] = useState('');
   const [error, setError] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!dateOfLeaving || !dateOfReturn || !reason || !roomNo || !address) {
+    if (!dateOfLeaving || !dateOfReturn || !reason || !roomNumber || !address) {
       setError('All fields are required.');
       return;
     }
@@ -25,7 +25,7 @@ const LongLeaveForm = () => {
         dateOfLeaving,
         dateOfReturn,
         reason,
-        roomNo,
+        roomNumber,
         address,
       },
     ];
@@ -106,14 +106,14 @@ const LongLeaveForm = () => {
               </div>
 
               <div className="mb-4">
-                <label htmlFor="roomNo" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="roomNumber" className="block text-sm font-medium text-gray-700">
                   Room No.
                 </label>
                 <input
                   type="text"
-                  id="roomNo"
-                  value={roomNo}
-                  onChange={(e) => setRoomNo(e.target.value)}
+                  id="roomNumber"
+                  value={roomNumber}
+                  onChange={(e) => setroomNumber(e.target.value)}
                   required
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
                 />
