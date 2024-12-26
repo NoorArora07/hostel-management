@@ -5,12 +5,10 @@ import { format } from "date-fns"
 import { Calendar } from "@/Components/ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "@/Components/ui/popover"
 
-// Mock data for mess-off dates and menu items
 const messOffDates = [new Date(2023, 11, 5), new Date(2023, 11, 12), new Date(2023, 11, 19), new Date(2023, 11, 26)]
 const menuItems: { [key: string]: string[] } = {
   "2023-12-01": ["Pasta", "Salad", "Fruit"],
   "2023-12-02": ["Chicken", "Rice", "Vegetables"],
-  // Add more dates and menu items as needed
 }
 
 const MessCalendar = () => {

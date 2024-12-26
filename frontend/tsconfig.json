@@ -6,6 +6,14 @@
       "paths": {
       "@/*": ["src/*"]
       },
-      "jsx": "react"
-    }
-  }
+      "jsx": "react-jsx", // or "react" for older projects
+      "allowJs": true,    // Allow JavaScript files in the project
+      "checkJs": false    // Skip type checking for .js/.jsx files
+    },
+    "exclude": [
+        "eslint.config.js",
+        "postcss.config.js",
+        "tailwind.config.js",
+        "vite.config.js"
+    ]
+}

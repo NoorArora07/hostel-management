@@ -1,3 +1,4 @@
+'use client'
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { postToBackend } from '../../store/fetchdata';
@@ -34,14 +35,14 @@ const MessLeaveForm = () => {
     ];
 
     try {
-      const result = await postToBackend('http://127.0.0.1:5090/api/mess-leaves/', applicationData);
+      const result = await postToBackend('http://127.0.0.1:5090/api/mess/off', applicationData);
       console.log(`application data`, applicationData, result);
       navigate('/Homepage');
     } catch (error) {
       console.error('Error submitting leave request:', error);
       setError('There was an error submitting the leave request.');
     }
-  };
+ };
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4">

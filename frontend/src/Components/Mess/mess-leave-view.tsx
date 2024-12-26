@@ -1,15 +1,55 @@
-import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/Components/ui/table"
-
-// Sample data - in a real application, this would come from an API or database
-const messLeaves = [
-  { id: 1, dateOfLeaving: '2023-06-01', dateOfReturn: '2023-06-05', reason: 'Family vacation', lastMeal: 'breakfast', firstMeal: 'dinner' },
-  { id: 2, dateOfLeaving: '2023-06-10', dateOfReturn: '2023-06-12', reason: 'Medical appointment', lastMeal: 'lunch', firstMeal: 'breakfast' },
-  { id: 3, dateOfLeaving: '2023-06-15', dateOfReturn: '2023-06-20', reason: 'Home visit', lastMeal: 'dinner', firstMeal: 'lunch' },
-];
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/Components/ui/table";
 
 const MessLeavesView = () => {
+  interface MessLeave {
+    id: number;
+    dateOfLeaving: string;
+    dateOfReturn: string;
+    reason: string;
+    lastMeal: string;
+    firstMeal: string;
+  }
+
+  const [messLeaves, setMessLeaves] = useState<MessLeave[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Fetch data from the backend API
+    const fetchMessLeaves = async () => {
+      try {
+        const response = await axios.get('/api/mess-leaves'); // Replace with your backend API endpoint
+        setMessLeaves(response.data); // Assuming the API returns an array of leave objects
+      } catch (err) {
+        setError("Failed to fetch mess leaves.");
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMessLeaves();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-xl font-semibold text-gray-700">Loading...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-xl font-semibold text-red-600">{error}</p>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4">
       <h1 className="text-3xl font-bold mb-6 text-white">Mess Leaves Overview</h1>
@@ -48,4 +88,3 @@ const MessLeavesView = () => {
 };
 
 export default MessLeavesView;
-

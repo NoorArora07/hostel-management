@@ -37,7 +37,7 @@ dotenv.config();
 //     }
 // };
 
-export const markMessOff = async (request, response) => {
+export const MessLeaveForm = async (request, response) => {
     try {
         const { dateOfLeaving, dateOfReturn,reason,lastMeal, firstMeal } = request.body;
 
