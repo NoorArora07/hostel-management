@@ -13,7 +13,7 @@ export const sendLateLeave = async (request, response) => {
     const todaysDate = (today).toISOString().split('T')[0];
     console.log(todaysDate);
 
-    const date = requestdata.critical === "critical" ? todaysDate : requestdata.date;
+    const date = requestdata.status === "critical" ? todaysDate : requestdata.date;
     
     try {
         const data = new lateLeave({
@@ -21,7 +21,7 @@ export const sendLateLeave = async (request, response) => {
             address: requestdata.address,
             reason: requestdata.reason,
             roomNumber: requestdata.roomNumber,
-            critical: requestdata.critical,
+            status: requestdata.status,
             approved: "pending"
         });
         
@@ -68,6 +68,7 @@ export const sendLateLeave = async (request, response) => {
 
             console.log(result);
             response.status(200).json({
+                "sent": true,
                 sid: usersid,
                 object_id: data._id.toString()
             });
@@ -88,6 +89,7 @@ export const sendLateLeave = async (request, response) => {
             let result = await addLLinfo.save();
 
             response.status(200).json({
+                "sent": true,
                 sid: usersid,
                 object_id: data._id.toString()
             });
@@ -126,7 +128,7 @@ export const viewAcceptedLateLeaves = async (request, response) => {
     console.log(usersid);
 
     try {
-        const result = await lateLeaveInfo.findOne({ sid: usersid });
+        const result = await lateLeavesInfo.findOne({ sid: usersid });
 
         if (!result) {
             console.log("Error! No such user exists!");

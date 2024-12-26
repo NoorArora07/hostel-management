@@ -17,7 +17,7 @@ const lateLeaveApplication = mongoose.Schema( {
             type: String,
             required: true
         },
-        critical: {
+        status: {
             type: String,
             required: true
         },

@@ -7,8 +7,8 @@ import express from 'express';
 
 const router = express.Router();
 
-router.get('/long-leaves/:time', viewRecent);
-router.patch('/long-leaves/delete', deleteApplication);
-router.patch('/long-leaves/approve', approveApplication);
+router.get('/:time', viewRecent);
+router.patch('/delete', deleteApplication);
+router.patch('/approve', approveApplication);
 
 export default router
