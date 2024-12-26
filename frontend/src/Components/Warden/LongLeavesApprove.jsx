@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getFromBackend, postToBackend } from '../../store/fetchdata';
+import { getFromBackend, patchToBackend } from '../../store/fetchdata';
 
 const LongLeavesApprove = () => {
   const [applications, setApplications] = useState([]);
@@ -15,27 +15,28 @@ const LongLeavesApprove = () => {
     getFromBackend(`http://127.0.0.1:5090/api/warden/long-leaves/${time}`)
       .then(response => {
         console.log('Response from backend:', response); // Debug log
-        setApplications(response.data);
-        alert(`Applications fetched successfully for timeframe: ${time}`);
+        setApplications(response.data || []);
+        // alert(`Applications fetched successfully for timeframe: ${time}`);
       })
       .catch(error => {
         console.error('Error fetching leave applications:', error.response ? error.response.data : error.message);
         alert('Failed to fetch applications. Check the console for details.');
       });
   };
-  
 
   const handleApplicationClick = (sid) => {
-    setSelectedApplication(prev => prev === sid ? null : sid);
+    setSelectedApplication(prev => (prev === sid ? null : sid));
   };
 
-  const handleAction = (id, sid, action) => {
+  const handleAction = (parentId, sid, action) => {
+    const longLeaveId = applications.find(app => app.sid === sid)?.longLeaves._id;
+
     if (action === 'decline') {
-      // Send a request to delete the application from the database
-      postToBackend(`http://127.0.0.1:5090/api/warden/long-leaves/delete/`,{sid:sid, object_id:id})
-        .then(response => {
+      // Decline the application and remove it from the list
+      patchToBackend(`http://127.0.0.1:5090/api/warden/long-leaves/delete/`, { sid, object_id: longLeaveId })
+        .then(() => {
           alert('Application declined and removed successfully!');
-          setApplications(prev => prev.filter(app => app.sid !== sid));
+          setApplications(prev => prev.filter(app => app._id !== parentId));
         })
         .catch(error => {
           console.error('Error declining application:', error.response ? error.response.data : error.message);
@@ -43,10 +44,14 @@ const LongLeavesApprove = () => {
         });
     } else if (action === 'approve') {
       // Approve the application by updating its status
-      postToBackend(`http://127.0.0.1:5090/api/warden/long-leaves/approve/${id}`,{sid:sid, object_id:id})
-        .then(response => {
+      patchToBackend(`http://127.0.0.1:5090/api/warden/long-leaves/approve/`, { sid, object_id: longLeaveId })
+        .then(() => {
           alert('Application approved successfully!');
-          setApplications(prev => prev.map(app => app.sid === sid ? { ...app, approved: true } : app));
+          setApplications(prev =>
+            prev.map(app =>
+              app.sid === sid ? { ...app, longLeaves: { ...app.longLeaves, approved: true } } : app
+            )
+          );
         })
         .catch(error => {
           console.error('Error approving application:', error.response ? error.response.data : error.message);
@@ -60,16 +65,18 @@ const LongLeavesApprove = () => {
   };
 
   return (
-    <div className="bg-gray-100 min-h-screen pt-20 pb-6"> {/* Adjusted padding to move content below the navbar */}
+    <div className="bg-gray-100 min-h-screen pt-20 pb-6">
       <h1 className="text-2xl font-bold text-center mb-6">Long Leave Applications</h1>
 
       <div className="max-w-4xl mx-auto mb-6">
-        <label htmlFor="time-frame" className="block text-gray-700 font-semibold mb-2">Select Time Frame:</label>
+        <label htmlFor="time-frame" className="block text-gray-700 font-semibold mb-2">
+          Select Time Frame:
+        </label>
         <div className="flex items-center gap-4">
-          <select 
-            id="time-frame" 
-            value={timeFrame} 
-            onChange={handleTimeFrameChange} 
+          <select
+            id="time-frame"
+            value={timeFrame}
+            onChange={handleTimeFrameChange}
             className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           >
             <option value="1 week">1 Week</option>
@@ -77,8 +84,8 @@ const LongLeavesApprove = () => {
             <option value="3 weeks">3 Weeks</option>
             <option value="4 weeks">4 Weeks</option>
           </select>
-          <button 
-            onClick={() => fetchApplications(timeFrame)} 
+          <button
+            onClick={() => fetchApplications(timeFrame)}
             className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
           >
             Apply Filter
@@ -89,33 +96,35 @@ const LongLeavesApprove = () => {
       <div className="max-w-4xl mx-auto bg-white shadow-md rounded-lg overflow-hidden">
         {applications.length > 0 ? (
           applications.map(application => (
-            <div key={application.sid} className="border-b border-gray-200">
-              <div 
+            <div key={application._id} className="border-b border-gray-200">
+              <div
                 className="flex justify-between items-center p-4 hover:bg-gray-50 cursor-pointer"
                 onClick={() => handleApplicationClick(application.sid)}
               >
                 <div>
                   <p className="text-lg font-semibold">{application.name}</p>
-                  <p className="text-sm text-gray-600">SID: {application.sid} | Branch: {application.branch}</p>
+                  <p className="text-sm text-gray-600">
+                    SID: {application.sid} | Branch: {application.branch}
+                  </p>
                 </div>
                 <span className="text-gray-500">{selectedApplication === application.sid ? '▲' : '▼'}</span>
               </div>
               {selectedApplication === application.sid && (
                 <div className="p-4 bg-gray-50">
-                  <p><strong>Reason:</strong> {application.reason}</p>
-                  <p><strong>Start Date:</strong> {application.dateOfLeaving}</p>
-                  <p><strong>End Date:</strong> {application.dateOfReturn}</p>
-                  <p><strong>Room No.:</strong> {application.roomNumber}</p>
-                  <p><strong>Address:</strong> {application.address}</p>
-                  <p><strong>Status:</strong> {application.approved ? 'Approved' : 'Pending'}</p>
+                  <p><strong>Reason:</strong> {application.longLeaves.reason}</p>
+                  <p><strong>Start Date:</strong> {application.longLeaves.dateOfLeaving}</p>
+                  <p><strong>End Date:</strong> {application.longLeaves.dateOfReturn}</p>
+                  <p><strong>Room No.:</strong> {application.longLeaves.roomNumber}</p>
+                  <p><strong>Address:</strong> {application.longLeaves.address}</p>
+                  <p><strong>Status:</strong> {application.longLeaves.approved ? 'Approved' : 'Pending'}</p>
                   <div className="flex gap-4 mt-4">
-                    <button 
+                    <button
                       className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
                       onClick={() => handleAction(application._id, application.sid, 'approve')}
                     >
                       Approve
                     </button>
-                    <button 
+                    <button
                       className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
                       onClick={() => handleAction(application._id, application.sid, 'decline')}
                     >
