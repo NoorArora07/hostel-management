@@ -32,7 +32,7 @@ const LongLeaveForm = () => {
     try {
       const result = await postToBackend('http://127.0.0.1:5090/api/leaves/long-leaves/', applicationData);
       console.log(`application data`, applicationData, result);
-      navigate('/Homepage');
+      navigate('/LongLeavesView');
     } catch (error) {
       console.error('Error submitting leave request:', error);
       setError('There was an error submitting the leave request.');
