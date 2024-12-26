@@ -60,3 +60,24 @@ export const postToBackend = async (link, data) => {
     }
   };
   
+  export const patchToBackend = async (link, data) => {
+    try {
+      const token = localStorage.getItem('token'); // Retrieve token from localStorage
+      if (!token) {
+        throw new Error('No token found in localStorage');
+      }
+
+      const response = await axios.patch(link, data, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+      });
+
+      return response; // Return the full Axios response object
+    } catch (error) {
+      console.error('Request Error:', error.response ? error.response.data : error.message);
+      throw error; // Rethrow to allow handling at the calling site
+    }
+  };
+
