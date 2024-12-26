@@ -7,7 +7,7 @@ import express from 'express';
 
 const router = express.Router();
 
-router.get('/long-leaves', viewRecent);
+router.get('/long-leaves/:time', viewRecent);
 router.patch('/long-leaves/delete', deleteApplication);
 router.patch('/long-leaves/approve', approveApplication);
 

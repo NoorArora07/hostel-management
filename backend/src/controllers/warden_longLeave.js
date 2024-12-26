@@ -9,10 +9,10 @@ dotenv.config();
 
 export const viewRecent = async (request, response) => {
     try {
-        const {time} = request.body
-
+        const time = request.params.time;
+        console.log(time);
         let startDate = getStartDate(time);
-
+        console.log(startDate);
         //yaha se date lagayenge
         let recentLeaves = await longLeaveInfo.aggregate([
             { $unwind: "$longLeaves" }, {
@@ -23,6 +23,7 @@ export const viewRecent = async (request, response) => {
             },
             { $sort: { "longLeaves.createdAt": -1 } }
         ])
+        console.log(recentLeaves);
         response.json(recentLeaves)
     } catch (error) {
         console.log("There has been an error while fetching responses for the warden!");
