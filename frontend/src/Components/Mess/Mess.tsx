@@ -1,7 +1,8 @@
 'use client'
 import React from "react";
-import { PencilSquareIcon, LockClosedIcon, ServerIcon } from '@heroicons/react/20/solid';
+import { PencilSquareIcon, BanknotesIcon, ClipboardDocumentCheckIcon } from '@heroicons/react/20/solid';
 import { Button } from "@/Components/ui/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/Components/ui/dropdown-menu";
 import messPic from '@/Photos/mess-pic.jpg';
 import { useNavigate } from 'react-router-dom';
 
@@ -11,22 +12,28 @@ const features = [
     description:
       'Including a calendar to keep track of your mess schedule and plan your meals accordingly.',
     icon: PencilSquareIcon,
-    buttonText: 'View Schedule',
-    navigateTo: '/mess-leave-form',
+    actions: [
+      { text: 'View Schedule', path: '/view-schedule' },
+      { text: 'Update Schedule', path: '/update-schedule' },
+    ],
   },
   {
     name: 'Pay Your Mess Fee',
     description: "Can't keep a track of your mess fee? We got you covered. Pay your mess fee online",
-    icon: LockClosedIcon,
-    buttonText: 'Pay Now',
-    navigateTo: '/mess-leave-form',
+    icon: BanknotesIcon,
+    actions: [
+      { text: 'View Fee', path: '/view-fee' },
+      { text: 'Pay Now', path: '/pay-fee' },
+    ],
   },
   {
     name: 'Update Mess Leave Days',
     description: 'Going out for a vacation? Update your leave days and we will take care of the rest.',
-    icon: ServerIcon,
-    buttonText: 'Update Leave',
-    navigateTo: '/mess-leave-form',
+    icon: ClipboardDocumentCheckIcon,
+    actions: [
+      { text: 'View Leave', path: '/mess-leave-view' },
+      { text: 'Update Leave', path: '/mess-leave-form' },
+    ],
   },
 ]
 
@@ -54,13 +61,22 @@ export default function Mess() {
                       {feature.name}
                     </dt>{' '}
                     <dd className="inline">{feature.description}</dd>
-                    <dd>
-                    <Button 
-                      className="mt-2 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white 
-                      font-semibold py-2 px-4 rounded-md shadow-md transition duration-300 ease-in-out transform hover:scale-105"
-                      onClick={() => handleNavigation(feature.navigateTo)}>
-                      {feature.buttonText}
-                    </Button>
+                    <dd className="mt-2">
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button className="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white 
+                            font-semibold py-2 px-4 rounded-md shadow-md transition duration-300 ease-in-out transform hover:scale-105">
+                            Actions
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                          {feature.actions.map((action, index) => (
+                            <DropdownMenuItem key={index} onSelect={() => handleNavigation(action.path)}>
+                              {action.text}
+                            </DropdownMenuItem>
+                          ))}
+                        </DropdownMenuContent>
+                      </DropdownMenu>
                     </dd>
                   </div>
                 ))}
@@ -79,3 +95,4 @@ export default function Mess() {
     </div>
   )
 }
+

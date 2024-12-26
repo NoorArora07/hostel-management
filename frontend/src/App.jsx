@@ -8,6 +8,7 @@ import Homepage from './Components/HomePage/homepage';
 import WardenDash from './Components/Warden/WardenDash';
 import Mess from './Components/Mess/Mess';
 import MessLeaveForm from './Components/Mess/mess-leave-form';
+import MessLeavesView from './Components/Mess/mess-leave-view';
 import LeavesDash from './Components/Leaves/LeavesDash';
 import LongLeavesView from './Components/Leaves/LongLeavesView';
 import LongLeaveForm from './Components/Leaves/LongLeaveForm';
@@ -48,6 +49,10 @@ function App() {
     {
       path: "/mess",
       element: <><Navbar /><Mess /><Footer /></>
+    },
+    {
+      path: "/mess-leave-view",
+      element: <><Navbar /><MessLeavesView /><Footer /></>
     },
     {
       path: "/mess-leave-form",
