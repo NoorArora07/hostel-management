@@ -13,7 +13,7 @@ const features = [
       'Including a calendar to keep track of your mess schedule and plan your meals accordingly.',
     icon: PencilSquareIcon,
     actions: [
-      { text: 'View Schedule', path: '/view-schedule' },
+      { text: 'View Schedule', path: '/mess-schedule-view' },
       { text: 'Update Schedule', path: '/update-schedule' },
     ],
   },
