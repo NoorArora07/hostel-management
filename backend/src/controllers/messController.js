@@ -53,7 +53,7 @@ export const MessLeaveForm = async (request, response) => {
             });
             await newMessData.save();
         } else {
-            messData.messOffDates.push({ dateOfLeaving, dateOfLeaving, reason,lastMeal, firstMeal });
+            messData.messOffDates.push({ dateOfLeaving, dateOfReturn, reason,lastMeal, firstMeal });
             await messData.save();
         }
 
