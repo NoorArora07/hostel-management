@@ -39,7 +39,7 @@ dotenv.config();
 
 export const MessLeaveForm = async (request, response) => {
     try {
-        const { dateOfLeaving, dateOfReturn,reason,lastMeal, firstMeal } = request.body;
+        const { dateOfLeaving, dateOfReturn, reason, lastMeal, firstMeal } = request.body[0];
 
         if (!dateOfLeaving || !dateOfReturn || !reason|| !lastMeal || !firstMeal)
             return response.status(400).send("All fields are required!");
@@ -49,11 +49,11 @@ export const MessLeaveForm = async (request, response) => {
         if (!messData) {
             const newMessData = new Mess({
                 sid: request.user.sid,
-                messOffDates: [{ dateOfLeaving, dateOfReturn,reason, lastMeal, firstMeal }],
+                messOffDates: [{dateOfLeaving, dateOfReturn, reason, lastMeal, firstMeal}],
             });
             await newMessData.save();
         } else {
-            messData.messOffDates.push({ dateOfLeaving, dateOfLeaving, reason,lastMeal, firstMeal });
+            messData.messOffDates.push({dateOfLeaving, dateOfReturn, reason, lastMeal, firstMeal});
             await messData.save();
         }
 
