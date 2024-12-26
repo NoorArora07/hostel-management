@@ -21,7 +21,7 @@ const LateLeavesApprove = () => {
         console.log('Response from backend:', response); 
         const filteredApplications = response.data.filter(application => {
           if (status === 'critical') return application.lateLeaves.status === 'critical';
-          if (status === 'not-critical') return application.lateLeaves.status === 'not-critical';
+          else if (status === 'not-critical') return application.lateLeaves.status === 'not-critical';
           return true; // For 'all', return all applications
         });
         setApplications(filteredApplications || []);
@@ -93,7 +93,7 @@ const LateLeavesApprove = () => {
           >
             <option value="all">All</option>
             <option value="critical">Critical</option>
-            <option value="not critical">In Advance</option>
+            <option value="not-critical">In Advance</option>
           </select>
           <button
             onClick={() => fetchApplications(leaveStatus)} // Re-fetch with the selected status
@@ -129,7 +129,7 @@ const LateLeavesApprove = () => {
                     <p><strong>Date:</strong> {application.lateLeaves.date}</p>
                     <p><strong>Room No.:</strong> {application.lateLeaves.roomNumber}</p>
                     <p><strong>Address:</strong> {application.lateLeaves.address}</p>
-                    <p><strong>Status:</strong> {application.lateLeaves.approved ? 'Approved' : 'Pending'}</p>
+                    {/* <p><strong>Status:</strong> {application.lateLeaves.approved}</p> */}
                     <div className="flex gap-4 mt-4">
                       <button
                         className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
