@@ -14,7 +14,7 @@ const WardenDash = () => {
   };
 
   const handleLateLeaveRedirect = () => {
-    navigate('/late-leave'); // Redirect to Late Leave page
+    navigate('/LateLeavesApprove'); // Redirect to Late Leave page
   };
 
   const handleComplaintsRedirect = () => {

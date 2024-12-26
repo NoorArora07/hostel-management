@@ -47,17 +47,24 @@ export default function LeaveDashboardPage() {
     setExpandedOption(expandedOption === name ? null : name);
   };
 
-  const handleViewLeaveApplications = () => {
-    navigate('/LongLeavesView'); // Navigate to the new page when button is clicked
-  };
-
-  const createLeaveApplications = () => {
-    navigate('/create-leave-request'); // Navigate to the new page when button is clicked
+  const handleNavigation = (action: string, leaveType: string) => {
+    if (leaveType === 'Long Leave') {
+      if (action === 'view') {
+        navigate('/LongLeavesView'); // Navigate to Long Leave View
+      } else if (action === 'create') {
+        navigate('/create-leave-request'); // Navigate to Create Long Leave
+      }
+    } else if (leaveType === 'Late Leave') {
+      if (action === 'view') {
+        navigate('/LateLeavesView'); // Navigate to Late Leave View
+      } else if (action === 'create') {
+        navigate('/LateLeaveForm'); // Navigate to Create Late Leave
+      }
+    }
   };
 
   return (
     <div>
-
       {/* Leave Dashboard Section */}
       <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-10 p-8 bg-gray-100 mt-16">
         {/* Left Content */}
@@ -66,10 +73,7 @@ export default function LeaveDashboardPage() {
           <p className="mt-4 text-4xl font-semibold text-gray-900">Manage Your Leaves</p>
           <div className="mt-6 space-y-6">
             {leaveOptions.map((option) => (
-              <div
-                key={option.name}
-                className="p-6 bg-white rounded-lg shadow-lg"
-              >
+              <div key={option.name} className="p-6 bg-white rounded-lg shadow-lg">
                 <div
                   className="flex justify-between items-center cursor-pointer"
                   onClick={() => toggleDropdown(option.name)}
@@ -95,7 +99,7 @@ export default function LeaveDashboardPage() {
                       <Button
                         key={action.label}
                         className="w-full bg-light-teal hover:bg-middle-teal text-white font-semibold py-2 px-4 rounded-md transition duration-300"
-                        onClick={action.label === 'View Leave Applications' ? handleViewLeaveApplications : action.label === 'Create New Leave Application' ? createLeaveApplications : () => alert(`${action.label} clicked`)}
+                        onClick={() => handleNavigation(action.action, option.name)}
                       >
                         {action.label}
                       </Button>

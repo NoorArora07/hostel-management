@@ -14,6 +14,9 @@ import LeavesDash from './Components/Leaves/LeavesDash';
 import LongLeavesView from './Components/Leaves/LongLeavesView';
 import LongLeaveForm from './Components/Leaves/LongLeaveForm';
 import LongLeavesApprove from './Components/Warden/LongLeavesApprove';
+import LateLeavesView from './Components/Leaves/LateLeavesView';
+import LateLeaveForm from './Components/Leaves/LateLeaveForm';
+import LateLeavesApprove from './Components/Warden/LateLeavesApprove';
 import Complaints from './Components/Complaints/Complaints';
 import Profile from './Components/Profile/Profile';
 import NoPage from './Components/Login/NoPage';
@@ -78,6 +81,18 @@ function App() {
     {
       path: "/LongLeavesApprove",
       element: <><WardenNavbar /><LongLeavesApprove /><Footer /></>
+    },
+    {
+      path: "/LateLeavesView",
+      element: <><Navbar /><LateLeavesView /><Footer /></>
+    },
+    {
+      path: "/LateLeaveForm",
+      element: <><Navbar /><LateLeaveForm /><Footer /></>
+    },
+    {
+      path: "/LateLeavesApprove",
+      element: <><WardenNavbar /><LateLeavesApprove /><Footer /></>
     },
     {
       path: "/complaints",
