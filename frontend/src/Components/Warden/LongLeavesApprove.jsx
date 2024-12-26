@@ -31,13 +31,13 @@ const LongLeavesApprove = () => {
     setSelectedApplication(prev => (prev === longLeaveId ? null : longLeaveId));
   };
 
-  const handleAction = (parentId, sid, action) => {
+  const handleAction = (sid, action) => {
     const longLeaveId = applications.find(app => app.sid === sid)?.longLeaves._id;
 
     if (action === 'decline') {
       patchToBackend(`http://127.0.0.1:5090/api/warden/long-leaves/delete/`, { sid, object_id: longLeaveId })
         .then(() => {
-          alert('Application declined and removed successfully!');
+          // alert('Application declined and removed successfully!');
           setApplications(prev => prev.filter(app => app.longLeaves._id !== longLeaveId));
         })
         .catch(error => {
@@ -47,14 +47,8 @@ const LongLeavesApprove = () => {
     } else if (action === 'approve') {
       patchToBackend(`http://127.0.0.1:5090/api/warden/long-leaves/approve/`, { sid, object_id: longLeaveId })
         .then(() => {
-          alert('Application approved successfully!');
-          setApplications(prev =>
-            prev.map(app =>
-              app.longLeaves._id === longLeaveId
-                ? { ...app, longLeaves: { ...app.longLeaves, approved: true } }
-                : app
-            )
-          );
+          // alert('Application approved successfully!');
+          setApplications(prev => prev.filter(app => app.longLeaves._id !== longLeaveId));
         })
         .catch(error => {
           console.error('Error approving application:', error.response ? error.response.data : error.message);
@@ -138,13 +132,13 @@ const LongLeavesApprove = () => {
                     <div className="flex gap-4 mt-4">
                       <button
                         className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
-                        onClick={() => handleAction(application._id, application.sid, 'approve')}
+                        onClick={() => handleAction(application.sid, 'approve')}
                       >
                         Approve
                       </button>
                       <button
                         className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-                        onClick={() => handleAction(application._id, application.sid, 'decline')}
+                        onClick={() => handleAction(application.sid, 'decline')}
                       >
                         Decline
                       </button>
