@@ -6,6 +6,7 @@ import cors from 'cors';
 import authRoutes from './routes/authRoutes.js';
 import longLeavesRoutes from './routes/longLeavesRoutes.js';
 import wardenLeavesRoutes from './routes/wardenLeaves.js'
+import lateLeavesRouters from './routes/lateLeavesRoutes.js'
 dotenv.config();
 
 console.log("MONGO URI: ", process.env.MONGO_URI);
@@ -19,7 +20,8 @@ app.use(cors());
 
 //routes
 app.use("/api/auth", authRoutes);
-app.use("/api/leaves", longLeavesRoutes);
+app.use("/api/leaves/long-leaves", longLeavesRoutes);
+app.use("/api/leaves/late-leaves", lateLeavesRouters);
 app.use("/api/warden", wardenLeavesRoutes);
 
 
