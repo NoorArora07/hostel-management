@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-// import { postToBackend } from '../../store/fetchdata';
+import { postToBackend } from '../../store/fetchdata';
 import { Button } from "@/Components/ui/button"
 import { Input } from "@/Components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card"
@@ -34,9 +34,8 @@ const MessLeaveForm = () => {
     ];
 
     try {
-      // Uncomment and update this when you're ready to connect to your backend
-      // const result = await postToBackend('http://127.0.0.1:5090/api/mess-leaves/', applicationData);
-      // console.log(`application data`, applicationData, result);
+      const result = await postToBackend('http://127.0.0.1:5090/api/mess-leaves/', applicationData);
+      console.log(`application data`, applicationData, result);
       navigate('/Homepage');
     } catch (error) {
       console.error('Error submitting leave request:', error);
