@@ -2,10 +2,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { postToBackend } from '../../store/fetchdata';
-import { Button } from "@/Components/ui/button"
-import { Input } from "@/Components/ui/input"
-import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/Components/ui/select"
+import { Button } from "@/Components/ui/button";
+import { Input } from "@/Components/ui/input";
+import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/Components/ui/select";
 
 const MessLeaveForm = () => {
   const navigate = useNavigate();
@@ -16,6 +16,16 @@ const MessLeaveForm = () => {
   const [firstMeal, setFirstMeal] = useState('');
   const [error, setError] = useState('');
 
+  const handleLastMealChange = (meal: string) => {
+    setLastMeal(meal);
+    console.log("Selected last meal:", meal); // Debugging to verify selected value
+  };
+
+  const handleFirstMealChange = (meal: string) => {
+    setFirstMeal(meal);
+    console.log("Selected first meal:", meal); // Debugging to verify selected value
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -24,25 +34,23 @@ const MessLeaveForm = () => {
       return;
     }
 
-    const applicationData = [
-      {
-        dateOfLeaving,
-        dateOfReturn,
-        reason,
-        lastMeal,
-        firstMeal,
-      },
-    ];
+    const messData = {
+      dateOfLeaving,
+      dateOfReturn,
+      reason,
+      lastMeal,
+      firstMeal,
+    };
 
     try {
-      const result = await postToBackend('http://127.0.0.1:5090/api/mess/off', applicationData);
-      console.log(`application data`, applicationData, result);
+      const result = await postToBackend('http://127.0.0.1:5090/api/mess/off', messData);
+      console.log(`Application data`, messData, result);
       navigate('/Homepage');
     } catch (error) {
       console.error('Error submitting leave request:', error);
       setError('There was an error submitting the leave request.');
     }
- };
+  };
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4">
@@ -99,11 +107,11 @@ const MessLeaveForm = () => {
               <label htmlFor="lastMeal" className="block text-sm font-medium text-gray-700">
                 Last meal eaten on the date of leaving
               </label>
-              <Select value={lastMeal} onValueChange={setLastMeal} required>
+              <Select value={lastMeal} onValueChange={handleLastMealChange} required>
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Select last meal" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent itemType="string">
                   <SelectItem value="none">None</SelectItem>
                   <SelectItem value="breakfast">Breakfast</SelectItem>
                   <SelectItem value="lunch">Lunch</SelectItem>
@@ -116,11 +124,11 @@ const MessLeaveForm = () => {
               <label htmlFor="firstMeal" className="block text-sm font-medium text-gray-700">
                 First meal after returning from leave
               </label>
-              <Select value={firstMeal} onValueChange={setFirstMeal} required>
+              <Select value={firstMeal} onValueChange={handleFirstMealChange} required>
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Select first meal" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent itemType="string">
                   <SelectItem value="breakfast">Breakfast</SelectItem>
                   <SelectItem value="lunch">Lunch</SelectItem>
                   <SelectItem value="dinner">Dinner</SelectItem>
