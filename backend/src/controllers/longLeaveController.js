@@ -41,16 +41,6 @@ export const sendLongLeave = async (request, response) => {
             });
         }
         else {
-            //add this new user 
-            // const user1 = await User.findOne({
-            //     sid: usersid
-            // })
-            
-            // if (!user1) {
-            //     console.log("Error! No such user exists!");
-            //     return response.status(400).send("Error! No such user exists!");
-            // }
-            
             const user2 = await UserDetail.findOne({
                 sid: usersid
             })
