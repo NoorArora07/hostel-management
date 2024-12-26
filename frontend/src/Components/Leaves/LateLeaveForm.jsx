@@ -36,6 +36,9 @@ const LateLeaveForm = () => {
     try {
       const result = await postToBackend('http://127.0.0.1:5090/api/leaves/late-leaves/', applicationData);
       console.log('Application Data:', applicationData, result);
+      if (result.data.sent === false){
+        alert(`${result.data.reason}`)
+      }
       navigate('/LateLeavesView');
     } catch (error) {
       console.error('Error submitting leave request:', error);
