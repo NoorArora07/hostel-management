@@ -6,6 +6,8 @@ import cors from 'cors';
 import authRoutes from './routes/authRoutes.js';
 import longLeavesRoutes from './routes/longLeavesRoutes.js';
 import wardenLeavesRoutes from './routes/wardenLeaves.js'
+import messRoutes from './routes/messRoutes.js';
+//import messpaymentRoutes from './routes/messpaymentRoutes.js';
 dotenv.config();
 
 console.log("MONGO URI: ", process.env.MONGO_URI);
@@ -21,7 +23,8 @@ app.use(cors());
 app.use("/api/auth", authRoutes);
 app.use("/api/leaves", longLeavesRoutes);
 app.use("/api/warden", wardenLeavesRoutes);
-
+app.use("/api/mess", messRoutes);
+//app.use("/api/payment", messpaymentRoutes);
 
 
 //start listening
