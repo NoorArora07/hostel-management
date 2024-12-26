@@ -2,8 +2,8 @@
 //div container max width nahi ho raha, need to solve this 
 
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card"
+import { Avatar, AvatarFallback, AvatarImage } from "@/Components/ui/avatar"
 
 const Profile = () => {
   
@@ -17,7 +17,7 @@ const Profile = () => {
   };
 
   return (
-    <div className="w-full px-4 md:px-8 py-16  mt-11 bg-zinc-500">
+    <div className="w-full px-4 md:px-8 py-16  mt-11 bg-blue-300">
       <Card className="max-w-2xl mx-auto mt-11">
         <CardHeader className="flex flex-row items-center gap-4">
           <Avatar className="w-20 h-20">

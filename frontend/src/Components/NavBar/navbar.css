@@ -1,5 +1,5 @@
 .homepage-navbar {
-    background-color: #354f52;
+    background-color: rgb(90, 27, 156);
     padding: 0px 8px; /* Adjust padding as needed */
     display: flex;
     justify-content: space-between;
@@ -38,6 +38,7 @@
 }
 
 .homepage-navbar ul {
+    
     list-style-type: none;
     text-decoration: none;
     display: flex;
