@@ -41,3 +41,43 @@ export const MessLeaveForm = async (request, response) => {
         response.status(500).send("Error marking mess off.");
     }
 };
+
+
+export const getMessLeaveDetails = async (req, res) => {
+    try {
+        const messData = await Mess.findOne({ sid: req.user.sid });
+
+        if (!messData) {
+            return res.status(404).json({ message: 'No mess leave data found.' });
+        }
+
+        const messOffDates = messData.messOffDates.map(leave => {
+            const { dateOfLeaving, dateOfReturn, reason, lastMeal, firstMeal } = leave;
+
+            // Calculate the total number of leave days
+            // const startDate = new Date(dateOfLeaving);
+            // const endDate = new Date(dateOfReturn);
+            // const leaveDuration = (endDate - startDate) / (1000 * 3600 * 24); // Difference in days
+
+            return {
+                dateOfLeaving,
+                dateOfReturn,
+                reason,
+                lastMeal,
+                firstMeal
+                //leaveDuration
+            };
+        });
+
+        //const totalLeaveDays = messOffDates.reduce((sum, leave) => sum + leave.leaveDuration, 0);
+        console.log("successful");
+        res.status(200).json({
+            messOffDates,
+            //totalLeaveDays
+        });
+    } catch (error) {
+        console.error("Error fetching mess leave details:", error);
+        res.status(500).json({ error: "An error occurred while fetching leave details." });
+    }
+};
+
