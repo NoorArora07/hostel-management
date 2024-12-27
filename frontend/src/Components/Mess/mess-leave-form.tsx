@@ -1,11 +1,12 @@
 'use client'
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { postToBackend } from '../../store/fetchdata';
+import { postToBackend } from '@/store/fetchdata';
 import { Button } from "@/Components/ui/button";
 import { Input } from "@/Components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/Components/ui/select";
+import axios from 'axios';
 
 const MessLeaveForm = () => {
   const navigate = useNavigate();
@@ -42,9 +43,34 @@ const MessLeaveForm = () => {
       firstMeal,
     };
 
+  // const postToBackend = async (link, data) => {
+  //   try {
+  //     const token = localStorage.getItem('token'); // Ensure token is retrieved
+  //     if (!token) {
+  //       throw new Error('No token found in localStorage');
+  //     }
+  
+  //     const response = await axios.post('http://127.0.0.1:5090/api/mess/off', messData, {
+  //       headers: {
+  //         'Authorization': `Bearer ${token}`,
+  //         'Content-Type': 'application/json'
+  //       },
+  //     });
+  //     return response; // Return the full Axios response object
+  //   } catch (error) {
+  //     if (axios.isAxiosError(error)) {
+  //       console.error('Request Error:', error.response ? error.response.data : error.message);
+  //     } else {
+  //       console.error('Unexpected Error:', error);
+  //     }
+  //     throw error; // Rethrow to allow handling at the calling site
+  //   }
+  // };
+
     try {
       const result = await postToBackend('http://127.0.0.1:5090/api/mess/off', messData);
       console.log(`Application data`, messData, result);
+      console.log('Mess leave request submitted successfully');
       navigate('/Homepage');
     } catch (error) {
       console.error('Error submitting leave request:', error);
@@ -54,7 +80,7 @@ const MessLeaveForm = () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4">
-      <h1 className="text-3xl font-bold mb-6 text-purple-600">Mess Leave Application System</h1>
+      <h1 className="mt-36 text-3xl font-bold mb-6 text-purple-600">Mess Leave Application System</h1>
       
       <Card className="w-full max-w-xl">
         <CardHeader>
@@ -112,10 +138,10 @@ const MessLeaveForm = () => {
                   <SelectValue placeholder="Select last meal" />
                 </SelectTrigger>
                 <SelectContent itemType="string">
-                  <SelectItem value="none">None</SelectItem>
-                  <SelectItem value="breakfast">Breakfast</SelectItem>
-                  <SelectItem value="lunch">Lunch</SelectItem>
-                  <SelectItem value="dinner">Dinner</SelectItem>
+                  <SelectItem value="None">None</SelectItem>
+                  <SelectItem value="Breakfast">Breakfast</SelectItem>
+                  <SelectItem value="Lunch">Lunch</SelectItem>
+                  <SelectItem value="Dinner">Dinner</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -129,9 +155,9 @@ const MessLeaveForm = () => {
                   <SelectValue placeholder="Select first meal" />
                 </SelectTrigger>
                 <SelectContent itemType="string">
-                  <SelectItem value="breakfast">Breakfast</SelectItem>
-                  <SelectItem value="lunch">Lunch</SelectItem>
-                  <SelectItem value="dinner">Dinner</SelectItem>
+                  <SelectItem value="Breakfast">Breakfast</SelectItem>
+                  <SelectItem value="Lunch">Lunch</SelectItem>
+                  <SelectItem value="Dinner">Dinner</SelectItem>
                 </SelectContent>
               </Select>
             </div>
