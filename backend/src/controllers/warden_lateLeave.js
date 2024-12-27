@@ -8,6 +8,12 @@ dotenv.config();
 
 export const viewRecent = async (request, response) => {
     try {
+        if (request.user.role !== "warden") {
+            return response.status(200).json({
+                "message": "access denied"
+            });
+        }
+        
         const filter = request.params.filter;
         console.log(filter);
         updateCriticalLeaves();
@@ -34,8 +40,8 @@ export const viewRecent = async (request, response) => {
             ])
         }
         console.log(recentLeaves);
-        response.json(recentLeaves);
-
+        response.json({recentLeaves, role: "warden", message: "all ok"});
+        
     } catch (error) {
         console.log("There has been an error while fetching responses for the warden!", error);
         response.status(500).send(error);
@@ -46,7 +52,12 @@ async function updateCriticalLeaves() {
     const today = new Date();
     const todaysDate = (today).toISOString().split('T')[0];
     console.log(todaysDate);
-
+    
+    if (request.user.role !== "warden") {
+        return response.status(200).json({
+            "message": "access denied"
+        });
+    }
     //update karna hai
     try {
         const result = await lateLeavesInfo.updateMany(
@@ -76,6 +87,14 @@ async function updateCriticalLeaves() {
 export const approveApplication = async(request, response) => {
     const sid = request.body.sid;
     const object_id = request.body.object_id;
+
+    if (request.user.role !== "warden") {
+        return response.status(200).json({
+            "message": "access denied"
+        });
+    }
+
+
     console.log(`sid: ${sid} and object_id: ${object_id}`);
     try {
         // console.log("first line")
@@ -100,6 +119,13 @@ export const approveApplication = async(request, response) => {
 export const disapproveApplication = async (request, response) => {
     const sid = request.body.sid;
     const object_id = request.body.object_id;
+
+    if(request.user.role !== "warden") {
+        return response.status(200).json({
+            "message": "access denied"
+        });
+    }
+
     console.log(`sid: ${sid} and object_id: ${object_id}`);
     try {
 

@@ -33,6 +33,7 @@ export const signup1 =  async (request, response) => {
             name: request.body.name, 
             sid : request.body.sid,
             email : request.body.email,
+            role : "student",
             password: hashedPassword,
         });
         const result = await data.save();
@@ -41,6 +42,7 @@ export const signup1 =  async (request, response) => {
             name: data.name,
             sid: data.sid, 
             email: data.email,
+            role: data.role
          }, JWT_SECRET, { expiresIn: "30m",}
         );
 
@@ -95,10 +97,17 @@ export const login = async (request, response) => {
             return response.status(400).send("Incorrect password!");
         }
 
+        let role = "student";
+        if (request.body.email === "warden@example.com" || request.body.email === "warden2@example.com"
+            || request.body.email === "warden3@example.com")
+                role = "warden"
+
+
         const token = jwt.sign({ 
             name: existingUser.name,
             sid: existingUser.sid, 
             email: existingUser.email,
+            role: role
          }, JWT_SECRET, { expiresIn: "30m",}
         );
 
