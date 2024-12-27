@@ -95,8 +95,6 @@ import axios from 'axios';
 import "./Login.css";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../store/auth";
-import { getFromBackend } from "../../store/fetchdata";
-import { postToBackend } from "../../store/fetchdata";
 
 const Login = () => {
     const [formData, setFormData] = useState({
@@ -116,7 +114,12 @@ const Login = () => {
         try {
             const response = await axios.post('http://127.0.0.1:5090/api/auth/login', formData);
             storeTokeninLS(response.data.token);
-            navigate("/Homepage");
+            console.log(response.data)
+            if (response.data.role === 'warden') {
+                navigate("/WardenDash");
+            } else {
+                navigate("/Homepage");
+            }
         } catch (error) {
             console.error(error.response?.data || 'Login failed');
             alert('Login failed');
@@ -158,12 +161,6 @@ const Login = () => {
                     <p>
                         Don't have an account?{" "}
                         <a href="./SignUp" className="signup-link">Sign Up</a>
-                    </p>
-                </div>
-                <div className="warden-login-container">
-                    <p>
-                        Have Warden Access?{" "}
-                        <a href="./WardenLogin" className="warden-link">Login Here</a>
                     </p>
                 </div>
             </div>

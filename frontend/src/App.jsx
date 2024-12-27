@@ -1,5 +1,6 @@
 import React from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import AccessDenied from './Components/HomePage/AccessDenied';
 import Login from './Components/Login/Login';
 import SignUp from './Components/Login/SignUp';
 import SignUp2 from './Components/Login/SignUp2';
@@ -31,6 +32,10 @@ function App() {
     {
       path: "/",
       element: <><Login /></>
+    },
+    {
+      path: "/AccessDenied",
+      element: <><AccessDenied /></>
     },
     {
       path: "/Homepage",

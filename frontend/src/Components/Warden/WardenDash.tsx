@@ -1,9 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { checkWarden } from '../../store/fetchdata';
 
 const WardenDash = () => {
   const navigate = useNavigate();
   const [dropdownVisible, setDropdownVisible] = useState(false);
+
+  useEffect(() => {
+    const verifyAccess = async () => {
+      try {
+        const message = await checkWarden(); // Await the result of checkWarden
+        if (message === "access denied!") {
+          navigate('/AccessDenied'); // Redirect if access is denied
+        }
+      } catch (error) {
+        console.error("Error while checking access:", error);
+        navigate('/AccessDenied'); // Redirect on any error
+      }
+    };
+
+    verifyAccess(); // Call the async function
+  }, [navigate]);
 
   const handleLeavesRedirect = () => {
     setDropdownVisible(!dropdownVisible); // Toggle the dropdown visibility

@@ -73,7 +73,7 @@ export const signup2 = async (request, response) => {
         })
 
         const result = await data.save();
-        response.status(201).json({ message: "Signup complete!", sid: result.sid});
+        response.status(201).json({ message: "Signup complete!", role: request.user.role, token: token});
     }
     catch (error) {
         console.error("Error during signup:", error);
@@ -113,15 +113,10 @@ export const login = async (request, response) => {
 
         console.log("Successful login!");
         response.status(200).json({ message: "Login successful!", 
-            token: token});
+            role: role, token: token});
     }
      catch (error) {
         console.error("Error during login:", error);
         response.status(500).send("An error occurred during login.");
     }
 };
-
-
-
-
-

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 export const getFromBackend = async (link) => {
   try {
@@ -81,13 +82,17 @@ export const postToBackend = async (link, data) => {
     }
   };
 
+
   export const checkWarden = async () => {
+    // const navigate = useNavigate();
     try {
       const result = await getFromBackend("http://127.0.0.1:5090/api/check/check-role");
-      if (result.data.message === "access denied") {
-          
-      }
-
+      console.log(result);
+      // if (result.data.message === "access denied") {
+      //     navigate("/AccessDenied");
+      // }
+      const message = await result.data.message;
+      return message;
     } catch (error) {
       console.error("error while checking role", error);
       throw error;
