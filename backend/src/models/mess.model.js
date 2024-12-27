@@ -10,7 +10,7 @@ const messSchema = new mongoose.Schema(
                 dateOfReturn: { type: Date, required: true },
                 reason:{type:String,required:true},
                 lastMeal: { type: String, enum: ['None','Breakfast', 'Lunch','Dinner'], required: true },
-                firstMeal: { type: String, enum: ['None','Breakfast','Lunch','Snacks','Dinner'], required: true },
+                firstMeal: { type: String, enum: ['Breakfast','Lunch','Snacks','Dinner'], required: true },
             }
         ]
     },
