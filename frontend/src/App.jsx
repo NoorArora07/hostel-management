@@ -9,7 +9,9 @@ import WardenDash from './Components/Warden/WardenDash';
 import Mess from './Components/Mess/Mess';
 import MessLeaveForm from './Components/Mess/mess-leave-form';
 import MessLeavesView from './Components/Mess/mess-leave-view';
-import MessSchedule from './Components/Mess/mess-schedule-view';
+import MyCalendar from './Components/Mess/mess-schedule-view';
+import MessMenu from './Components/Mess/MessMenu'; 
+import MessPaymentPlan from './Components/Mess/MessViewFee'; 
 import LeavesDash from './Components/Leaves/LeavesDash';
 import LongLeavesView from './Components/Leaves/LongLeavesView';
 import LongLeaveForm from './Components/Leaves/LongLeaveForm';
@@ -55,7 +57,15 @@ function App() {
       element: <><Navbar /><Mess /><Footer /></>
     },{
       path: "/mess-schedule-view",
-      element: <><Navbar /><MessSchedule/><Footer /></>
+      element: <><Navbar /><MyCalendar/><Footer /></>
+    },
+    {
+      path: "/mess-menu",
+      element: <><Navbar /><MessMenu/><Footer /></>
+    },
+    {
+      path: "/view-mess-fee",
+      element: <><Navbar /><MessPaymentPlan/><Footer /></>
     },
     {
       path: "/mess-leave-view",

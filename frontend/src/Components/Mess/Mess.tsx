@@ -8,13 +8,13 @@ import { useNavigate } from 'react-router-dom';
 
 const features = [
   {
-    name: 'Get Your Mess Schedule',
+    name: 'Get Your Mess Details',
     description:
-      'Including a calendar to keep track of your mess schedule and plan your meals accordingly.',
+      'Including a calendar to keep track of your mess schedule and mess menu, plan your meals accordingly :)',
     icon: PencilSquareIcon,
     actions: [
-      { text: 'View Schedule', path: '/mess-schedule-view' },
-      { text: 'Update Schedule', path: '/update-schedule' },
+      { text: 'View Updates', path: '/mess-schedule-view' },
+      { text: 'View Menu', path: '/mess-menu' },
     ],
   },
   {
@@ -22,8 +22,8 @@ const features = [
     description: "Can't keep a track of your mess fee? We got you covered. Pay your mess fee online",
     icon: BanknotesIcon,
     actions: [
-      { text: 'View Fee', path: '/view-fee' },
-      { text: 'Pay Now', path: '/pay-fee' },
+      { text: 'View Fee Structure', path: '/view-mess-fee' },
+      { text: 'Pay Now', path: '/pay-mess-fee' },
     ],
   },
   {
@@ -31,8 +31,8 @@ const features = [
     description: 'Going out for a vacation? Update your leave days and we will take care of the rest.',
     icon: ClipboardDocumentCheckIcon,
     actions: [
-      { text: 'View Leave', path: '/mess-leave-view' },
-      { text: 'Update Leave', path: '/mess-leave-form' },
+      { text: 'View Leaves', path: '/mess-leave-view' },
+      { text: 'Update Leaves', path: '/mess-leave-form' },
     ],
   },
 ]
@@ -66,7 +66,7 @@ export default function Mess() {
                         <DropdownMenuTrigger asChild>
                           <Button className="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white 
                             font-semibold py-2 px-4 rounded-md shadow-md transition duration-300 ease-in-out transform hover:scale-105">
-                            Actions
+                            Options
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent>

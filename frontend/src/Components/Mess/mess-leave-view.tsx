@@ -1,35 +1,48 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/Components/ui/table";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/Components/ui/card";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/Components/ui/table";
 
-const MessLeavesView = () => {
-  interface MessLeave {
-    id: number;
-    dateOfLeaving: string;
-    dateOfReturn: string;
-    reason: string;
-    lastMeal: string;
-    firstMeal: string;
-  }
+interface MessLeave {
+  id: number;
+  dateOfLeaving: string;
+  dateOfReturn: string;
+  reason: string;
+  lastMeal: string;
+  firstMeal: string;
+}
 
+const MessLeavesView: React.FC = () => {
   const [messLeaves, setMessLeaves] = useState<MessLeave[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Fetch data from the backend API
     const fetchMessLeaves = async () => {
       try {
-        const response = await axios.get('/api/mess-leaves'); // Replace with your backend API endpoint
-        setMessLeaves(response.data); // Assuming the API returns an array of leave objects
+        const response = await axios.get<MessLeave[]>("/api/mess-leaves");
+        console.log("API Response:", response.data);
+        setMessLeaves(response.data);
       } catch (err) {
         setError("Failed to fetch mess leaves.");
-        console.error(err);
+        console.error("Error fetching mess leaves:", err);
       } finally {
         setLoading(false);
       }
     };
+    
 
     fetchMessLeaves();
   }, []);
@@ -51,36 +64,64 @@ const MessLeavesView = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4">
-      <h1 className="text-3xl font-bold mb-6 text-white">Mess Leaves Overview</h1>
-      
-      <Card className="w-full max-w-4xl">
+    <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-gray-100">
+      <h1 className="text-3xl font-bold mb-6 text-purple-700">
+        Mess Leaves Overview
+      </h1>
+
+      <Card className="w-full max-w-4xl bg-white shadow-md rounded-lg">
         <CardHeader>
-          <CardTitle className="text-2xl font-bold text-center text-purple-600">Mess Leave Requests</CardTitle>
+          <CardTitle className="text-2xl font-bold text-center text-purple-600">
+            Mess Leave Requests
+          </CardTitle>
         </CardHeader>
         <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Leave Date</TableHead>
-                <TableHead>Return Date</TableHead>
-                <TableHead>Reason</TableHead>
-                <TableHead>Last Meal</TableHead>
-                <TableHead>First Meal</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {messLeaves.map((leave) => (
-                <TableRow key={leave.id}>
-                  <TableCell>{leave.dateOfLeaving}</TableCell>
-                  <TableCell>{leave.dateOfReturn}</TableCell>
-                  <TableCell>{leave.reason}</TableCell>
-                  <TableCell className="capitalize">{leave.lastMeal}</TableCell>
-                  <TableCell className="capitalize">{leave.firstMeal}</TableCell>
+          {messLeaves.length === 0 ? (
+            <p className="text-center text-gray-600">No leave requests found.</p>
+          ) : (
+            <Table className="table-auto border-collapse border border-gray-300">
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="border px-4 py-2 text-left text-gray-600">
+                    Leave Date
+                  </TableHead>
+                  <TableHead className="border px-4 py-2 text-left text-gray-600">
+                    Return Date
+                  </TableHead>
+                  <TableHead className="border px-4 py-2 text-left text-gray-600">
+                    Reason
+                  </TableHead>
+                  <TableHead className="border px-4 py-2 text-left text-gray-600">
+                    Last Meal
+                  </TableHead>
+                  <TableHead className="border px-4 py-2 text-left text-gray-600">
+                    First Meal
+                  </TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {messLeaves.map((leave) => (
+                  <TableRow key={leave.id}>
+                    <TableCell className="border px-4 py-2">
+                      {leave.dateOfLeaving}
+                    </TableCell>
+                    <TableCell className="border px-4 py-2">
+                      {leave.dateOfReturn}
+                    </TableCell>
+                    <TableCell className="border px-4 py-2">
+                      {leave.reason}
+                    </TableCell>
+                    <TableCell className="border px-4 py-2 capitalize">
+                      {leave.lastMeal}
+                    </TableCell>
+                    <TableCell className="border px-4 py-2 capitalize">
+                      {leave.firstMeal}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          )}
         </CardContent>
       </Card>
     </div>
