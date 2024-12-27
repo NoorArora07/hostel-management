@@ -81,3 +81,15 @@ export const postToBackend = async (link, data) => {
     }
   };
 
+  export const checkWarden = async () => {
+    try {
+      const result = await getFromBackend("http://127.0.0.1:5090/api/check/check-role");
+      if (result.data.message === "access denied") {
+          
+      }
+
+    } catch (error) {
+      console.error("error while checking role", error);
+      throw error;
+    }
+  }

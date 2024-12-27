@@ -1,7 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import { connectDb } from './config/db.js';
-import User from './models/users.model.js';
 import cors from 'cors';
 import authRoutes from './routes/authRoutes.js';
 import longLeavesRoutes from './routes/longLeavesRoutes.js';
@@ -14,6 +13,8 @@ import wardenLongLeavesRoutes from './routes/wardenLeaves.js'
 import lateLeavesRouters from './routes/lateLeavesRoutes.js'
 import wardenLateLeaveRouters from './routes/wardenLateLeaves.js'
 import profileRoutes from './routes/profRoutes.js';
+
+import roleRoutes from './routes/roleRoutes.js';
 
 
 dotenv.config();
@@ -40,6 +41,7 @@ app.use("/api/leaves/late-leaves", lateLeavesRouters);
 app.use("/api/warden/long-leaves", wardenLongLeavesRoutes);
 app.use("/api/warden/late-leaves", wardenLateLeaveRouters);
 app.use("/api/profile", profileRoutes);
+app.use("/api/check", roleRoutes);
 
 //start listening
 app.listen(5090, () => {
