@@ -53,6 +53,13 @@ const WardenNavbar = () => {
         >
           <li className="px-4 py-2 text-lg font-medium">Complaints</li>
         </NavLink>
+
+        <NavLink 
+          to="/mess-schedule-warden"
+          className={({ isActive }) => isActive ? "text-red-500" : "text-white hover:text-gray-300"}
+        >
+          <li className="px-4 py-2 text-lg font-medium">Mess Schedule</li>
+        </NavLink>
       </ul>
     </nav>
   );

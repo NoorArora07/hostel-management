@@ -1,51 +1,34 @@
 import React, { useEffect, useState } from "react";
 import Calendar from "react-calendar";
-import axios from "axios";
 import "react-calendar/dist/Calendar.css";
-import FormComponent from "./FormComponent";
 import EventListComponent from "./EventListComponent";
+import { getFromBackend } from "../../store/fetchdata";
 
 const MyCalendar = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [events, setEvents] = useState([]);
-  const [showForm, setShowForm] = useState(false);
 
   useEffect(() => {
     fetchData();
   }, []);
 
   const fetchData = async () => {
-  try {
-    const response = await axios.get("link"); // Replace with your actual backend endpoint
-    const transformedEvents = response.data.map(({ title, description, date }) => ({
-      date: new Date(date), // Ensure the backend sends ISO strings for dates
-      title,
-      description,
-    }));
+    try {
+      const response = await getFromBackend("http://127.0.0.1:5090/api/mess/getEvent");
+      const transformedEvents = response.data.map(({ title, description, date }) => ({
+        date: new Date(date),
+        title,
+        description,
+      }));
 
-    setEvents(transformedEvents);
-  } catch (error) {
-    console.error("API fetch error:", error);
-  }
-};
-
+      setEvents(transformedEvents);
+    } catch (error) {
+      console.error("API fetch error:", error);
+    }
+  };
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
-  };
-
-  const handleAddEvent = (title, description) => {
-    const newEvent = {
-      date: selectedDate,
-      title,
-      description,
-    };
-    setEvents([...events, newEvent]);
-    setShowForm(false); // Hide the form after adding an event
-  };
-
-  const toggleForm = () => {
-    setShowForm(!showForm);
   };
 
   const isDateWithEvent = (date) => {
@@ -57,38 +40,28 @@ const MyCalendar = () => {
   const filteredEvents = events.filter(
     (event) => event.date.toDateString() === selectedDate.toDateString()
   );
-return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold text-center mb-6 text-blue-600">
-        My Calendar
+
+  return (
+    <div className="container mx-auto p-4 max-w-4xl mt-20 mb-5">
+      <h1 className="text-3xl font-bold text-center mb-8 text-indigo-950">
+        Mess Calendar
       </h1>
-      <div className="bg-white p-6 rounded-lg shadow-md">
-        <Calendar
-          className="react-calendar border-none"
-          onChange={handleDateChange}
-          value={selectedDate}
-          tileContent={({ date }) =>
-            isDateWithEvent(date) && (
-              <div className="w-2 h-2 bg-blue-500 rounded-full mx-auto"></div>
-            )
-          }
-        />
-      </div>
-      <div className="flex justify-center mt-6">
-        <button
-          className="px-4 py-2 bg-blue-500 text-white rounded-md shadow-md hover:bg-blue-600 transition"
-          onClick={toggleForm}
-        >
-          {showForm ? "Cancel" : "Add Event"}
-        </button>
-      </div>
-      {showForm && (
-        <div className="mt-6">
-          <FormComponent handleAddEvent={handleAddEvent} />
+      <div className="grid md:grid-cols-2 gap-8">
+        <div className="bg-white p-6 rounded-lg shadow-md">
+          <Calendar
+            className="react-calendar border-none w-full"
+            onChange={handleDateChange}
+            value={selectedDate}
+            tileContent={({ date }) =>
+              isDateWithEvent(date) && (
+                <div className="w-2 h-2 bg-blue-500 rounded-full mx-auto"></div>
+              )
+            }
+          />
         </div>
-      )}
-      <div className="mt-6">
-        <EventListComponent events={filteredEvents} />
+        <div>
+          <EventListComponent events={filteredEvents} />
+        </div>
       </div>
     </div>
   );

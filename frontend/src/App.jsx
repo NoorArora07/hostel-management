@@ -13,6 +13,7 @@ import MessLeavesView from './Components/Mess/mess-leave-view';
 import MyCalendar from './Components/Mess/mess-schedule-view';
 import MessMenu from './Components/Mess/MessMenu'; 
 import MessPaymentPlan from './Components/Mess/MessViewFee'; 
+import WCalendar from './Components/Warden/mess-schedule-warden';
 import LeavesDash from './Components/Leaves/LeavesDash';
 import LongLeavesView from './Components/Leaves/LongLeavesView';
 import LongLeaveForm from './Components/Leaves/LongLeaveForm';
@@ -76,10 +77,13 @@ function App() {
       path: "/mess-leave-view",
       element: <><Navbar /><MessLeavesView /><Footer /></>
     },
-    
     {
-      path: "/mess-leave-form",
+      path: "/mess-leave-form", 
       element: <><Navbar /><MessLeaveForm /><Footer /></>
+    },
+    {
+      path: "/mess-schedule-warden",
+      element: <><WardenNavbar /><WCalendar /><Footer /></>
     },
     {
       path: "/leaves",

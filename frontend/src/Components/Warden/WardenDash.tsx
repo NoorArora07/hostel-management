@@ -38,6 +38,10 @@ const WardenDash = () => {
     navigate('/complaints'); // Redirect to Complaints page
   };
 
+  const handleMessScheduleRedirect = () => {
+    navigate('/mess-schedule-warden')
+  };
+
   return (
     <div className="flex flex-col justify-center items-center min-h-screen bg-cover bg-center" style={{ backgroundImage: "url('../../Photos/hostel-dashboard.jpg')" }}>
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
@@ -68,6 +72,13 @@ const WardenDash = () => {
               </button>
             </div>
           )}
+          
+          <button
+          onClick={handleMessScheduleRedirect}
+          className="w-full py-3 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none"
+          >
+          Mess Schedule
+          </button>
           
           <button
             onClick={handleComplaintsRedirect}
