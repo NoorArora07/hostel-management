@@ -6,10 +6,9 @@ import cors from 'cors';
 import authRoutes from './routes/authRoutes.js';
 import longLeavesRoutes from './routes/longLeavesRoutes.js';
 import wardenLeavesRoutes from './routes/wardenLeaves.js'
-
 import messRoutes from './routes/messRoutes.js';
 import messpaymentRoutes from './routes/messpaymentRoutes.js';
-
+import wardenMessRoutes from './routes/wardenMessRoutes.js';
 import wardenLongLeavesRoutes from './routes/wardenLeaves.js'
 import lateLeavesRouters from './routes/lateLeavesRoutes.js'
 import wardenLateLeaveRouters from './routes/wardenLateLeaves.js'
@@ -31,10 +30,9 @@ app.use(cors());
 app.use("/api/auth", authRoutes);
 app.use("/api/leaves", longLeavesRoutes);
 app.use("/api/warden", wardenLeavesRoutes);
-
 app.use("/api/mess", messRoutes);
-app.use('/api/payments', messpaymentRoutes);
-
+app.use("/api/payments", messpaymentRoutes);
+app.use("/api/mess-warden", wardenMessRoutes);
 app.use("/api/leaves/long-leaves", longLeavesRoutes);
 app.use("/api/leaves/late-leaves", lateLeavesRouters);
 app.use("/api/warden/long-leaves", wardenLongLeavesRoutes);
