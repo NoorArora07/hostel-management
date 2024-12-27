@@ -14,11 +14,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/Components/ui/table";
+import { getFromBackend }  from "@/store/fetchdata";
 
 interface MessLeave {
   id: number;
-  dateOfLeaving: string;
-  dateOfReturn: string;
+  dateOfLeaving: Date;
+  dateOfReturn: Date;
   reason: string;
   lastMeal: string;
   firstMeal: string;
@@ -32,17 +33,25 @@ const MessLeavesView: React.FC = () => {
   useEffect(() => {
     const fetchMessLeaves = async () => {
       try {
-        const response = await axios.get<MessLeave[]>("/api/mess-leaves");
-        console.log("API Response:", response.data);
-        setMessLeaves(response.data);
+          const response = await getFromBackend("http://127.0.0.1:5090/api/mess/leave-details");
+  
+          const messData = response.data.messOffDates.map((application: any) => ({
+              id: application._id || Math.random(), // Use a unique key
+              dateOfLeaving: application.dateOfLeaving,
+              dateOfReturn: application.dateOfReturn,
+              reason: application.reason,
+              lastMeal: application.lastMeal,
+              firstMeal: application.firstMeal,
+          }));
+  
+          setMessLeaves(messData);
       } catch (err) {
-        setError("Failed to fetch mess leaves.");
-        console.error("Error fetching mess leaves:", err);
+          setError("Failed to fetch mess leaves.");
+          console.error("Error fetching mess leaves:", err);
       } finally {
-        setLoading(false);
+          setLoading(false);
       }
-    };
-    
+  };
 
     fetchMessLeaves();
   }, []);
@@ -101,12 +110,12 @@ const MessLeavesView: React.FC = () => {
               </TableHeader>
               <TableBody>
                 {messLeaves.map((leave) => (
-                  <TableRow key={leave.id}>
+                  <TableRow key = {leave.id}>
                     <TableCell className="border px-4 py-2">
-                      {leave.dateOfLeaving}
+                      {new Date(leave.dateOfLeaving).toLocaleDateString()}
                     </TableCell>
                     <TableCell className="border px-4 py-2">
-                      {leave.dateOfReturn}
+                      {new Date(leave.dateOfReturn).toLocaleDateString()}
                     </TableCell>
                     <TableCell className="border px-4 py-2">
                       {leave.reason}

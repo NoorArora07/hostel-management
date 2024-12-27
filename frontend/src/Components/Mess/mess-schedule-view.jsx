@@ -16,7 +16,7 @@ const MyCalendar = () => {
 
   const fetchData = async () => {
   try {
-    const response = await axios.get("https://jsonplaceholder.typicode.com/posts?_limit=7"); // Replace with your actual backend endpoint
+    const response = await axios.get("link"); // Replace with your actual backend endpoint
     const transformedEvents = response.data.map(({ title, description, date }) => ({
       date: new Date(date), // Ensure the backend sends ISO strings for dates
       title,
