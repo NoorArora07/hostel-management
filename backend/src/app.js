@@ -11,6 +11,9 @@ import messpaymentRoutes from './routes/messpaymentRoutes.js';
 import wardenLongLeavesRoutes from './routes/wardenLeaves.js'
 import lateLeavesRouters from './routes/lateLeavesRoutes.js'
 import wardenLateLeaveRouters from './routes/wardenLateLeaves.js'
+import profileRoutes from './routes/profRoutes.js';
+
+
 dotenv.config();
 
 console.log("MONGO URI: ", process.env.MONGO_URI);
@@ -34,6 +37,7 @@ app.use("/api/leaves/long-leaves", longLeavesRoutes);
 app.use("/api/leaves/late-leaves", lateLeavesRouters);
 app.use("/api/warden/long-leaves", wardenLongLeavesRoutes);
 app.use("/api/warden/late-leaves", wardenLateLeaveRouters);
+app.use("/api/profile", profileRoutes);
 
 //start listening
 app.listen(5090, () => {
