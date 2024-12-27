@@ -1,7 +1,18 @@
 import Mess from '../models/mess.model.js';
+import Event from '../models/messEvents.model.js';
 import dotenv from 'dotenv';
 
 dotenv.config();
+
+export const getEvents = async (request, response) => {
+    try {
+        const events = await Event.find().sort({ date: 1 });
+        response.status(200).json(events);
+    } catch (error) {
+        console.error("Error fetching events:", error);
+        response.status(500).send("An error occurred while fetching events.");
+    }
+};
 
 export const getMessStatus = async (request, response) => {
     try {
