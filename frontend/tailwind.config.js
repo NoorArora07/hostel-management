@@ -67,7 +67,23 @@ module.exports = {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
-  		}
+  		},
+		backgroundSize: {
+			  '200%': '200%',
+		},
+		keyframes: {
+			gradient: {
+			  '0%': { backgroundPosition: '0% 50%' },
+			  '50%': { backgroundPosition: '100% 50%' },
+			  '100%': { backgroundPosition: '0% 50%' },
+			},
+		},
+		animation: {
+			gradient: 'gradient 5s ease infinite',
+		},
+		backgroundImage: {
+			'blue-purple-gradient': 'linear-gradient(270deg, #8fb5f3, #8ae6b8)', // Blue to purple gradient
+		},
   	}
   },
   plugins: [addVariablesForColors, require("tailwindcss-animate")],
