@@ -73,7 +73,7 @@ export const signup2 = async (request, response) => {
         })
 
         const result = await data.save();
-        response.status(201).json({ message: "Signup complete!", role: request.user.role, token: token});
+        response.status(201).json({ message: "Signup complete!", role: request.user.role});
     }
     catch (error) {
         console.error("Error during signup:", error);
