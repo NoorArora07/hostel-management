@@ -1,13 +1,15 @@
 import express from 'express';
-import { createPaymentIntent, getPaymentDetails } from '../controllers/messpaymentControllers.js';
+import { initiatePayment,updateFeeStatus,getFeeStatus, generateStripeSignature } from '../controllers/messpaymentControllers.js';
 import { verifyToken } from '../middleware/verifyToken.js';
 
 const router = express.Router();
 
-router.post('/create-payment-intent',verifyToken, createPaymentIntent);
+router.post('/paynow',verifyToken, initiatePayment);
+router.post('/generate-signature', generateStripeSignature);
+//router.post('/updateStatus',verifyToken, updateFeeStatus);
+//router.get('/status/:studentId',verifyToken, getFeeStatus);
 
-// get payment details
-router.get('/payment-details/:id', getPaymentDetails);
+
 
 export default router;
 
