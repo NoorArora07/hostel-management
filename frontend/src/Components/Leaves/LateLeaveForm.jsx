@@ -4,7 +4,7 @@ import { postToBackend } from '../../store/fetchdata';
 
 const LateLeaveForm = () => {
   const navigate = useNavigate();
-  const [status, setStatus] = useState('not-critical');
+  const [status, setStatus] = useState('not-critical'); // 'not-critical' for In Advance, 'critical' for Critical
   const [date, setDate] = useState('');
   const [reason, setReason] = useState('');
   const [roomNumber, setRoomNumber] = useState('');
@@ -36,8 +36,8 @@ const LateLeaveForm = () => {
     try {
       const result = await postToBackend('http://127.0.0.1:5090/api/leaves/late-leaves/', applicationData);
       console.log('Application Data:', applicationData, result);
-      if (result.data.sent === false){
-        alert(`${result.data.reason}`)
+      if (result.data.sent === false) {
+        alert(`${result.data.reason}`);
       }
       navigate('/LateLeavesView');
     } catch (error) {
@@ -48,43 +48,24 @@ const LateLeaveForm = () => {
 
   return (
     <div>
-      {/* Navigation Bar */}
-      <nav className="bg-blue-500 text-white py-4 px-6 shadow-md">
-        <div className="container mx-auto">
-          <h1 className="text-lg font-semibold">Late Leave Application System</h1>
-        </div>
-      </nav>
 
       {/* Form Section */}
-      <div className="flex items-center justify-center min-h-screen bg-gray-50">
-        <div className="w-full max-w-4xl bg-white p-6 shadow-lg rounded-md">
-          <h1 className="text-2xl font-bold mb-6 text-center">Create Leave Request</h1>
+      <div className="flex items-center justify-center min-h-screen mt-4">
+        <div className=" max-w-4xl bg-white p-6 shadow-lg rounded-md">
+          <h1 className="text-2xl font-bold mb-6 text-center">Create Late Leave Request</h1>
           <form onSubmit={handleSubmit} className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {error && <p className="text-red-500 mb-4 col-span-2">{error}</p>}
 
             {/* Leave Type Toggle */}
             <div className="col-span-2 flex justify-center gap-8 mb-4">
-              <label className="flex items-center gap-2">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <span className="text-sm">In Advance</span>
                 <input
-                  type="radio"
-                  name="leaveType"
-                  value="not-critical"
+                  type="checkbox"
                   checked={status === 'not-critical'}
-                  onChange={() => setStatus('not-critical')}
-                  className="mr-2"
+                  onChange={() => setStatus(status === 'not-critical' ? 'critical' : 'not-critical')}
+                  className="form-checkbox h-5 w-5 text-teal-500"
                 />
-                In Advance
-              </label>
-              <label className="flex items-center gap-2">
-                <input
-                  type="radio"
-                  name="leaveType"
-                  value="critical"
-                  checked={status === 'critical'}
-                  onChange={() => setStatus('critical')}
-                  className="mr-2"
-                />
-                Critical
               </label>
             </div>
 
@@ -115,7 +96,7 @@ const LateLeaveForm = () => {
                 value={reason}
                 onChange={(e) => setReason(e.target.value)}
                 required
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md h-75"
                 rows="3"
               ></textarea>
             </div>

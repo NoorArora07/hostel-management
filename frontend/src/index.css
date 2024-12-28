@@ -70,10 +70,4 @@
     @apply bg-background text-foreground;
     @apply bg-gradient-to-br from-[#8fb5f3] to-[#8ae6b8] min-h-screen;
   }
-  footer {
-      @apply flex justify-between items-center w-full px-8 py-4 bg-dark-gray text-white;
-  }
-  footer div p {
-      @apply m-0;
-  }
 }

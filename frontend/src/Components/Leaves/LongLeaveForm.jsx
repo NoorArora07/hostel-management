@@ -7,7 +7,7 @@ const LongLeaveForm = () => {
   const [dateOfLeaving, setDateOfLeaving] = useState('');
   const [dateOfReturn, setDateOfReturn] = useState('');
   const [reason, setReason] = useState('');
-  const [roomNumber, setroomNumber] = useState('');
+  const [roomNumber, setRoomNumber] = useState('');
   const [address, setAddress] = useState('');
   const [error, setError] = useState('');
 
@@ -41,17 +41,11 @@ const LongLeaveForm = () => {
 
   return (
     <div>
-      {/* Navigation Bar */}
-      <nav className="bg-blue-500 text-white py-4 px-6 shadow-md">
-        <div className="container mx-auto">
-          <h1 className="text-lg font-semibold">Leave Application System</h1>
-        </div>
-      </nav>
-
+    
       {/* Form Section */}
-      <div className="flex items-center justify-center min-h-screen bg-gray-50">
-        <div className="w-full max-w-4xl bg-white p-6 shadow-lg rounded-md">
-          <h1 className="text-2xl font-bold mb-6 text-center">Create Leave Request</h1>
+      <div className="flex items-center justify-center min-h-screen mt-8">
+        <div className=" max-w-3xl bg-white p-8 shadow-lg rounded-md">
+          <h1 className="text-2xl font-bold mb-6 text-center">Create Long Leave Request</h1>
           <form onSubmit={handleSubmit} className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {error && <p className="text-red-500 mb-4 col-span-2">{error}</p>}
 
@@ -105,7 +99,7 @@ const LongLeaveForm = () => {
                 type="text"
                 id="roomNumber"
                 value={roomNumber}
-                onChange={(e) => setroomNumber(e.target.value)}
+                onChange={(e) => setRoomNumber(e.target.value)}
                 required
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
               />

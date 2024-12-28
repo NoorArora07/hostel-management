@@ -59,7 +59,7 @@ const LongLeavesView = () => {
       minHeight: '100vh', // Full viewport height
     }}
     >
-      <div className="w-full bg-white p-6 rounded-lg shadow-xl">
+      <div className=" bg-white p-6 rounded-lg shadow-xl">
         <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-10">
 
           <div className="flex-1 flex gap-10">

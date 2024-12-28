@@ -57,7 +57,7 @@ const LateLeavesView = () => {
         minHeight: '100vh',
       }}
     >
-      <div className="w-full bg-white p-6 rounded-lg shadow-xl">
+      <div className=" bg-white p-6 rounded-lg shadow-xl">
         <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-10">
 
           <div className="flex-1 flex gap-10">
@@ -142,7 +142,7 @@ const LateLeavesView = () => {
                 onClick={handleCreateNewRequest}
                 className="w-full bg-light-teal hover:bg-dark-teal text-white font-semibold py-2 px-4 rounded-md shadow-lg transition duration-300"
               >
-                Create a New Leave Request
+                Create a New Late Leave Request
               </Button>
               <p className="text-gray-600 mt-4">
                 Click on the above Button to Create a New Late Leave Application.
