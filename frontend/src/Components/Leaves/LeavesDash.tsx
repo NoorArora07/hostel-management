@@ -66,7 +66,7 @@ export default function LeaveDashboardPage() {
   return (
     <div>
       {/* Leave Dashboard Section */}
-      <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-10 p-8 bg-gray-100 mt-16">
+      <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-10 p-8 bg-gray-100 mt-16 w-screen">
         {/* Left Content */}
         <div className="lg:w-1/2">
           <h2 className="text-2xl font-bold text-dark-teal">Leave Management</h2>

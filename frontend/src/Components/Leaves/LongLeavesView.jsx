@@ -131,7 +131,7 @@ const LongLeavesView = () => {
                 onClick={handleCreateNewRequest}
                 className="w-full bg-light-teal hover:bg-dark-teal text-white font-semibold py-2 px-4 rounded-md shadow-lg transition duration-300"
               >
-                Create a New Leave Request
+                Create a New Long Leave Request
               </Button>
               <p className="text-gray-600 mt-4">
                 Click on the above Button to Create a New Long Leave Application.
