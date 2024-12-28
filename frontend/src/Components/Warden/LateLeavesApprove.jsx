@@ -6,73 +6,69 @@ import { useNavigate } from 'react-router-dom';
 const LateLeavesApprove = () => {
   const [applications, setApplications] = useState([]);
   const [selectedApplication, setSelectedApplication] = useState(null);
-  const [leaveStatus, setLeaveStatus] = useState('all'); // State for leave status filter
+  const [leaveStatus, setLeaveStatus] = useState('all');
   const navigate = useNavigate();
-  
+
   useEffect(() => {
-      const verifyAccess = async () => {
-        try {
-          const message = await checkWarden(); // Await the result of checkWarden
-          if (message === "access denied!") {
-            navigate('/AccessDenied'); // Redirect if access is denied
-          }
-        } catch (error) {
-          console.error("Error while checking access:", error);
-          navigate('/AccessDenied'); // Redirect on any error
+    const verifyAccess = async () => {
+      try {
+        const message = await checkWarden();
+        if (message === 'access denied!') {
+          navigate('/AccessDenied');
         }
-      };
-  
-      verifyAccess(); // Call the async function
-    }, [navigate]);
+      } catch (error) {
+        console.error('Error while checking access:', error);
+        navigate('/AccessDenied');
+      }
+    };
 
-  // Pagination state
+    verifyAccess();
+  }, [navigate]);
+
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5; 
+  const itemsPerPage = 6;
 
   useEffect(() => {
-    fetchApplications(leaveStatus); // Fetch applications based on leave status
-  }, [leaveStatus]); // Trigger fetch when leaveStatus changes
+    fetchApplications(leaveStatus);
+  }, [leaveStatus]);
 
   const fetchApplications = (status) => {
-    console.log('Fetching applications for status:', status); // Debug log
     getFromBackend(`http://127.0.0.1:5090/api/warden/late-leaves/${status}`)
-      .then(response => {
-        console.log('Response from backend:', response); 
-        const filteredApplications = response.data.filter(application => {
-          if (status === 'critical') return application.lateLeaves.status === 'critical';
-          else if (status === 'not-critical') return application.lateLeaves.status === 'not-critical';
-          return true; // For 'all', return all applications
-        });
-        setApplications(filteredApplications || []);
+      .then((response) => {
+        setApplications(response.data || []);
       })
-      .catch(error => {
-        console.error('Error fetching leave applications:', error.response ? error.response.data : error.message);
+      .catch((error) => {
+        console.error(
+          'Error fetching leave applications:',
+          error.response ? error.response.data : error.message
+        );
         alert('Failed to fetch applications. Check the console for details.');
       });
   };
 
   const handleApplicationClick = (lateLeaveId) => {
-    setSelectedApplication(prev => (prev === lateLeaveId ? null : lateLeaveId));
+    setSelectedApplication((prev) => (prev === lateLeaveId ? null : lateLeaveId));
   };
 
-  const handleAction = (sid, action) => {
-    const lateLeaveId = applications.find(app => app.sid === sid)?.lateLeaves._id;
+  const handleAction = (applications, action) => {
+    const lateLeaveId = applications.lateLeaves._id;
+    const sid = applications.sid;
 
     if (action === 'decline') {
-      patchToBackend(`http://127.0.0.1:5090/api/warden/late-leaves/disapprove/`, { sid, object_id: lateLeaveId })
+      patchToBackend(`http://127.0.0.1:5090/api/warden/late-leaves/disapprove/`, { sid:sid, object_id: lateLeaveId })
         .then(() => {
-          setApplications(prev => prev.filter(app => app.lateLeaves._id !== lateLeaveId));
+          setApplications((prev) => prev.filter((app) => app.lateLeaves._id !== lateLeaveId));
         })
-        .catch(error => {
+        .catch((error) => {
           console.error('Error declining application:', error.response ? error.response.data : error.message);
           alert('Failed to decline application.');
         });
     } else if (action === 'approve') {
-      patchToBackend(`http://127.0.0.1:5090/api/warden/late-leaves/approve/`, { sid, object_id: lateLeaveId })
+      patchToBackend(`http://127.0.0.1:5090/api/warden/late-leaves/approve/`, { sid:sid, object_id: lateLeaveId })
         .then(() => {
-          setApplications(prev => prev.filter(app => app.lateLeaves._id !== lateLeaveId));
+          setApplications((prev) => prev.filter((app) => app.lateLeaves._id !== lateLeaveId));
         })
-        .catch(error => {
+        .catch((error) => {
           console.error('Error approving application:', error.response ? error.response.data : error.message);
           alert('Failed to approve application.');
         });
@@ -83,7 +79,6 @@ const LateLeavesApprove = () => {
     setLeaveStatus(event.target.value);
   };
 
-  // Pagination logic
   const totalPages = Math.ceil(applications.length / itemsPerPage);
   const currentApplications = applications.slice(
     (currentPage - 1) * itemsPerPage,
@@ -91,19 +86,19 @@ const LateLeavesApprove = () => {
   );
 
   const changePage = (page) => {
-    if (page < 1 || page > totalPages) return; // Prevent going out of bounds
+    if (page < 1 || page > totalPages) return;
     setCurrentPage(page);
   };
 
   return (
-    <div className="bg-gray-100 min-h-screen pt-20 pb-6">
-      <h1 className="text-2xl font-bold text-center mb-6">Late Leave Applications</h1>
+    <div className="min-h-screen pt-20 pb-6">
+      <div className="max-w-6xl mx-auto p-6 bg-white rounded-lg shadow-md mt-6">
+        <h1 className="text-3xl font-bold text-center mb-8">Late Leave Applications</h1>
 
-      <div className="max-w-4xl mx-auto mb-6">
-        <label htmlFor="leave-status" className="block text-gray-700 font-semibold mb-2">
-          Select Leave Status:
-        </label>
-        <div className="flex items-center gap-4">
+        <div className="mb-6">
+          <label htmlFor="leave-status" className="block text-gray-700 font-semibold mb-2">
+            Select Leave Status:
+          </label>
           <select
             id="leave-status"
             value={leaveStatus}
@@ -114,78 +109,104 @@ const LateLeavesApprove = () => {
             <option value="critical">Critical</option>
             <option value="not-critical">In Advance</option>
           </select>
-          <button
-            onClick={() => fetchApplications(leaveStatus)} // Re-fetch with the selected status
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-          >
-            Apply Filter
-          </button>
         </div>
-      </div>
 
-      <div className="max-w-4xl mx-auto bg-white shadow-md rounded-lg overflow-hidden">
-        {currentApplications.length > 0 ? (
-          currentApplications.map(application => {
-            const uniqueKey = application.lateLeaves._id.toString();
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {currentApplications.length > 0 ? (
+            currentApplications.map((application) => {
+              const uniqueKey = application.lateLeaves._id.toString();
+              const isSelected = selectedApplication === application.lateLeaves._id;
 
-            return (
-              <div key={uniqueKey} className="border-b border-gray-200">
+              // Determine the badge style based on the leave status
+              const badgeStyle =
+                application.lateLeaves.status === 'critical'
+                  ? 'bg-red-500 text-white'
+                  : 'bg-blue-500 text-white';
+
+              const badgeText =
+                application.lateLeaves.status === 'critical' ? 'Critical' : 'In Advance';
+
+              return (
                 <div
-                  className="flex justify-between items-center p-4 hover:bg-gray-50 cursor-pointer"
-                  onClick={() => handleApplicationClick(application.lateLeaves._id)}
+                  key={uniqueKey}
+                  className="bg-gray-50 shadow-lg rounded-lg p-6 hover:shadow-xl transition-shadow"
                 >
-                  <div>
-                    <p className="text-lg font-semibold">{application.name}</p>
-                    <p className="text-sm text-gray-600">
-                      SID: {application.sid} | Branch: {application.branch}
-                    </p>
-                  </div>
-                  <span className="text-gray-500">{selectedApplication === application.lateLeaves._id ? '▲' : '▼'}</span>
-                </div>
-                {selectedApplication === application.lateLeaves._id && (
-                  <div className="p-4 bg-gray-50">
-                    <p><strong>Reason:</strong> {application.lateLeaves.reason}</p>
-                    <p><strong>Date:</strong> {application.lateLeaves.date}</p>
-                    <p><strong>Room No.:</strong> {application.lateLeaves.roomNumber}</p>
-                    <p><strong>Address:</strong> {application.lateLeaves.address}</p>
-                    {/* <p><strong>Status:</strong> {application.lateLeaves.approved}</p> */}
-                    <div className="flex gap-4 mt-4">
-                      <button
-                        className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
-                        onClick={() => handleAction(application.sid, 'approve')}
-                      >
-                        Approve
-                      </button>
-                      <button
-                        className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-                        onClick={() => handleAction(application.sid, 'decline')}
-                      >
-                        Decline
-                      </button>
+                  <div
+                    className="flex justify-between items-center cursor-pointer"
+                    onClick={() => handleApplicationClick(application.lateLeaves._id)}
+                  >
+                    <div>
+                      <p className="text-lg font-semibold">{application.name}</p>
+                      <p className="text-sm text-gray-600">
+                        SID: {application.sid} | Branch: {application.branch}
+                      </p>
                     </div>
+                    <span className="text-gray-500 text-xl">
+                      {isSelected ? '▲' : '▼'}
+                    </span>
                   </div>
-                )}
-              </div>
-            );
-          })
-        ) : (
-          <p className="text-center p-6 text-gray-500">No late leave applications available.</p>
-        )}
+                  <div className="mt-2">
+                    <span
+                      className={`inline-block px-3 py-1 rounded-full text-sm font-semibold ${badgeStyle}`}
+                    >
+                      {badgeText}
+                    </span>
+                  </div>
+                  {isSelected && (
+                    <div className="mt-4">
+                      <p><strong>Reason:</strong> {application.lateLeaves.reason}</p>
+                      <p><strong>Date:</strong> {application.lateLeaves.date}</p>
+                      <p><strong>Room No.:</strong> {application.lateLeaves.roomNumber}</p>
+                      <p><strong>Address:</strong> {application.lateLeaves.address}</p>
+                      <div className="flex gap-4 mt-4">
+                        <button
+                          className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+                          onClick={() => handleAction(application, 'approve')}
+                        >
+                          Approve
+                        </button>
+                        <button
+                          className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                          onClick={() => handleAction(application, 'decline')}
+                        >
+                          Decline
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })
+          ) : (
+            <p className="text-center text-gray-500 col-span-full">
+              No late leave applications available.
+            </p>
+          )}
+        </div>
 
-        {/* Pagination Controls */}
-        <div className="flex justify-center gap-4 p-4">
+        <div className="flex justify-center items-center gap-2 mt-8">
           <button
             onClick={() => changePage(currentPage - 1)}
             disabled={currentPage === 1}
-            className="bg-gray-300 text-gray-700 px-3 py-1 text-sm rounded disabled:opacity-50"
+            className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md disabled:opacity-50 hover:bg-gray-300"
           >
             Previous
           </button>
-          <span className="text-lg">{`Page ${currentPage} of ${totalPages}`}</span>
+          {[...Array(totalPages).keys()].map((num) => (
+            <button
+              key={num}
+              onClick={() => changePage(num + 1)}
+              className={`px-4 py-2 rounded-md ${
+                currentPage === num + 1 ? 'bg-middle-teal text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+              }`}
+            >
+              {num + 1}
+            </button>
+          ))}
           <button
             onClick={() => changePage(currentPage + 1)}
             disabled={currentPage === totalPages}
-            className="bg-gray-300 text-gray-700 px-3 py-1 text-sm rounded disabled:opacity-50"
+            className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md disabled:opacity-50 hover:bg-gray-300"
           >
             Next
           </button>

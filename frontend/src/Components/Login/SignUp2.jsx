@@ -26,8 +26,8 @@ const SignUp2 = () => {
         let response;
         try {
             response = await postToBackend('http://127.0.0.1:5090/api/auth/signup2', formData);
-            alert(response.data.message);
-            navigate("/");
+            // alert(response.data.message);
+            navigate("/Homepage");
         } catch (error) {
             const errorMessage = error.response?.data?.message || 'Signup failed';
             // console.error("Error:", errorMessage);
