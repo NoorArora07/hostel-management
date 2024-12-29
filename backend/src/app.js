@@ -1,4 +1,7 @@
 import express from 'express';
+import http from 'http';
+import { Server } from "socket.io"
+
 import dotenv from 'dotenv';
 import { connectDb } from './config/db.js';
 import cors from 'cors';
@@ -17,11 +20,14 @@ import profileRoutes from './routes/profRoutes.js';
 
 import roleRoutes from './routes/roleRoutes.js';
 
-
 dotenv.config();
-
 console.log("MONGO URI: ", process.env.MONGO_URI);
+
+
 const app = express();
+const server = http.createServer(app);
+const io = new Server(server);
+
 
 //middleware to parse json from requests i think
 app.use(express.json());
@@ -46,7 +52,7 @@ app.use("/api/profile", profileRoutes);
 app.use("/api/check", roleRoutes);
 
 //start listening
-app.listen(5090, () => {
+server.listen(5090, () => {
     connectDb();
     console.log("Server started at http://127.0.0.1:5090");
 });
