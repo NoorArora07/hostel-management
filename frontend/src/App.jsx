@@ -24,6 +24,9 @@ import LateLeavesView from './Components/Leaves/LateLeavesView';
 import LateLeaveForm from './Components/Leaves/LateLeaveForm';
 import LateLeavesApprove from './Components/Warden/LateLeavesApprove';
 import Complaints from './Components/Complaints/Complaints';
+import ComplaintsForm from './Components/Complaints/complaintform';
+import ComplaintsView from './Components/Complaints/complaintview';
+import ComplaintsViewW from './Components/Warden/Complaintwarden';
 import Profile from './Components/Profile/Profile';
 import NoPage from './Components/Login/NoPage';
 import Navbar from './Components/Navbar/Navbar';
@@ -126,6 +129,18 @@ function App() {
     {
       path: "/complaints",
       element: <><Navbar /><Complaints /><Footer /></>
+    },
+    {
+      path: "/complaintsform",
+      element: <><Navbar /><ComplaintsForm /><Footer /></>
+    },
+    {
+      path: "/complaintsview",
+      element: <><Navbar /><ComplaintsView /><Footer /></>
+    },
+    {
+      path: "/complaintsviewwarden",
+      element: <><WardenNavbar /><ComplaintsViewW /><Footer /></>
     },
     {
       path: "/profile",

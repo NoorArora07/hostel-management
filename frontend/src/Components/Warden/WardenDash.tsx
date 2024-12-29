@@ -35,7 +35,7 @@ const WardenDash = () => {
   };
 
   const handleComplaintsRedirect = () => {
-    navigate('/complaints'); // Redirect to Complaints page
+    navigate('/complaintsviewwarden'); // Redirect to Complaints page
   };
 
   const handleMessScheduleRedirect = () => {
