@@ -9,6 +9,7 @@ import messRoutes from './routes/messRoutes.js';
 import messpaymentRoutes from './routes/messpaymentRoutes.js';
 import complaintsRoutes from './routes/complaintsRoutes.js';
 import wardenMessRoutes from './routes/wardenMessRoutes.js';
+import warden_complaintsRoutes from './routes/warden_complaintsRoutes.js';
 import wardenLongLeavesRoutes from './routes/wardenLeaves.js'
 import lateLeavesRouters from './routes/lateLeavesRoutes.js'
 import wardenLateLeaveRouters from './routes/wardenLateLeaves.js'
@@ -35,6 +36,7 @@ app.use("/api/warden", wardenLeavesRoutes);
 app.use("/api/mess", messRoutes);
 app.use("/api/payments", messpaymentRoutes);
 app.use("/api/complaint",complaintsRoutes);
+app.use("/api/warden-complaint",warden_complaintsRoutes);
 app.use("/api/mess-warden", wardenMessRoutes);
 app.use("/api/leaves/long-leaves", longLeavesRoutes);
 app.use("/api/leaves/late-leaves", lateLeavesRouters);

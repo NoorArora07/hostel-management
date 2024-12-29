@@ -3,7 +3,7 @@ import Stripe from 'stripe';
 import dotenv from 'dotenv';
 import crypto from 'crypto';
 
-dotenv.config();
+dotenv.config(); 
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
@@ -30,10 +30,9 @@ export const initiatePayment= async (req, res) => {
           metadata: {
               studentId,
           },
-          success_url: `http://localhost:5173/stripe/success?studentId=${studentId}`,
-          cancel_url: `http://localhost:5000/cancel?studentId=${studentId}`,
+          //success_url: "http://localhost:5173/Homepage",
+          //cancel_url: "http://localhost:5000", 
       });
-
       res.json({ url: session.url });
   } catch (error) {
       res.status(500).json({ error: error.message });
