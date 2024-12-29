@@ -49,18 +49,20 @@ export const updateComplaintStatus = async (request, response) => {
       return response.status(404).json({ message: "No complaints found." });
     }
 
+    console.log("1");
     const complaintToUpdate = complaint.complaints.id(complaintId);
-
+    console.log("2");
     if (!complaintToUpdate) {
       return response
         .status(404)
         .json({ message: "Complaint not found for the student." });
     }
+    console.log("3");
 
     complaintToUpdate.status = status;
-
+    console.log("4");
     await complaint.save();
-
+    console.log("5");
     response.status(200).json({
       message: "Complaint status updated successfully.",
       complaint: complaintToUpdate,

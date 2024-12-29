@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ClipboardList, PlusCircle } from "lucide-react";
-import pic from "@/Photos/complaintsmain.jpg";
+import pic from "@/Photos/complaints.jpg";
 import { useNavigate } from "react-router-dom";
 
 export default function Complaints() {

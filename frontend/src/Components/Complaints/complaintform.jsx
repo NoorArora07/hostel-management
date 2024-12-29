@@ -37,14 +37,12 @@ export default function ComplaintsForm() {
 
         try {
             const response = await postToBackend('http://127.0.0.1:5090/api/complaint/add', formData);
-            if (response.ok) {
-                alert('Complaint submitted successfully.');
-            } else {
-                alert('Failed to submit complaint. Please try again.');
-            }
+            console.log(response)
+            alert(`${response.data.message}`)
         } catch (error) {
             console.error('Error submitting complaint:', error);
             alert('An error occurred while submitting your complaint.');
+            console.log("hello")
         }
     };
 

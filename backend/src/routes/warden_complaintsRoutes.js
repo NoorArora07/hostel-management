@@ -5,6 +5,6 @@ import {getAllComplaints,updateComplaintStatus,} from "../controllers/warden_com
 const router = express.Router();
 
 router.get("/all", verifyToken, getAllComplaints);
-router.put("/update-status", verifyToken, updateComplaintStatus);
+router.patch("/update-status", verifyToken, updateComplaintStatus);
 
 export default router;

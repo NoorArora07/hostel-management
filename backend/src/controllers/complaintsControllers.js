@@ -55,7 +55,7 @@ export const addComplaint = async (request, response) => {
     );
 
     if (weeklyComplaints.length >= 3) {
-      return response.status(400).json({
+      return response.json({
         message: "Weekly limit reached. You can only send 3 complaints per week.",
       });
     }

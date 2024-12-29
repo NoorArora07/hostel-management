@@ -1,5 +1,4 @@
 'use client'
-
 import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import {
@@ -14,6 +13,10 @@ import { getFromBackend, postToBackend } from "@/store/fetchdata"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Loader2 } from 'lucide-react'
+import { patchToBackend } from "@/store/fetchdata"
+
+
+
 
 export default function ComplaintsViewW() {
   const [complaints, setComplaints] = useState([])
@@ -22,35 +25,48 @@ export default function ComplaintsViewW() {
   useEffect(() => {
     const fetchComplaints = async () => {
       try {
-        setLoading(true)
-        const response = await getFromBackend("http://127.0.0.1:5090/api/warden-complaint/all")
-        setComplaints(response.data)
+        setLoading(true);
+        const response = await getFromBackend("http://127.0.0.1:5090/api/warden-complaint/all");
+        console.log("as it is response:", response);
+        console.log("complaints in Response data:", response.data.complaints);
+
+        const complaintsArray = response.data.complaints || [];
+
+        setComplaints(Array.isArray(complaintsArray) ? complaintsArray : []);
+        console.log("array toh hai yeh")
       } catch (error) {
-        console.error("Failed to fetch complaints", error)
+        console.error("Failed to fetch complaints", error);
+
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    fetchComplaints()
-  }, [])
+    fetchComplaints();
+  }, []);
 
-  const handleStatusChange = async (id, status) => {
+  const handleStatusChange = async (sid, complaintId, status) => {
+    console.log(`Changing status for complaintId: ${complaintId}, sid: ${sid}, to: ${status}`);
+  
+    const info = {sid: sid, complaintId:complaintId, status: status.toLowerCase()}
+    console.log(info)
     try {
-      await postToBackend("http://127.0.0.1:5090/api/warden-complaint/update-status", {
-        id,
-        status,
-      })
-      
+      const response = await patchToBackend(
+        "http://127.0.0.1:5090/api/warden-complaint/update-status", info
+      );
+  
+      console.log("Backend response:", response);
+  
       setComplaints((prevComplaints) =>
         prevComplaints.map((complaint) =>
-          complaint.id === id ? { ...complaint, status } : complaint
+          complaint._id === complaintId ? { ...complaint, status } : complaint
         )
-      )
+      );
     } catch (error) {
-      console.error("Failed to update status", error)
+      console.error('Failed to update status:', error.response ? error.response.data : error.message);
+      alert(`Error: ${error.response ? error.response.data.message : error.message}`);
     }
-  }
+  };
 
   const getStatusColor = (status) => {
     switch (status.toLowerCase()) {
@@ -65,85 +81,129 @@ export default function ComplaintsViewW() {
     }
   }
 
+  const pendingComplaints = complaints.filter(complaint => complaint.status.toLowerCase() === 'pending');
+  const otherComplaints = complaints.filter(complaint =>
+    ['resolved', 'rejected'].includes(complaint.status.toLowerCase())
+  );
+
   return (
-    <Card className="w-full mt-40 mb-20">
-      <CardHeader>
-        <CardTitle className="text-2xl font-bold">Complaints Dashboard</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="rounded-md border">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="font-semibold">Name</TableHead>
-                <TableHead className="font-semibold">Student ID</TableHead>
-                <TableHead className="font-semibold">Email</TableHead>
-                <TableHead className="font-semibold">Title</TableHead>
-                <TableHead className="font-semibold">Description</TableHead>
-                <TableHead className="font-semibold">Status</TableHead>
-                <TableHead className="font-semibold w-[180px]">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {loading ? (
+    <div className="mt-40 mb-20">
+      <Card className="w-full mb-8">
+        <CardHeader>
+          <CardTitle className="text-2xl font-bold">Pending Complaints</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="rounded-md border">
+            <Table>
+              <TableHeader>
                 <TableRow>
-                  <TableCell colSpan={7} className="h-24 text-center">
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin inline-block" />
-                    Loading complaints...
-                  </TableCell>
+                  <TableHead className="font-semibold">Student ID</TableHead>
+                  <TableHead className="font-semibold">Complaint ID</TableHead>
+                  <TableHead className="font-semibold">Title</TableHead>
+                  <TableHead className="font-semibold">Status</TableHead>
+                  <TableHead className="font-semibold w-[180px]">Actions</TableHead>
                 </TableRow>
-              ) : complaints.length > 0 ? (
-                complaints.map((complaint) => (
-                  <TableRow key={complaint.id}>
-                    <TableCell className="font-medium">{complaint.name}</TableCell>
-                    <TableCell>{complaint.sid}</TableCell>
-                    <TableCell>{complaint.email}</TableCell>
-                    <TableCell>{complaint.title}</TableCell>
-                    <TableCell className="max-w-xs truncate">{complaint.description}</TableCell>
-                    <TableCell>
-                      <Badge className={getStatusColor(complaint.status)}>
-                        {complaint.status}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex space-x-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleStatusChange(complaint.id, "Pending")}
-                        >
-                          Pending
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleStatusChange(complaint.id, "Resolved")}
-                        >
-                          Resolved
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleStatusChange(complaint.id, "Rejected")}
-                        >
-                          Rejected
-                        </Button>
-                      </div>
+              </TableHeader>
+              <TableBody>
+                {loading ? (
+                  <TableRow>
+                    <TableCell colSpan={5} className="h-24 text-center">
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin inline-block" />
+                      Loading complaints...
                     </TableCell>
                   </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell colSpan={7} className="h-24 text-center">
-                    No complaints found.
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </div>
-      </CardContent>
-    </Card>
-  )
-}
+                ) : pendingComplaints.length > 0 ? (
+                  pendingComplaints.map((complaint) => (
+                    <TableRow key={complaint._id}>
+                      <TableCell className="font-medium">{complaint.name}</TableCell>
+                      <TableCell>{complaint.sid}</TableCell> {/* Display student ID */}
+                      <TableCell>{complaint.title}</TableCell>
+                      <TableCell>
+                        <Badge className={getStatusColor(complaint.status)}>
+                          {complaint.status}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex space-x-2">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleStatusChange(complaint.sid, complaint._id, "resolved")}
+                          >
+                            Resolve
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleStatusChange(complaint.sid, complaint._id, "rejected")}
+                          >
+                            Reject
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={5} className="h-24 text-center">
+                      No pending complaints found.
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </div>
+        </CardContent>
+      </Card>
 
+      <Card className="w-full">
+        <CardHeader>
+          <CardTitle className="text-2xl font-bold">Resolved / Rejected Complaints</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="rounded-md border">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="font-semibold">Student ID</TableHead>
+                  <TableHead className="font-semibold">Complaint ID</TableHead>
+                  <TableHead className="font-semibold">Title</TableHead>
+                  <TableHead className="font-semibold">Status</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {loading ? (
+                  <TableRow>
+                    <TableCell colSpan={4} className="h-24 text-center">
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin inline-block" />
+                      Loading complaints...
+                    </TableCell>
+                  </TableRow>
+                ) : otherComplaints.length > 0 ? (
+                  otherComplaints.map((complaint) => (
+                    <TableRow key={complaint.complaintId}>
+                      <TableCell className="font-medium">{complaint.sid}</TableCell>
+                      <TableCell>{complaint.complaintId}</TableCell>
+                      <TableCell>{complaint.title}</TableCell>
+                      <TableCell>
+                        <Badge className={getStatusColor(complaint.status)}>
+                          {complaint.status}
+                        </Badge>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={4} className="h-24 text-center">
+                      No resolved or rejected complaints found.
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}

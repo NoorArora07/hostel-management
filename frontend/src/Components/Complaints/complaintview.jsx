@@ -21,31 +21,43 @@ export default function ComplaintsView() {
   const [loading, setLoading] = useState(false)
   const [searchTerm, setSearchTerm] = useState("")
   const [currentPage, setCurrentPage] = useState(1)
-  const complaintsPerPage = 10
-
+  const complaintsPerPage = 3
+  
   useEffect(() => {
     const fetchComplaints = async () => {
       try {
-        setLoading(true)
-        const response = await getFromBackend("http://127.0.0.1:5090/api/warden-complaint/all")
-        setComplaints(response.data)
+        setLoading(true);
+        const response = await getFromBackend("http://127.0.0.1:5090/api/complaint/view");
+        console.log("Full response:", response);
+        console.log("Response data:", response.data);
+  
+        // Extract complaints array
+        const complaintsArray = response.data.complaints || [];
+        setComplaints(Array.isArray(complaintsArray) ? complaintsArray : []);
       } catch (error) {
-        console.error("Failed to fetch complaints", error)
+        console.error("Failed to fetch complaints", error);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
-
-    fetchComplaints()
-  }, [])
-
-  const filteredComplaints = complaints.filter((complaint) =>
-    Object.values(complaint).some(
+    };
+  
+    fetchComplaints();
+  }, []);
+  
+  
+  useEffect(() => {
+    console.log("Complaints state:", complaints);
+  }, [complaints]);
+  
+  
+  const filteredComplaints = complaints.filter((complaint) => {
+    console.log("Filtering complaint:", complaint);
+    return Object.values(complaint).some(
       (value) =>
         typeof value === "string" &&
         value.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-  )
+    );
+  });
 
   const indexOfLastComplaint = currentPage * complaintsPerPage
   const indexOfFirstComplaint = indexOfLastComplaint - complaintsPerPage
@@ -68,6 +80,10 @@ export default function ComplaintsView() {
         return 'bg-gray-100 text-gray-800'
     }
   }
+
+  useEffect(() => {
+    console.log("Complaints state:", complaints);
+  }, [complaints]);
 
   return (
     <div className="p-36">
@@ -113,9 +129,6 @@ export default function ComplaintsView() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Student ID</TableHead>
-                <TableHead>Email</TableHead>
                 <TableHead>Title</TableHead>
                 <TableHead>Description</TableHead>
                 <TableHead>Status</TableHead>
@@ -129,16 +142,13 @@ export default function ComplaintsView() {
                   </TableCell>
                 </TableRow>
               ) : currentComplaints.length > 0 ? (
-                currentComplaints.map((complaint) => (
-                  <TableRow key={complaint.id}>
-                    <TableCell className="font-medium">{complaint.name}</TableCell>
-                    <TableCell>{complaint.sid}</TableCell>
-                    <TableCell>{complaint.email}</TableCell>
-                    <TableCell>{complaint.title}</TableCell>
-                    <TableCell className="max-w-xs truncate">{complaint.description}</TableCell>
+                currentComplaints.map((complaints) => (
+                  <TableRow key={complaints.id}>
+                    <TableCell className="font-medium">{complaints.name}</TableCell>
+                    <TableCell className="max-w-xs truncate">{complaints.description}</TableCell>
                     <TableCell>
-                      <Badge className={getStatusColor(complaint.status)}>
-                        {complaint.status}
+                      <Badge className={getStatusColor(complaints.status)}>
+                        {complaints.status}
                       </Badge>
                     </TableCell>
                   </TableRow>
