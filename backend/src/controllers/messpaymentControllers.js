@@ -10,7 +10,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 export const initiatePayment= async (req, res) => {
   try {
       const studentId = req.user.sid; 
-      const { amount } = req.body;
+      const amount = req.body.amount;
 
       const session = await stripe.checkout.sessions.create({
           payment_method_types: ['card'],
@@ -35,7 +35,8 @@ export const initiatePayment= async (req, res) => {
       });
       res.json({ url: session.url });
   } catch (error) {
-      res.status(500).json({ error: error.message });
+        console.log("good nighty night night night night........niiiiiiii------night!!!!!!!")
+        res.status(500).json({ error: error.message });
   }
 };
 

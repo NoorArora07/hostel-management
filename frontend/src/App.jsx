@@ -15,6 +15,7 @@ import MessMenu from './Components/Mess/MessMenu';
 import MessPaymentPlan from './Components/Mess/MessViewFee'; 
 import WCalendar from './Components/Warden/mess-schedule-warden';
 import Payment from './Components/Mess/payment/MessPayment';
+import Stripe from './Components/Mess/payment/Stripe';
 import LeavesDash from './Components/Leaves/LeavesDash';
 import LongLeavesView from './Components/Leaves/LongLeavesView';
 import LongLeaveForm from './Components/Leaves/LongLeaveForm';
@@ -89,6 +90,10 @@ function App() {
     {
       path: "/mess-fee-payment",
       element: <><Navbar /><Payment /><Footer /></>
+    },
+    {
+      path: "/stripe",
+      element: <><Stripe /><Footer /></>
     },
     {
       path: "/leaves",
