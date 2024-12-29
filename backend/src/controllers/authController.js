@@ -108,7 +108,7 @@ export const login = async (request, response) => {
             sid: existingUser.sid, 
             email: existingUser.email,
             role: role
-         }, JWT_SECRET, { expiresIn: "30m",}
+         }, JWT_SECRET, { expiresIn: "2h",}
         );
 
         console.log("Successful login!");
