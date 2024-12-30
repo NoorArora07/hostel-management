@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 const messSchema = new mongoose.Schema(
-    {
+    {   name:{type:String,required:true},
         sid: { type: Number, required: true },
         feeStatus: { type: String, enum: ['Paid', 'Pending'], default: 'Pending' },
         messOffDates: [
