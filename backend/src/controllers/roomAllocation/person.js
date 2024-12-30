@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
-import { person, room } from '../models/roomalloc_person.model.js';
-import UserDetail from '../models/userDetail.model.js';
+import { person, room } from '../../models/roomalloc_person.model.js';
+import UserDetail from '../../models/userDetail.model.js';
 
 dotenv.config();
 
@@ -36,12 +36,7 @@ const selectEmpty = async (request, response) => {
         }
 
         const branch = userDetails.branch;
-        const info = {
-            sid: sid,
-            name: name,
-            branch: branch
-        }
-        
+
         let data = new person({
             name: name,
             sid: sid,
@@ -74,7 +69,6 @@ const selectAnother = async (request, response) => {
     const sid = request.user.sid;
     const name = request.user.name;
 
-    let info;
     let data;
     let branch;
 
@@ -85,11 +79,6 @@ const selectAnother = async (request, response) => {
             return response.status(500).send("trying to find a room for a user that doesn't exist o_O O_o");
         }
         branch = userDetails.branch;
-        info = {
-            sid: sid,
-            name: name,
-            branch: branch
-        }
         
         data = new person({
             name: name,

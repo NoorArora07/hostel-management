@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
-import { person } from '../models/roomalloc_person.model.js';
-import { room } from '../models/roomalloc_person.model.js';
-import UserDetail from '../models/userDetail.model.js';
+import { person } from '../../models/roomalloc_person.model.js';
+import { room } from '../../models/roomalloc_person.model.js';
+import UserDetail from '../../models/userDetail.model.js';
 
 dotenv.config();
 
@@ -49,9 +49,13 @@ const updateEmpty = async (request, response) => {
                 occupantsDetails: info
             }
         })
+        return response.status(200).json({
+            updatedRoom: result,
+            sent: true
+        })
     } catch (error) {
         console.log("error while updating an empty room: ", error);
-        response.status(200).json({
+        response.status(500).json({
             sent: false,
             error: error
         })
@@ -66,7 +70,7 @@ const updateAnother = async (request, response) => {
         const usersid = request.user.sid;
         const name = request.user.name;
 
-        const userDetails = await UserDetail.findOne( {sid: sid} );
+        const userDetails = await UserDetail.findOne( {sid: usersid} );
         if (!userDetails) {
             console.log("no such user exists tf lmaoo");
             return response.status(500).send("trying to find a room for a user that doesn't exist o_O O_o");
@@ -80,6 +84,7 @@ const updateAnother = async (request, response) => {
         }
 
         if (allowWaitingList) {
+            console.log("adding in the waiting list!");
             const result = await room.updateOne({
                 roomNumber: roomNo
             }, {
@@ -100,6 +105,10 @@ const updateAnother = async (request, response) => {
                 }
             })
         }
+
+        return response.status(200).json({
+            sent: true
+        })
 
     } catch (error) {
         console.log("error while updating an occupied room: ", error);
@@ -136,5 +145,6 @@ export const makeRoom = async (request, response) => {
         console.log("error while making a room", error);
         response.status(500).send("error while making a room!");
     }
-
 }   
+
+
