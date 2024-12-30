@@ -1,17 +1,28 @@
 import Complaint from "../models/complaints.model.js";
+import UsersData from "../models/userDetail.model.js";
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-
 export const addComplaint = async (request, response) => {
     const {sid} = request.user;
+    const {name} =  request.user;
     const { title, description } = request.body;
     if (!title || !description) {
         return res.status(400).json({ message: "All fields are required!" });
     }
 
   try {
+
+    const userDetail = await UsersData.findOne({sid});
+
+    if(! userDetail){
+        console.log("No such user exists");
+        return response.status(500).send("User doesn't exist");
+    }
+
+    const branch = userDetail.branch;
+
     const today = new Date();
 
     // Calculate the start of the current week (Sunday)
@@ -21,15 +32,15 @@ export const addComplaint = async (request, response) => {
     const complaint = await Complaint.findOne({ sid });
 
     if (!complaint) {
-         // If no record exists for the student, create a new one
+         // creating new record if 0 complaints were sent before
          const newComplaint = new Complaint({
+            name,
             sid,
-            branch: request.user.branch || "Unknown",
+            branch: branch || "Unknown",
             roomNumber: request.body.roomNumber || "Unknown",
             complaints: [],
         });
 
-        // Create the first complaint 
         const firstComplaint = {
           title,
           description,
@@ -37,10 +48,8 @@ export const addComplaint = async (request, response) => {
           status: "pending",
       };
       
-        // Add the first complaint to the array
         newComplaint.complaints.push(firstComplaint);
 
-        // Save the newly created complaint document with the first complaint
         await newComplaint.save(); 
         
         return response.status(201).json({
@@ -49,7 +58,7 @@ export const addComplaint = async (request, response) => {
         });
     }
 
-    // Count complaints for the current week
+    //complaint limit=3
     const weeklyComplaints = complaint.complaints.filter(
       (comp) => comp.date >= startOfWeek
     );
@@ -106,8 +115,7 @@ export const viewComplaints = async (request, response) => {
       });
     }
   };
-
-  
+ 
   export const viewComplaintsByStatus = async (request, response) => {
     const  {sid} = request.user;
     const {status }= request.body;

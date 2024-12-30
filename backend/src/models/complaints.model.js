@@ -21,6 +21,10 @@ const complaintSchema = mongoose.Schema({
 });
 
 const studentSchema = mongoose.Schema({
+  name:{
+    type:String,
+    required:true
+  },
   sid: {
     type: String,
     required: true,
