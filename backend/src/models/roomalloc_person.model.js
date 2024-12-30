@@ -38,10 +38,6 @@ const personModel = new mongoose.Schema({
         type: Boolean,
         required: true
     },
-    waitingList: {
-        type: [details],
-        required: false
-    },
     roomNumber: {
         type: String,
         required: false
@@ -64,7 +60,15 @@ const roomModel = new mongoose.Schema({
     occupantsDetails: {
         type: [details],
         required: false
-    }
+    },
+    allowWaitingList: {
+        type: Boolean,
+        required: true //user se legaaaa
+    },
+    waitingList: {
+        type: [details],
+        required: false
+    },
 })
 
 export const person = mongoose.model("roomallocationpeople", personModel);
