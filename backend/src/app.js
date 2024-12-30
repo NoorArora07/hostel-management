@@ -17,6 +17,7 @@ import wardenLongLeavesRoutes from './routes/wardenLeaves.js'
 import lateLeavesRouters from './routes/lateLeavesRoutes.js'
 import wardenLateLeaveRouters from './routes/wardenLateLeaves.js'
 import profileRoutes from './routes/profRoutes.js';
+import roomAllocationRoutes from './routes/roomAllocRoutes.js'
 
 import roleRoutes from './routes/roleRoutes.js';
 
@@ -50,6 +51,7 @@ app.use("/api/warden/long-leaves", wardenLongLeavesRoutes);
 app.use("/api/warden/late-leaves", wardenLateLeaveRouters);
 app.use("/api/profile", profileRoutes);
 app.use("/api/check", roleRoutes);
+app.use("/api/room-allocation", roomAllocationRoutes);
 
 //start listening
 server.listen(5090, () => {
