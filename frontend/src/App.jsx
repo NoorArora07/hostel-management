@@ -32,6 +32,7 @@ import NoPage from './Components/Login/NoPage';
 import Navbar from './Components/Navbar/Navbar';
 import Footer from './Components/NavBar/Footer';
 import WardenNavbar from './Components/Warden/WardenNavbar';
+import Photo from '@/Components/Profile/imageadd'
 
 function App() {
   const router = createBrowserRouter([
@@ -145,6 +146,10 @@ function App() {
     {
       path: "/profile",
       element: <><Navbar /><Profile /><Footer /></>
+    },
+    {
+      path: "/imageadd",
+      element: <><Navbar /><Photo /><Footer /></>
     },
     {
       path: "*",

@@ -68,6 +68,7 @@
     }
   body {
     @apply bg-background text-foreground;
-    @apply bg-gradient-to-br from-[#8fb5f3] to-[#8ae6b8] min-h-screen bg-fixed;
+    @apply bg-slate-200
+    /* @apply bg-gradient-to-br from-[#adadad] to-[#c29ae3] min-h-screen bg-fixed; */
   }
 }
