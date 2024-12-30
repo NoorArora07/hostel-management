@@ -9,13 +9,13 @@ export const selectRoom = async (request, response) => {
     
     const numberOfOccupants = request.body.numberOfOccupants;
     if (numberOfOccupants == 0) {
-        selectEmpty(request, response);
+        return selectEmpty(request, response);
     }
     else if (numberOfOccupants == 1) {
-        selectAnother(request, response);
+        return selectAnother(request, response);
     }
     else {
-        request.json({"selected": false});
+        return response.json({"selected": false});
     }
 }
 //kaafi kuch
@@ -55,8 +55,6 @@ const selectEmpty = async (request, response) => {
         console.log(result);
         if (result.acknowledged)
             console.log("hurray");
-
-        updateRoomDetails(roomNo, allowWaitingList, info);
         
         response.status(200).json({
            "selected": true
@@ -64,8 +62,8 @@ const selectEmpty = async (request, response) => {
 
 
     } catch (error) {
-        console.log("Error while trying to select an empty room!");
-        response.status(500).send("error while selecting an empty room", error);
+        console.log("Error while trying to select an empty room!", error);
+        return response.status(400).send("error while selecting an empty room");
 
     }
 }
