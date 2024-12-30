@@ -27,6 +27,7 @@ import Complaints from './Components/Complaints/Complaints';
 import ComplaintsForm from './Components/Complaints/complaintform';
 import ComplaintsView from './Components/Complaints/complaintview';
 import ComplaintsViewW from './Components/Warden/Complaintwarden';
+import RoomsView from './Components/RoomAllocation/RoomsView';
 import Profile from './Components/Profile/Profile';
 import NoPage from './Components/Login/NoPage';
 import Navbar from './Components/Navbar/Navbar';
@@ -142,6 +143,10 @@ function App() {
     {
       path: "/complaintsviewwarden",
       element: <><WardenNavbar /><ComplaintsViewW /><Footer /></>
+    },
+    {
+      path: "/RoomsView",
+      element: <><Navbar /><RoomsView/><Footer /></>
     },
     {
       path: "/profile",
