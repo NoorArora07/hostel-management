@@ -37,6 +37,7 @@ export const MessLeaveForm = async (request, response) => {
 
         if (!messData) {
             const newMessData = new Mess({
+                name:request.user.name,
                 sid: request.user.sid,
                 messOffDates: [{dateOfLeaving, dateOfReturn, reason, lastMeal, firstMeal}],
             });
