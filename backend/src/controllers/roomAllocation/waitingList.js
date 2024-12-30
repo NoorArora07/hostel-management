@@ -50,7 +50,7 @@ export const declineInWaitingList = async (request, response) => {
     try {
         const result = await room.updateOne(
             { 
-                sid: usersid,
+                roomNumber: roomNumber,
                 "waitingList.sid": declinesid
             },
             { 
@@ -89,6 +89,7 @@ export const acceptInWaitingList = async (request, response) => {
     
     const roomNumber = request.body.roomNumber;
     const info = request.body.info;
+    console.log(info);
     
     /*
     {
@@ -102,7 +103,15 @@ export const acceptInWaitingList = async (request, response) => {
             
     */
     try {
-        const updateRoom = await room.updateOne({ sid: usersid }, 
+        const updatePerson = await person.updateOne({
+            sid: info.sid
+        }, {
+            $set: {
+                roomSelected: "true"
+            }
+        });
+
+        const updateRoom = await room.updateOne({ roomNumber: roomNumber }, 
         {
             $set: {
                 numberOfOccupants: 2,
@@ -116,19 +125,20 @@ export const acceptInWaitingList = async (request, response) => {
             }
         })
         
-        const personDetails = await room.findOne({sid: usersid});
-        const waitingList = personDetails.waitingList;
+        const roomDetails = await room.findOne({roomNumber: roomNumber});
+        const waitingList = roomDetails.waitingList;
         
-        const updateRoom2 = await room.updateOne({sid: usersid}, {
+        const updateRoom2 = await room.updateOne({roomNumber: roomNumber}, {
             $set: {
                 waitingList: []
             }
         }
     )
     
-    for (const info in waitingList) {
+    for (const infos of waitingList) {
+        console.log(infos.sid);
         const updatePerson = await person.updateOne({
-            sid: info.sid
+            sid: infos.sid
         }, {
             $set: {
                 roomSelected: "false"

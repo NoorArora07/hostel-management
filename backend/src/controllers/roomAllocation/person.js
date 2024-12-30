@@ -89,36 +89,40 @@ const selectAnother = async (request, response) => {
         })
     } catch (error) {
         console.log("there is an error while saving basic details", error);
-        response.status(500).send("error while saving basic details", error);
+        return response.status(500).send("error while saving basic details", error);
     }
 
-    
-    if (!allowWaitingList) {
-        try {
-            data.roomNumber = roomNo;
+    try {
+        if (!allowWaitingList) {
+            try {
+                data.roomNumber = roomNo;
 
+                const result = await data.save();
+                console.log(result);
+                if (result.acknowledged)
+                    console.log("hurray");
+                
+                response.status(200).json({
+                    "selected": true
+                }) //temporary response, this could change aage jaake
+            } catch (error) {
+                console.log("Error while trying to select an empty room!");
+                response.status(500).send("error while selecting an empty room", error);    
+            }
+        }
+        else {
             const result = await data.save();
             console.log(result);
             if (result.acknowledged)
                 console.log("hurray");
             
-            response.send(200).json({
+            //add to waiting list
+            response.status(200).json({
                 "selected": true
             }) //temporary response, this could change aage jaake
-        } catch (error) {
-            console.log("Error while trying to select an empty room!");
-            response.status(500).send("error while selecting an empty room", error);    
         }
-    }
-    else {
-        const result = await data.save();
-        console.log(result);
-        if (result.acknowledged)
-            console.log("hurray");
-        
-        //add to waiting list
-        response.send(200).json({
-            "selected": true
-        }) //temporary response, this could change aage jaake
+    } catch (error) {
+        console.log("error while updating a person's record with selectAnother", error);
+        response.status(500).send("error while selectRoom!");
     }
 }
