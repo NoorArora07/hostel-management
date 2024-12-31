@@ -87,7 +87,8 @@ const selectAnother = async (request, response) => {
             branch: branch,
             roomNo: roomNo,
             allowWaitingList: allowWaitingList,
-            roomSelected: roomSelected
+            roomSelected: roomSelected,
+            numberOfOccupants: request.body.numberOfOccupants
         })
 
         response.status(200).json({"selected": true});
@@ -98,7 +99,7 @@ const selectAnother = async (request, response) => {
     }
 }
 
-const upsertPersonRecord = async ({ sid, name, branch, roomNo, allowWaitingList, roomSelected }) => {
+const upsertPersonRecord = async ({ sid, name, branch, roomNo, allowWaitingList, roomSelected, numberOfOccupants}) => {
     try {
         const result = await person.findOneAndUpdate(
             { sid: sid },
@@ -108,7 +109,7 @@ const upsertPersonRecord = async ({ sid, name, branch, roomNo, allowWaitingList,
                     branch,
                     roomNumber: roomNo,
                     roomSelected,
-                    allowWaitingList,
+                    allowWaitingList: numberOfOccupants == 0 ? allowWaitingList : "false"
                 }
             },
             {

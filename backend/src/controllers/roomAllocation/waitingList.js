@@ -158,3 +158,44 @@ export const acceptInWaitingList = async (request, response) => {
     }
 }
 
+export const leaveWaitingList = async (request, response) => {
+    const usersid = request.user.sid;
+    const name = request.user.name;
+
+    try {
+        const personDetails = await person.findOne({sid: usersid})
+
+        if (!personDetails) {
+            return response.status(200).json({"left": false});
+        }
+
+        const roomNumber = personDetails.roomNumber;
+        const info = {
+            sid: usersid,
+            name: name,
+            branch: personDetails.branch
+        }
+
+
+        const updatePerson = await person.updateOne({sid: usersid}, {
+            $set: {
+                roomSelected: "false",
+                roomNumber: 0
+            },
+        })
+
+        const updateRoom = await room.updateOne({roomNumber: roomNumber}, {
+            $pull: {
+                waitingList: {sid: usersid}
+            }
+        });
+
+        return response.status(200).json({
+            "left": true
+        })
+
+    } catch (error) {
+
+    }
+}
+
