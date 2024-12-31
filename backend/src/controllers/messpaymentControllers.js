@@ -52,7 +52,7 @@ export const initiatePayment= async (req, res) => {
         res.status(500).json({ success: false, error: "Failed to process payment"});
 
   }
-};
+}; 
 
 export const updateFeeStatus = async (req, res) => {
   const name = req.user.name;
