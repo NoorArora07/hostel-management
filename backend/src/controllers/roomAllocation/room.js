@@ -6,6 +6,12 @@ import UserDetail from '../../models/userDetail.model.js';
 dotenv.config();
 
 export const updateRoom = async (request, response) => {
+    const usersid = request.user.sid;
+    const find = await person.findOne({sid: usersid});
+
+    if (find && (find.roomSelected == "true" || find.roomSelected == "pending" )) {
+        return response.json({"selected": false, "reason": "You have already selected a room!"});
+    }
 
     const numberOfOccupants = request.body.numberOfOccupants;
     if (numberOfOccupants == 0) {

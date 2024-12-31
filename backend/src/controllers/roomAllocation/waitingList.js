@@ -107,7 +107,8 @@ export const acceptInWaitingList = async (request, response) => {
             sid: info.sid
         }, {
             $set: {
-                roomSelected: "true"
+                roomSelected: "true",
+                roomNumber: roomNumber
             }
         });
 

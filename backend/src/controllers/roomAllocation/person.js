@@ -6,6 +6,13 @@ dotenv.config();
 
 export const selectRoom = async (request, response) => {
     //abhi ke liye dekho bhai kya hai status
+    const usersid = request.user.sid;
+    const find = await person.findOne({sid: usersid});
+    console.log(find);
+
+    if (find && (find.roomSelected == "true" || find.roomSelected == "pending" ))  {
+        return response.json({"selected": false, "reason": "You have already selected a room!"});
+    }
     
     const numberOfOccupants = request.body.numberOfOccupants;
     if (numberOfOccupants == 0) {
@@ -15,7 +22,7 @@ export const selectRoom = async (request, response) => {
         return selectAnother(request, response);
     }
     else {
-        return response.json({"selected": false});
+        return response.json({"selected": false, "reason": "This room is full!"});
     }
 }
 //kaafi kuch
@@ -36,22 +43,16 @@ const selectEmpty = async (request, response) => {
         }
 
         const branch = userDetails.branch;
-
-        let data = new person({
-            name: name,
+        await upsertPersonRecord({
             sid: sid,
+            name: name,
             branch: branch,
-            roomSelected: "true",
+            roomNo: roomNo,
             allowWaitingList: allowWaitingList,
-            roomNumber: roomNo
+            roomSelected: "true"
         })
-        
-        const result = await data.save();
-        console.log(result);
-        if (result.acknowledged)
-            console.log("hurray");
-        
-        response.status(200).json({
+
+        return response.status(200).json({
            "selected": true
         }) //temporary response, this could change aage jaake
 
@@ -69,7 +70,6 @@ const selectAnother = async (request, response) => {
     const sid = request.user.sid;
     const name = request.user.name;
 
-    let data;
     let branch;
 
     try {
@@ -79,50 +79,48 @@ const selectAnother = async (request, response) => {
             return response.status(500).send("trying to find a room for a user that doesn't exist o_O O_o");
         }
         branch = userDetails.branch;
-        
-        data = new person({
-            name: name,
+        const roomSelected = allowWaitingList ? "pending" : "true";
+
+        await upsertPersonRecord({
             sid: sid,
+            name: name,
             branch: branch,
-            roomSelected: allowWaitingList ? "pending" : "true",
-            allowWaitingList: false,
+            roomNo: roomNo,
+            allowWaitingList: allowWaitingList,
+            roomSelected: roomSelected
         })
-    } catch (error) {
-        console.log("there is an error while saving basic details", error);
-        return response.status(500).send("error while saving basic details", error);
-    }
 
-    try {
-        if (!allowWaitingList) {
-            try {
-                data.roomNumber = roomNo;
+        response.status(200).json({"selected": true});
 
-                const result = await data.save();
-                console.log(result);
-                if (result.acknowledged)
-                    console.log("hurray");
-                
-                response.status(200).json({
-                    "selected": true
-                }) //temporary response, this could change aage jaake
-            } catch (error) {
-                console.log("Error while trying to select an empty room!");
-                response.status(500).send("error while selecting an empty room", error);    
-            }
-        }
-        else {
-            const result = await data.save();
-            console.log(result);
-            if (result.acknowledged)
-                console.log("hurray");
-            
-            //add to waiting list
-            response.status(200).json({
-                "selected": true
-            }) //temporary response, this could change aage jaake
-        }
     } catch (error) {
         console.log("error while updating a person's record with selectAnother", error);
         response.status(500).send("error while selectRoom!");
     }
 }
+
+const upsertPersonRecord = async ({ sid, name, branch, roomNo, allowWaitingList, roomSelected }) => {
+    try {
+        const result = await person.findOneAndUpdate(
+            { sid: sid },
+            {
+                $set: {
+                    name,
+                    branch,
+                    roomNumber: roomNo,
+                    roomSelected,
+                    allowWaitingList,
+                }
+            },
+            {
+                upsert: true, // Create new document if not exists
+                new: true // Return the updated document
+            }
+        );
+
+        console.log("Person record upserted successfully:", result);
+        return result;
+    } catch (error) {
+        console.error("Error in upsertPersonRecord:", error);
+        throw error;
+    }
+};
