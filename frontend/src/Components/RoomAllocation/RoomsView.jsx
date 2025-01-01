@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { patchToBackend, postToBackend } from '../../store/fetchdata';
+import { getFromBackend, patchToBackend, postToBackend } from "../../store/fetchdata";
 import { HoverCard, HoverCardTrigger, HoverCardContent } from "../ui/hover-card";
+import { useNavigate } from "react-router-dom"; // Import useNavigate hook
 
 const RoomAllocation = () => {
   const floors = 3;
@@ -9,8 +10,11 @@ const RoomAllocation = () => {
   const [floor, setFloor] = useState(1);
   const [roomStatus, setRoomStatus] = useState([]);
   const [selectedRoom, setSelectedRoom] = useState(null);
-  const [allowWaitingList, setWaitingList] = useState(false);
+  const [allowWaitingList, setAllowWaitingList] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
+  const [hasWaitingList, setHasWaitingList] = useState(false); // State to track waiting list status
+
+  const navigate = useNavigate(); // Initialize navigate
 
   // Fetch room data from the backend for the selected floor
   useEffect(() => {
@@ -34,6 +38,19 @@ const RoomAllocation = () => {
     fetchRoomData();
   }, [floor]);
 
+  const checkWaitingListStatus = async (roomNumber) => {
+    if (!roomNumber) return;  // Prevent error if roomNumber is undefined or null
+
+    try {
+      const response = await getFromBackend(`http://127.0.0.1:5090/api/room-allocation/get-info/${roomNumber}`);
+      const data = response.data;
+      setAllowWaitingList(data.inWaitingList); // Set the waiting list status based on API response
+      setHasWaitingList(data.inWaitingList); // Set the button display status
+    } catch (error) {
+      console.error("Error fetching waiting list status:", error);
+    }
+  };
+
   const getRoomColor = (room) => {
     if (selectedRoom?.roomNumber === room.roomNumber) {
       return "bg-purple-200 border-purple-500"; // Selected room
@@ -46,35 +63,43 @@ const RoomAllocation = () => {
 
   const handleRoomClick = (room) => {
     setSelectedRoom(room);
-    setWaitingList(false); // Reset waiting list checkbox
+    setAllowWaitingList(false); // Reset waiting list checkbox
+    setHasWaitingList(false); // Reset button display status
+    checkWaitingListStatus(room.roomNumber); // Check waiting list status for the selected room
   };
 
   const handleConfirmSelection = async () => {
     if (!selectedRoom) return;
-    
+
     const updatedPersonData = {
-        roomNumber: selectedRoom.roomNumber,
-        numberOfOccupants: selectedRoom.numberOfOccupants,
-        allowWaitingList
-    }
+      roomNumber: selectedRoom.roomNumber,
+      numberOfOccupants: selectedRoom.numberOfOccupants,
+      allowWaitingList: selectedRoom.numberOfOccupants === 1 ? selectedRoom.allowWaitingList : allowWaitingList,
+    };
 
     const updatedRoomData = {
       roomNumber: selectedRoom.roomNumber,
       numberOfOccupants: selectedRoom.numberOfOccupants,
-      allowWaitingList
+      allowWaitingList: selectedRoom.numberOfOccupants === 1 ? selectedRoom.allowWaitingList : allowWaitingList,
     };
-  
+
     try {
       const response1 = await patchToBackend(
         `http://127.0.0.1:5090/api/room-allocation/room`,
         updatedRoomData
       );
+      if (response1.data.selected === false) {
+        // If the room is already selected, show a popup with the reason
+        setShowConfirmation(false); // Don't show the confirmation popup
+        alert(response1.data.reason); // Set error message to display in popup
+        return;
+      }
       const response2 = await postToBackend(
         `http://127.0.0.1:5090/api/room-allocation/person`,
         updatedPersonData
       );
-      console.log("API Response:", response); // Debug the response object
-      if (response.status === 200) {
+      console.log("API Response:", response1); // Debug the response object
+      if (response1.status === 200) {
         const updatedRoomStatus = roomStatus.map((room) =>
           room.roomNumber === selectedRoom.roomNumber
             ? {
@@ -91,7 +116,6 @@ const RoomAllocation = () => {
       handleAxiosError(error); // Use the custom error handler
     }
   };
-  
 
   const renderRooms = (rooms, startIndex) => {
     return rooms.slice(startIndex, startIndex + roomsPerSide).map((room, index) => (
@@ -124,9 +148,7 @@ const RoomAllocation = () => {
           <button
             key={floorIndex}
             onClick={() => setFloor(floorIndex + 1)}
-            className={`px-4 py-2 rounded-md text-white font-medium ${
-              floor === floorIndex + 1 ? "bg-blue-600" : "bg-gray-400"
-            }`}
+            className={`px-4 py-2 rounded-md text-white font-medium ${floor === floorIndex + 1 ? "bg-blue-600" : "bg-gray-400"}`}
           >
             Floor {floorIndex + 1}
           </button>
@@ -180,7 +202,7 @@ const RoomAllocation = () => {
                     <input
                       type="checkbox"
                       checked={allowWaitingList}
-                      onChange={(e) => setWaitingList(e.target.checked)}
+                      onChange={(e) => setAllowWaitingList(e.target.checked)}
                       className="w-4 h-4"
                     />
                     <span>Create a waiting list?</span>
@@ -200,6 +222,18 @@ const RoomAllocation = () => {
             >
               {selectedRoom.numberOfOccupants === 2 ? "Room Full" : "Select Room"}
             </button>
+
+            {/* View Waiting List Button */}
+            {hasWaitingList && (
+              <div className="mt-4">
+                <button
+                  onClick={() => navigate(`/WaitingList`)} // Navigate to waiting list page
+                  className="px-4 py-2 bg-yellow-500 text-white rounded-md"
+                >
+                  View Waiting List
+                </button>
+              </div>
+            )}
           </div>
         )}
       </div>
