@@ -62,7 +62,8 @@ export const declineInWaitingList = async (request, response) => {
             sid: declinesid
         }, {
             $set: {
-                roomSelected: "false"
+                roomSelected: "false",
+                roomNumber: 0
             }
         });
 

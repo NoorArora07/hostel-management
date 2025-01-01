@@ -12,7 +12,7 @@ export const updateRoom = async (request, response) => {
     if (find && (find.roomSelected == "true" || find.roomSelected == "pending" )) {
         return response.json({"selected": false, "reason": "You have already selected a room!"});
     }
-
+    
     const numberOfOccupants = request.body.numberOfOccupants;
     if (numberOfOccupants == 0) {
         return updateEmpty(request, response);
@@ -57,12 +57,12 @@ const updateEmpty = async (request, response) => {
         })
         return response.status(200).json({
             updatedRoom: result,
-            sent: true
+            selected: true
         })
     } catch (error) {
         console.log("error while updating an empty room: ", error);
         response.status(500).json({
-            sent: false,
+            selected: false,
             error: error
         })
     }
@@ -113,13 +113,13 @@ const updateAnother = async (request, response) => {
         }
 
         return response.status(200).json({
-            sent: true
+            selected: true
         })
 
     } catch (error) {
         console.log("error while updating an occupied room: ", error);
         response.status(200).json({
-            sent: false,
+            selected: false,
             error: error
         })
     }
@@ -143,7 +143,7 @@ export const makeRoom = async (request, response) => {
         if (result) {
             console.log("saved successfully!");
             return response.status(200).json({
-                sent:true
+                selected:true
             })
         }
         
