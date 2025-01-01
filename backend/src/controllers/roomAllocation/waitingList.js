@@ -192,7 +192,8 @@ export const leaveWaitingList = async (request, response) => {
         });
 
         return response.status(200).json({
-            "left": true
+            "left": true,
+            "sid":usersid
         })
 
     } catch (error) {
