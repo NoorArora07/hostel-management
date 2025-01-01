@@ -39,17 +39,24 @@ const RoomAllocation = () => {
   }, [floor]);
 
   const checkWaitingListStatus = async (roomNumber) => {
-    if (!roomNumber) return;  // Prevent error if roomNumber is undefined or null
-
+    if (!roomNumber) return;
+  
     try {
       const response = await getFromBackend(`http://127.0.0.1:5090/api/room-allocation/get-info/${roomNumber}`);
       const data = response.data;
-      setAllowWaitingList(data.inWaitingList); // Set the waiting list status based on API response
-      setHasWaitingList(data.inWaitingList); // Set the button display status
+  
+      setAllowWaitingList(data.allowWaitingList);
+      setHasWaitingList(data.inWaitingList);
+      setSelectedRoom((prev) => ({
+        ...prev,
+        occupant: data.occupant,
+        inWaitingList: data.inWaitingList,
+      }));
     } catch (error) {
       console.error("Error fetching waiting list status:", error);
     }
   };
+  
 
   const getRoomColor = (room) => {
     if (selectedRoom?.roomNumber === room.roomNumber) {
@@ -70,35 +77,42 @@ const RoomAllocation = () => {
 
   const handleConfirmSelection = async () => {
     if (!selectedRoom) return;
-
+  
     const updatedPersonData = {
       roomNumber: selectedRoom.roomNumber,
       numberOfOccupants: selectedRoom.numberOfOccupants,
       allowWaitingList: selectedRoom.numberOfOccupants === 1 ? selectedRoom.allowWaitingList : allowWaitingList,
     };
-
+  
     const updatedRoomData = {
       roomNumber: selectedRoom.roomNumber,
       numberOfOccupants: selectedRoom.numberOfOccupants,
       allowWaitingList: selectedRoom.numberOfOccupants === 1 ? selectedRoom.allowWaitingList : allowWaitingList,
     };
-
+  
     try {
       const response1 = await patchToBackend(
         `http://127.0.0.1:5090/api/room-allocation/room`,
         updatedRoomData
       );
+      
+      console.log(response1)
+
+      // Check if the room is already selected
       if (response1.data.selected === false) {
-        // If the room is already selected, show a popup with the reason
-        setShowConfirmation(false); // Don't show the confirmation popup
-        alert(response1.data.reason); // Set error message to display in popup
-        return;
+        setShowConfirmation(false); 
+        alert(response1.data.reason); 
+        return; 
       }
+  
+      // Proceed to update the person's data
       const response2 = await postToBackend(
         `http://127.0.0.1:5090/api/room-allocation/person`,
         updatedPersonData
       );
+  
       console.log("API Response:", response1); // Debug the response object
+  
       if (response1.status === 200) {
         const updatedRoomStatus = roomStatus.map((room) =>
           room.roomNumber === selectedRoom.roomNumber
@@ -110,10 +124,15 @@ const RoomAllocation = () => {
         );
         setRoomStatus(updatedRoomStatus);
         setShowConfirmation(false); // Close confirmation popup
+  
+        // Now check and show waiting list alert, if applicable
+        if (selectedRoom.allowWaitingList) {
+          alert('You have been added to the waiting list for this room.');
+        }
       }
     } catch (error) {
       console.error("Error updating room data:", error); // Log the error
-      handleAxiosError(error); // Use the custom error handler
+      handleAxiosError(error); // Handle Axios errors
     }
   };
 
@@ -191,6 +210,13 @@ const RoomAllocation = () => {
               </div>
             )}
 
+            {selectedRoom.allowWaitingList === true ?
+              (<div>
+              <p>The room has a Waiting List.</p>
+              </div>)
+              : " "
+            }
+
             {selectedRoom.numberOfOccupants === 2 ? (
               <p className="text-red-600 font-semibold">
                 This room is at full capacity.
@@ -224,7 +250,8 @@ const RoomAllocation = () => {
             </button>
 
             {/* View Waiting List Button */}
-            {hasWaitingList && (
+            {selectedRoom && selectedRoom.numberOfOccupants === 1 && selectedRoom.allowWaitingList === true && (
+            (selectedRoom.occupant || selectedRoom.inWaitingList) && (
               <div className="mt-4">
                 <button
                   onClick={() => navigate(`/WaitingList`)} // Navigate to waiting list page
@@ -233,7 +260,9 @@ const RoomAllocation = () => {
                   View Waiting List
                 </button>
               </div>
-            )}
+            )
+          )}
+
           </div>
         )}
       </div>
