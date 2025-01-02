@@ -12,7 +12,7 @@ export const updateRoom = async (request, response) => {
     if (find && (find.roomSelected == "true" || find.roomSelected == "pending" )) {
         return response.json({"selected": false, "reason": "You have already selected a room!"});
     }
-    
+
     const numberOfOccupants = request.body.numberOfOccupants;
     if (numberOfOccupants == 0) {
         return updateEmpty(request, response);
@@ -126,31 +126,30 @@ const updateAnother = async (request, response) => {
 }
 
 export const makeRoom = async (request, response) => {
-    const roomNumber = request.body.roomNumber;
-    const floorNumber = request.body.floorNumber;
-
     try {
-        const newRoom = new room({
-            roomNumber: roomNumber,
-            numberOfOccupants: 0,
-            floorNumber: floorNumber,
-            occupantsDetails: [],
-            allowWaitingList: false,
-            waitingList: []
-        })
+        for (let floorNumber = 1; floorNumber <= 3; floorNumber++) {
+            for (let roomNumber = floorNumber * 100 + 1; roomNumber <= floorNumber * 100 + 24; roomNumber++) {
+                const newRoom = new room({
+                    roomNumber: roomNumber,
+                    numberOfOccupants: 0,
+                    floorNumber: floorNumber,
+                    occupantsDetails: [],
+                    allowWaitingList: false,
+                    waitingList: []
+                })
 
-        const result = await newRoom.save();
-        if (result) {
-            console.log("saved successfully!");
-            return response.status(200).json({
-                selected:true
-            })
+                const result = await newRoom.save();
+            }
         }
-        
-    } catch(error) {
+        console.log("saved successfully!");
+        return response.status(200).json({
+            selected:true
+        })
+        }  catch(error) {
         console.log("error while making a room", error);
         response.status(500).send("error while making a room!");
     }
 }   
+
 
 
