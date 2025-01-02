@@ -55,45 +55,41 @@ export const initiatePayment= async (req, res) => {
 }; 
 
 export const updateFeeStatus = async (req, res) => {
-  const name = req.user.name;
-  const studentId = req.user.sid;
+  const { sessionId } = req.body;
 
-      if (!studentId) {
-    return res.send("Invalid studentId");
-}
-      try {
-        const { sessionId } = req.body;
-        const session = await stripe.checkout.sessions.retrieve(sessionId);
-        const amount = session.metadata.amount;
+  if (!sessionId) {
+    return res.send("Invalid sessionId");
+  }
+  try {
+    const session = await stripe.checkout.sessions.retrieve(sessionId);
+    
 
-        if (session.payment_status !== 'unpaid') {
-            const { studentId } = session.metadata;
-      
-            // Update the fee status to paid
-            await Fee.findOneAndUpdate(
-                {name},
-                {studentId },
-                {status: 'paid' },
-                {feeStatus: 'paid'},
-                {amount},
-                { new: true, upsert: true }
-            );
-      
-            console.log(`Fee status updated to 'paid' for studentId: ${studentId}`);
-            res.redirect('http://localhost:5173/success');
-          } 
-          else {
-            console.log('Retrieved Stripe session:', session);
 
-            console.log(`Payment not completed for sessionId: ${sessionId}`);
-            
-            res.redirect('http://localhost:5173/cancel');
-          }
-        } catch (err) {
-          console.error(`Failed to update payment status: ${err.message}`);
-          res.status(500).json({ error: err.message });
-        }
-      };
+    if (session.payment_status === 'paid') {
+      const { studentId, name, amount } = session.metadata;
+
+      // Update the fee status to paid
+      await Fee.findOneAndUpdate(
+        { studentId }, // Find by studentId
+        {
+          status: 'paid',
+          feeStatus: 'paid',
+          amount: amount, // Update the amount
+        },
+        { new: true, upsert: true } // Update or insert
+      );
+
+      console.log(`Fee status updated to 'paid' for studentId: ${studentId}`);
+      res.redirect('http://localhost:5173/success');
+    } else {
+      console.log('Payment not completed for sessionId:', sessionId);
+      res.redirect('http://localhost:5173/cancel');
+    }
+  } catch (err) {
+    console.error(`Failed to update payment status: ${err.message}`);
+    res.status(500).json({ error: err.message });
+  }
+};
                   
 
 export const getFeeStatus = async (req, res) => {
