@@ -12,10 +12,13 @@ import MessLeaveForm from './Components/Mess/mess-leave-form';
 import MessLeavesView from './Components/Mess/mess-leave-view';
 import MyCalendar from './Components/Mess/mess-schedule-view';
 import MessMenu from './Components/Mess/MessMenu'; 
-import MessPaymentPlan from './Components/Mess/MessViewFee'; 
+import MessPaymentPlan from './Components/Mess/payment/MessViewFee'; 
 import WCalendar from './Components/Warden/mess-schedule-warden';
 import Payment from './Components/Mess/payment/MessPayment';
+import PaymentSuccess from './Components/Mess/payment/successpayment';
+import PaymentCancel from './Components/Mess/payment/cancelledpayment';
 import Stripe from './Components/Mess/payment/Stripe';
+import FeeStatus from './Components/Mess/payment/statuspayment';
 import LeavesDash from './Components/Leaves/LeavesDash';
 import LongLeavesView from './Components/Leaves/LongLeavesView';
 import LongLeaveForm from './Components/Leaves/LongLeaveForm';
@@ -96,6 +99,18 @@ function App() {
     {
       path: "/mess-fee-payment",
       element: <><Navbar /><Payment /><Footer /></>
+    },
+    {
+      path: "/success",
+      element: <><Navbar /><PaymentSuccess /><Footer /></>
+    },
+    {
+      path: "/cancel",
+      element: <><Navbar /><PaymentCancel /><Footer /></>
+    },
+    {
+      path: "/stripe",
+      element: <><Stripe /><Footer /></>
     },
     {
       path: "/stripe",
