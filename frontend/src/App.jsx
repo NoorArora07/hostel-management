@@ -51,7 +51,7 @@ function App() {
     },
     {
       path: "/Homepage",
-      element: <><Homepage /></>
+      element: <><Navbar /><Homepage /><Footer /></>
     },
     {
       path: "/WardenDash",

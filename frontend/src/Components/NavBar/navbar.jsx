@@ -70,7 +70,7 @@ const Navbar = () => {
 
         // Update the state
         setNotifications((prev) =>
-            prev.filter((notification) => notification.id !== notifId)
+            prev.filter((notification) => notification._id !== notifId)
         );
         console.log("Notification handled successfully");
 
@@ -87,7 +87,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-gradient-to-r from-purple-600 via-black to-violet-800 fixed top-0 left-0 right-0 z-50 shadow-lg">
+    <nav className="bg-gradient-to-r from-violet-700 via-violet-950 to-destructive fixed top-0 left-0 right-0 z-50 shadow-lg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           <NavLink to="/Homepage" className="flex items-center space-x-4">

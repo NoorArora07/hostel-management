@@ -42,7 +42,7 @@ export const markSeen = async(req ,res)=>{
     try {
     
         const updatedNotif = await Notif.findOneAndUpdate(
-          { userId: req.user.sid, 'notifications.id': req.body.notifId },
+          { userId: req.user.sid, 'notifications._id': req.body.notifId },
           { $set: { 'notifications.$.seen': true } },
           { new: true }
         );
