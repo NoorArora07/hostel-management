@@ -18,6 +18,7 @@ import lateLeavesRouters from './routes/lateLeavesRoutes.js'
 import wardenLateLeaveRouters from './routes/wardenLateLeaves.js'
 import profileRoutes from './routes/profRoutes.js';
 import roomAllocationRoutes from './routes/roomAllocRoutes.js'
+import notifsRoutes from './routes/notifsRoutes.js';
 
 import roleRoutes from './routes/roleRoutes.js';
 
@@ -28,7 +29,6 @@ console.log("MONGO URI: ", process.env.MONGO_URI);
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
-
 
 //middleware to parse json from requests i think
 app.use(express.json());
@@ -52,6 +52,7 @@ app.use("/api/warden/late-leaves", wardenLateLeaveRouters);
 app.use("/api/profile", profileRoutes);
 app.use("/api/check", roleRoutes);
 app.use("/api/room-allocation", roomAllocationRoutes);
+app.use("/api/notif",notifsRoutes);
 
 //start listening
 server.listen(5090, () => {
