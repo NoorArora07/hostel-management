@@ -24,8 +24,8 @@ export const add_notif = async (userId=null, name = '', title, message) => {
 
 export const fetch = async(req ,res)=>{
     try {const {sid} = req.user;
-        const notifications = await Notif.find({ userId: sid });
-        console.log("notifications : ",notifications);
+        const user_notifications = await Notif.find({ userId: sid });
+        console.log("notifications : ",user_notifications.notifications);
         res.status(200).json(notifications);
         
       } catch (error) {
@@ -35,32 +35,43 @@ export const fetch = async(req ,res)=>{
 
 export const markSeen = async(req ,res)=>{
     try {
-        const notification = await Notif.findById(req.params.notifId);
-        if (!notification) {
-          return res.status(404).json({ error: 'Notification not found' });
-        }
     
-        notification.seen = true;
+        const updatedNotif = await Notif.findOneAndUpdate(
+          { userId: req.user.sid, 'notifications._id': req.params.notifId },
+          { $set: { 'notifications.$.seen': true } },
+          { new: true }
+        );
+        notification.notifications.seen = true;
         await notification.save();
 
+        if (!updatedNotif) {
+          return res.status(404).json({ error: 'Notification not found' });
+        }
         res.status(200).json({ message: 'Notification marked as seen' });
       } catch (error) {
         res.status(500).json({ error: 'Error updating notification' });
       }
+    };
+
+export const deleteNotif = async (req, res) => {
+  try {
+    const { sid } = req.user;
+
+    const result = await Notif.updateOne(
+      { userId: sid },
+      { $pull: { notifications: { seen: true } } }
+    );
+
+    if (result.nModified === 0) {
+      return res.status(404).json({ error: 'No notifications found to delete' });
+    }
+
+    res.status(200).json({ message: 'Notifications deleted successfully', result });
+  } catch (error) {
+    res.status(500).json({ error: 'Server error while deleting notifications' });
+  }
 };
 
-export const deleteNotif = async(req,res)=>{
-    try{
-        const notification = await Notif.deleteMany({seen:true});
-        if (!notification) {
-            return res.status(404).json({ error: 'Notification not found' });
-          }
-          res.status(200).json({ message: 'Notification deleted successfully', deleted_notification : notification });
-    }
-    catch(error){
-        res.status(500).json({ error: 'Server error while deleting notification' });
-    }
-};
 
 //only for testing on postman
 export const addNotif = async(req,res)=>{
