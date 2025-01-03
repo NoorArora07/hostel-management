@@ -1,4 +1,6 @@
 import Complaint from "../models/complaints.model.js";
+import {add_notif} from "../controllers/notifsControllers.js";
+import {standardise} from "../controllers/convert in title form.js";
 
 export const getAllComplaints = async (request, response) => {
   try {
@@ -33,6 +35,7 @@ export const getAllComplaints = async (request, response) => {
 
 export const updateComplaintStatus = async (request, response) => {
   const { sid, complaintId, status } = request.body;
+  const name=request.user.name;
 
   if (!["resolved", "rejected"].includes(status)) {
     return response.status(400).json({ message: "Invalid status provided." });
@@ -49,20 +52,23 @@ export const updateComplaintStatus = async (request, response) => {
       return response.status(404).json({ message: "No complaints found." });
     }
 
-    console.log("1");
     const complaintToUpdate = complaint.complaints.id(complaintId);
-    console.log("2");
     if (!complaintToUpdate) {
       return response
         .status(404)
         .json({ message: "Complaint not found for the student." });
     }
-    console.log("3");
 
     complaintToUpdate.status = status;
-    console.log("4");
     await complaint.save();
-    console.log("5");
+
+    //notif
+    const complaintTitle = standardise(complaintToUpdate.title);
+    const mssg = status==="resolved"
+    ? `Your complaint titled "${complaintTitle}" has been resolved.` 
+    : `Your complaint titled "${complaintTitle}" has been rejected.`
+    add_notif(sid,name,complaintTitle,mssg);
+    
     response.status(200).json({
       message: "Complaint status updated successfully.",
       complaint: complaintToUpdate,
