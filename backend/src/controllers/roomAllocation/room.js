@@ -2,128 +2,111 @@ import dotenv from 'dotenv';
 import { person } from '../../models/roomalloc_person.model.js';
 import { room } from '../../models/roomalloc_person.model.js';
 import UserDetail from '../../models/userDetail.model.js';
-
 dotenv.config();
 
-export const updateRoom = async (request, response) => {
-    const usersid = request.user.sid;
-    const find = await person.findOne({sid: usersid});
-
-    if (find && (find.roomSelected == "true" || find.roomSelected == "pending" )) {
-        return response.json({"selected": false, "reason": "You have already selected a room!"});
-    }
-
-    const numberOfOccupants = request.body.numberOfOccupants;
-    if (numberOfOccupants == 0) {
-        return updateEmpty(request, response);
-    }
-    else if (numberOfOccupants == 1) {
-        return updateAnother(request, response);
-    }
-    else {
-        return request.json({"selected": false});
-    }
-}
-
-const updateEmpty = async (request, response) => {
-    const roomNo = request.body.roomNumber;
+export const updateRoomSocket = async (data, callback) => {
     try {
-        const usersid = request.user.sid;
-        const name = request.user.name;
+        const usersid = data.sid; // Get user SID from socket data
+        const find = await person.findOne({ sid: usersid });
 
-        const userDetails = await UserDetail.findOne( {sid: usersid} );
-        if (!userDetails) {
-            console.log("no such user exists tf lmaoo");
-            return response.status(500).send("trying to find a room for a user that doesn't exist o_O O_o");
+        if (find && (find.roomSelected === "true" || find.roomSelected === "pending")) {
+            return callback({ selected: false, reason: "You have already selected a room!" });
         }
 
-        const branch = userDetails.branch;
-        const info = {
-            sid: usersid,
-            name: name,
-            branch: branch
-        }
-
-        const result = await room.updateOne({
-            roomNumber: roomNo
-        }, {
-            $set: {
-                numberOfOccupants: 1,
-                allowWaitingList: request.body.allowWaitingList,
-            },
-            $push: {
-                occupantsDetails: info
-            }
-        })
-        return response.status(200).json({
-            updatedRoom: result,
-            selected: true
-        })
-    } catch (error) {
-        console.log("error while updating an empty room: ", error);
-        response.status(500).json({
-            selected: false,
-            error: error
-        })
-    }
-}
-
-const updateAnother = async (request, response) => {
-    const roomNo = request.body.roomNumber;
-    const allowWaitingList = request.body.allowWaitingList;
-
-    try {
-        const usersid = request.user.sid;
-        const name = request.user.name;
-
-        const userDetails = await UserDetail.findOne( {sid: usersid} );
-        if (!userDetails) {
-            console.log("no such user exists tf lmaoo");
-            return response.status(500).send("trying to find a room for a user that doesn't exist o_O O_o");
-        }
-
-        const branch = userDetails.branch;
-        const info = {
-            sid: usersid,
-            name: name,
-            branch: branch
-        }
-
-        if (allowWaitingList) {
-            console.log("adding in the waiting list!");
-            const result = await room.updateOne({
-                roomNumber: roomNo
-            }, {
-                $push: {
-                    waitingList: info
-                }
-            })
+        const numberOfOccupants = data.numberOfOccupants;
+        if (numberOfOccupants === 0) {
+            return await updateEmptySocket(data, callback);
+        } else if (numberOfOccupants === 1) {
+            return await updateAnotherSocket(data, callback);
         } else {
-            const result = await room.updateOne({
-                roomNumber: roomNo
-            }, {
+            return callback({ selected: false });
+        }
+    } catch (error) {
+        console.log("Error in updateRoomSocket:", error);
+        callback({ selected: false, error: error.message });
+    }
+};
+
+const updateEmptySocket = async (data, callback) => {
+    try {
+        const { sid, name, roomNumber, allowWaitingList } = data;
+        const userDetails = await UserDetail.findOne({ sid: sid });
+
+        if (!userDetails) {
+            console.log("No such user exists.");
+            return callback({ selected: false, error: "User does not exist!" });
+        }
+
+        const info = {
+            sid,
+            name,
+            branch: userDetails.branch,
+        };
+
+        const result = await room.updateOne(
+            { roomNumber: roomNumber },
+            {
                 $set: {
-                    numberOfOccupants: 2,
-                    allowWaitingList: false
+                    numberOfOccupants: 1,
+                    allowWaitingList: allowWaitingList,
                 },
                 $push: {
-                    occupantsDetails: info
-                }
-            })
+                    occupantsDetails: info,
+                },
+            }
+        );
+
+        callback({ selected: true, updatedRoom: result });
+    } catch (error) {
+        console.log("Error while updating empty room:", error);
+        callback({ selected: false, error: error.message });
+    }
+};
+
+const updateAnotherSocket = async (data, callback) => {
+    try {
+        const { sid, name, roomNumber, allowWaitingList } = data;
+        const userDetails = await UserDetail.findOne({ sid: sid });
+
+        if (!userDetails) {
+            console.log("No such user exists.");
+            return callback({ selected: false, error: "User does not exist!" });
         }
 
-        return response.status(200).json({
-            selected: true
-        })
+        const info = {
+            sid,
+            name,
+            branch: userDetails.branch,
+        };
 
+        if (allowWaitingList) {
+            await room.updateOne(
+                { roomNumber: roomNumber },
+                {
+                    $push: { waitingList: info },
+                }
+            );
+        } else {
+            await room.updateOne(
+                { roomNumber: roomNumber },
+                {
+                    $set: {
+                        numberOfOccupants: 2,
+                        allowWaitingList: false,
+                    },
+                    $push: {
+                        occupantsDetails: info,
+                    },
+                }
+            );
+        }
+
+        callback({ selected: true });
     } catch (error) {
-        console.log("error while updating an occupied room: ", error);
-        response.status(200).json({
-            selected: false,
-            error: error
-        })
+        console.log("Error while updating occupied room:", error);
+        callback({ selected: false, error: error.message });
     }
-}
+};
 
 export const makeRoom = async (request, response) => {
     try {
@@ -149,7 +132,4 @@ export const makeRoom = async (request, response) => {
         console.log("error while making a room", error);
         response.status(500).send("error while making a room!");
     }
-}   
-
-
-
+}

@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../store/auth";
+import { initializeSocket, updateSocketToken, getSocket } from "../../store/socket"; // Import socket functions
 import loginside from '../../Photos/loginside.jpg';
 
 const Login = () => {
@@ -21,8 +22,19 @@ const Login = () => {
         e.preventDefault();
         try {
             const response = await axios.post("http://127.0.0.1:5090/api/auth/login", formData);
-            storeTokeninLS(response.data.token);
+
+            const token = response.data.token;
+            storeTokeninLS(token); // Store token in local storage
             console.log(response.data);
+
+            // Initialize or update the socket
+            if (!getSocket()) {
+                initializeSocket(token); // Initialize the socket for the first time
+            } else {
+                updateSocketToken(token); // Update the token if socket already exists
+            }
+
+            // Navigate based on user role
             if (response.data.role === "warden") {
                 navigate("/WardenDash");
             } else {
@@ -37,7 +49,6 @@ const Login = () => {
     return (
         <div className="flex justify-center items-center min-h-screen">
             <div className="bg-white shadow-md rounded-lg flex max-w-4xl w-full">
-                {/* Left Image Section */}
                 <div className="w-1/2 hidden lg:block shadow-lg shadow-purple-300">
                     <img
                         src={loginside}
@@ -46,7 +57,6 @@ const Login = () => {
                     />
                 </div>
 
-                {/* Form Section */}
                 <div className="w-full lg:w-1/2 p-8 flex flex-col items-center justify-center space-y-6 shadow-lg shadow-purple-300">
                     <form className="space-y-6 w-full max-w-md" onSubmit={handleSubmit}>
                         <h2 className="text-2xl font-semibold text-gray-800 text-center">Login</h2>
@@ -88,7 +98,6 @@ const Login = () => {
                         </button>
                     </form>
 
-                    {/* Signup Link Below the Form */}
                     <div className="mt-4 text-center">
                         <p className="text-sm text-gray-600">
                             Don't have an account?{" "}

@@ -1,7 +1,5 @@
 import express from 'express';
 
-import { updateRoom } from '../controllers/roomAllocation/room.js';
-import { selectRoom } from '../controllers/roomAllocation/person.js';
 import { makeRoom } from '../controllers/roomAllocation/room.js';
 import { verifyToken } from '../middleware/verifyToken.js';
 import { fetchRooms } from '../controllers/roomAllocation/fetchRooms.js';
@@ -13,8 +11,6 @@ import { viewPartOf } from '../controllers/roomAllocation/fetchRooms.js';
 
 const router = express.Router();
 
-router.post("/person", verifyToken, selectRoom);
-router.patch("/room", verifyToken, updateRoom);
 router.post("/create-room", makeRoom);
 router.get("/get-rooms/:floor", fetchRooms);
 router.get("/waiting-list/", verifyToken, viewWaitingList);
@@ -23,4 +19,4 @@ router.patch("/waiting-list/decline", verifyToken, declineInWaitingList);
 router.patch("/waiting-list/leave", verifyToken, leaveWaitingList);
 router.get("/get-info/:roomNumber", verifyToken, viewPartOf);
 
-export default router
+export default router 
