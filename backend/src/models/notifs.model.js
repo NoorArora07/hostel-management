@@ -1,13 +1,32 @@
 import mongoose from "mongoose";
 
 const notifSchema = new mongoose.Schema({
-    userId: { type: String, required: false },
-    name:{type:String,required:false},
-    title:{type:String,required:true},
-    message: { type: String, required: true },
-    seen: { type: Boolean, default: false }, 
-    createdAt: { type: Date, default: Date.now },
+    title:{
+        type:String,
+        required:true},
+    message: {
+        type: String,
+        required: true },
+    seen: {
+        type: Boolean,
+        default: false }, 
+    createdAt: {
+        type: Date,
+        default: Date.now },
 });
 
-export default mongoose.model("Notif", notifSchema);
+const notifs = mongoose.Schema({
+  userId:{
+    type: String, 
+    required: false,
+    unique:true},
+  name:{
+    type:String,
+    required:false},
+  notifications: {
+    type: [notifSchema],
+    default: [],
+  },
+});
 
+export default mongoose.model("Notif", notifs);

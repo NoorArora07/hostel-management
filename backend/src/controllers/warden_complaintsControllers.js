@@ -18,6 +18,7 @@ export const getAllComplaints = async (request, response) => {
     const formattedComplaints = complaints.flatMap((student) =>
       student.complaints.map((comp) => ({
         sid: student.sid,
+        name:student.name,
         branch: student.branch,
         roomNumber: student.roomNumber,
         ...comp,
@@ -34,8 +35,7 @@ export const getAllComplaints = async (request, response) => {
 };
 
 export const updateComplaintStatus = async (request, response) => {
-  const { sid, complaintId, status } = request.body;
-  const name=request.user.name;
+  const { sid,name,complaintId, status } = request.body;
 
   if (!["resolved", "rejected"].includes(status)) {
     return response.status(400).json({ message: "Invalid status provided." });
@@ -63,7 +63,7 @@ export const updateComplaintStatus = async (request, response) => {
     await complaint.save();
 
     //notif
-    const complaintTitle = standardise(complaintToUpdate.title);
+    const complaintTitle = standardise(complaintToUpdate.title).trim();
     const mssg = status==="resolved"
     ? `Your complaint titled "${complaintTitle}" has been resolved.` 
     : `Your complaint titled "${complaintTitle}" has been rejected.`
