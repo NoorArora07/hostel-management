@@ -29,6 +29,7 @@ export default function ComplaintsView() {
         setLoading(true)
         const response = await getFromBackend("http://127.0.0.1:5090/api/complaint/view")
         const complaintsArray = response.data.complaints || []
+        console.log(response)
         setComplaints(Array.isArray(complaintsArray) ? complaintsArray : [])
       } catch (error) {
         console.error("Failed to fetch complaints", error)

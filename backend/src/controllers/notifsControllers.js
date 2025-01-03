@@ -42,7 +42,7 @@ export const markSeen = async(req ,res)=>{
     try {
     
         const updatedNotif = await Notif.findOneAndUpdate(
-          { userId: req.user.sid, 'notifications._id': req.params.notifId },
+          { userId: req.user.sid, 'notifications.id': req.body.notifId },
           { $set: { 'notifications.$.seen': true } },
           { new: true }
         );
@@ -77,8 +77,6 @@ export const deleteNotif = async (req, res) => {
   }
 };
 
-
-//only for testing on postman
 export const addNotif = async(req,res)=>{
   const { userId,name, title, message } = req.body;
 

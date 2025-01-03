@@ -5,7 +5,7 @@ import {fetch,markSeen,deleteNotif,addNotif} from "../controllers/notifsControll
 const router = express.Router();
 
 router.get("/view",verifyToken, fetch);
-router.put("/markSeen/:notifId",verifyToken, markSeen);
+router.put("/markSeen",verifyToken, markSeen);
 router.delete("/delete",verifyToken,deleteNotif);
 
 //only for testing on postman

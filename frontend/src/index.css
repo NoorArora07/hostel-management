@@ -68,8 +68,8 @@
   }
   body {
     overflow-y: scroll;
-    @apply bg-background text-foreground;
+    /* @apply bg-background text-foreground;
     @apply bg-slate-200
-    /* @apply bg-gradient-to-br from-[#adadad] to-[#c29ae3] min-h-screen bg-fixed; */;
+    @apply bg-gradient-to-br from-[#adadad] to-[#c29ae3] min-h-screen bg-fixed;; */
   }
 }

@@ -113,10 +113,6 @@ function App() {
       element: <><Stripe /><Footer /></>
     },
     {
-      path: "/stripe",
-      element: <><Stripe /><Footer /></>
-    },
-    {
       path: "/leaves",
       element: <><Navbar /><LeavesDash /><Footer /></>
     },
