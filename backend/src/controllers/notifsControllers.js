@@ -24,9 +24,14 @@ export const add_notif = async (userId=null, name = '', title, message) => {
 
 export const fetch = async(req ,res)=>{
     try {const {sid} = req.user;
-        const user_notifications = await Notif.find({ userId: sid });
+        const user_notifications = await Notif.findOne({ userId: sid });
+
+        if (!user_notifications) {
+          return res.status(404).json({ error: 'No notifications found for this user' });
+        }
+
         console.log("notifications : ",user_notifications.notifications);
-        res.status(200).json(notifications);
+        res.status(200).json(user_notifications.notifications);
         
       } catch (error) {
         res.status(500).json({ error: 'Error fetching notifications' });
@@ -41,8 +46,8 @@ export const markSeen = async(req ,res)=>{
           { $set: { 'notifications.$.seen': true } },
           { new: true }
         );
-        notification.notifications.seen = true;
-        await notification.save();
+        // notification.notifications.seen = true;
+        // await notification.save();
 
         if (!updatedNotif) {
           return res.status(404).json({ error: 'Notification not found' });
@@ -82,11 +87,8 @@ export const addNotif = async(req,res)=>{
   }
 
   try {
-    const result = await add_notif(userId,name, title, message);
-
-    const savedNotif = await result.save()
-
-    console.log('Notification added successfully:', savedNotif);
+    await add_notif(userId,name, title, message);
+    res.status(200).json({ message: 'Notification added successfully' });
   } catch (error) {
     res.status(500).json({ error: 'Error creating notification',error });
   }
