@@ -1,3 +1,5 @@
+import {add_notif} from '../controllers/notifsControllers.js';
+
 import dotenv from 'dotenv';
 import { request, response } from 'express';
 import lateLeavesInfo from '../models/lateLeaves.model.js';
@@ -89,6 +91,13 @@ export const approveApplication = async(request, response) => {
                 $set: { 'lateLeaves.$.approved': "true" }
             }
         )
+
+         //notif
+         const leaveDate = (await lateLeavesInfo.findOne({ sid: sid, 'lateLeaves._id': objectId }))?.lateLeaves?.[0]?.date;
+         const title = "Late Leave Approved";
+         const mssg = `Your late leave application for ${leaveDate} has been approved.`
+         add_notif(sid,title,'late_leave',mssg);
+        
         response.send('Leave application approved successfully');
         
     } catch (error) {
@@ -113,6 +122,13 @@ export const disapproveApplication = async (request, response) => {
                 $set: { 'lateLeaves.$.approved': "false" }
             }
         );
+
+        //notif
+        const leaveDate = (await lateLeavesInfo.findOne({ sid: sid, 'lateLeaves._id': objectId }))?.lateLeaves?.[0]?.date;
+        const title = "Late Leave Disapproved";
+        const mssg = `Your late leave application for ${leaveDate} has been disapproved.`;
+        add_notif(sid,title,'late_leave',mssg);
+
         response.send('Leave application disapproved successfully');
 
     } catch (error) {

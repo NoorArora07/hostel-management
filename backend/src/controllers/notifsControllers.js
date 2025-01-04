@@ -1,16 +1,16 @@
 import Notif from "../models/notifs.model.js";
 
-export const add_notif = async (userId=null, name = '', title, message) => {
+export const add_notif = async (userId=null, title,field, message) => {
     try {
         const newNotification = {
             title,
+            field,
             message,
         };
         const user = await Notif.findOneAndUpdate(
             { userId },
             {
-                $push: { notifications: newNotification },
-                $setOnInsert: { name }, 
+                $push: { notifications: newNotification }, 
             },
             { new: true, upsert: true } 
         );
@@ -81,15 +81,16 @@ export const deleteNotif = async (req, res) => {
   }
 };
 
+//for postman testing
 export const addNotif = async(req,res)=>{
-  const { userId,name, title, message } = req.body;
+  const { userId, title, field, message } = req.body;
 
-  if (!userId || !name || !title || !message) {
+  if (!userId || !title || !field || !message) {
     return res.status(400).json({ error: 'Missing required fields' });
   }
 
   try {
-    await add_notif(userId,name, title, message);
+    await add_notif(userId,title, field, message);
     res.status(200).json({ message: 'Notification added successfully' });
   } catch (error) {
     res.status(500).json({ error: 'Error creating notification',error });

@@ -7,6 +7,11 @@ const notifSchema = new mongoose.Schema({
     message: {
         type: String,
         required: true },
+    field:{
+      type:String,
+      required:true,
+      enum: ['complaint' , 'long_leave' , 'late_leave' , 'room' , 'mess_event' ] ,
+    },
     seen: {
         type: Boolean,
         default: false }, 
@@ -20,9 +25,6 @@ const notifs = mongoose.Schema({
     type: String, 
     required: false,
     unique:true},
-  name:{
-    type:String,
-    required:false},
   notifications: {
     type: [notifSchema],
     default: [],

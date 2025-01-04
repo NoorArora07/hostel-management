@@ -1,3 +1,5 @@
+import {add_notif} from "../controllers/notifsControllers.js";
+
 import dotenv from 'dotenv';
 import { request, response } from 'express';
 import longLeaveInfo from '../models/longLeaves.model.js';
@@ -56,6 +58,12 @@ export const approveApplication = async(request, response) => {
             return response.status(400).send('Leave application was already approved or no changes were made');
         }
         
+        //notif
+        const leaveDate = (await longLeaveInfo.findOne({ sid: sid, 'longLeaves._id': objectId })).longLeaves[0].dateOfLeaving;
+        const title = "Long Leave Approved";
+        const mssg = `Your long leave application for ${leaveDate} has been approved.`
+        add_notif(sid,title,'long_leave',mssg);
+
         response.send('Leave application approved successfully');
         
     } catch (error) {

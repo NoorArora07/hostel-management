@@ -35,7 +35,7 @@ export const getAllComplaints = async (request, response) => {
 };
 
 export const updateComplaintStatus = async (request, response) => {
-  const { sid,name,complaintId, status } = request.body;
+  const { sid,complaintId, status } = request.body;
 
   if (!["resolved", "rejected"].includes(status)) {
     return response.status(400).json({ message: "Invalid status provided." });
@@ -67,7 +67,13 @@ export const updateComplaintStatus = async (request, response) => {
     const mssg = status==="resolved"
     ? `Your complaint titled "${complaintTitle}" has been resolved.` 
     : `Your complaint titled "${complaintTitle}" has been rejected.`
-    add_notif(sid,name,complaintTitle,mssg);
+
+    const titlE = status==="resolved" 
+    ? "Complaint Resolved"
+    : "Complaint Rejected"
+
+    add_notif(sid,titlE,'complaint',mssg);
+
     
     response.status(200).json({
       message: "Complaint status updated successfully.",

@@ -8,7 +8,7 @@ router.get("/view",verifyToken, fetch);
 router.patch("/markSeen",verifyToken, markSeen);
 router.patch("/delete",verifyToken,deleteNotif);
 
-//only for testing on postman
+//for testing on postman
 router.post("/add",verifyToken,addNotif);
 
 export default router;

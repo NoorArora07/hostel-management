@@ -1,4 +1,10 @@
 import Event from '../models/messEvents.model.js';
+import User from '../models/users.model.js';
+import {add_notif} from "../controllers/notifsControllers.js";
+import {standardise} from "../controllers/convert in title form.js";
+
+
+const BATCH_SIZE = 100;  // to send notifs to all students but batch wise
 
 export const getEvents = async (request, response) => {
     try {
@@ -33,6 +39,37 @@ export const createEvent = async (request, response) => {
         });
 
         await newEvent.save();
+
+    //notif
+    const eventTitle = standardise(title).trim();
+    const titlE = "New Event";
+    const mssg = `An event titled "${eventTitle}" has been created.`;
+
+    //Fetch all students from the database bcaz want to notify all the users regarding mess events
+    //const students = await User.find();
+
+    // Paginate and send notifications in batches
+        let page = 0;
+        let moreStudents = true;
+
+        while(moreStudents){
+            const batch = await User.find()
+                .skip(page * BATCH_SIZE)
+                .limit(BATCH_SIZE);
+
+            if (batch.length < BATCH_SIZE) {
+                moreStudents = false;
+            }
+
+             // Send notifications to this batch
+             const notificationPromises = batch.map(student => {  const sid = student.sid;
+                return add_notif(sid,titlE,'mess_event', mssg);
+            });
+
+            await Promise.all(notificationPromises);  // Wait for batch to complete and to send notifs to all the students in current batch parallely
+            page++;
+        }
+
         response.status(201).json({ message: "Event created successfully", newEvent });
     } catch (error) {
         console.error("Error creating event:", error);
