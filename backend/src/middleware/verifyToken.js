@@ -15,3 +15,21 @@ export const verifyToken = (request, response, next) => {
         next();
     });
 };
+
+export const verifySocketToken = (socket, next) => {
+    const token = socket.handshake.auth.token; // Get token from handshake
+
+    if (!token) {
+        return next(new Error("Access Denied: No Token Provided!")); // Reject connection
+    }
+
+    try {
+        // Verify token and attach user data
+        const user = jwt.verify(token, JWT_SECRET);
+        socket.user = user; // Attach user to socket (similar to request.user in Express)
+        next(); // Allow connection
+    } catch (error) {
+        console.log("Socket Authentication Error:", error.message);
+        return next(new Error("Invalid Token!")); // Reject connection
+    }
+};

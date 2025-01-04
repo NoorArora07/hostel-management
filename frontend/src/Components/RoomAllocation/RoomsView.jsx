@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import {getSocket} from '../../store/socket';
 import { getFromBackend, patchToBackend, postToBackend } from "../../store/fetchdata";
 import { HoverCard, HoverCardTrigger, HoverCardContent } from "../ui/hover-card";
-import { useNavigate } from "react-router-dom"; // Import useNavigate hook
+import { useNavigate } from "react-router-dom"; 
 
 const RoomAllocation = () => {
+  
   const floors = 3;
   const roomsPerSide = 12;
   const [floor, setFloor] = useState(1);
@@ -14,17 +16,23 @@ const RoomAllocation = () => {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [hasWaitingList, setHasWaitingList] = useState(false); // State to track waiting list status
 
-  const navigate = useNavigate(); // Initialize navigate
+  const navigate = useNavigate(); 
+  const socket = getSocket();
 
   // Fetch room data from the backend for the selected floor
   useEffect(() => {
+    if (!socket) {
+      console.error("Socket is not initialized.");
+      return;
+    }
     const fetchRoomData = async () => {
       try {
         const response = await axios.get(
           `http://127.0.0.1:5090/api/room-allocation/get-rooms/${floor}`
         );
         if (response.data && Array.isArray(response.data.rooms)) {
-          setRoomStatus(response.data.rooms); // Access "rooms" array
+          setRoomStatus(response.data.rooms);
+          console.log(response.data);
         } else {
           console.error("Unexpected data format:", response.data);
           setRoomStatus([]);
@@ -35,28 +43,46 @@ const RoomAllocation = () => {
       }
     };
 
-    fetchRoomData();
-  }, [floor]);
+    socket.on("roomUpdated", (updatedRoom) => {
+      console.log(updatedRoom);
+      setRoomStatus((prevRoomStatus) =>
+        prevRoomStatus.map((room) =>
+          room.roomNumber === updatedRoom.roomNumber ? updatedRoom : room
+        )
+      );
+      fetchRoomData();
+    });
+
+    if (socket.connected) {
+      fetchRoomData();
+    } else {
+      socket.on("connect", fetchRoomData); // Trigger data fetch when socket connects
+    }
+
+    return () => {
+      socket.off("roomUpdated");
+    };
+  }, [floor, socket]);
 
   const checkWaitingListStatus = async (roomNumber) => {
     if (!roomNumber) return;
-  
     try {
       const response = await getFromBackend(`http://127.0.0.1:5090/api/room-allocation/get-info/${roomNumber}`);
       const data = response.data;
-  
-      setAllowWaitingList(data.allowWaitingList);
-      setHasWaitingList(data.inWaitingList);
+      console.log(data);
+      // Set the allowWaitingList value in state
+      setAllowWaitingList(data.allowWaitingList || false); 
+      // Update selectedRoom state to include allowWaitingList
       setSelectedRoom((prev) => ({
         ...prev,
         occupant: data.occupant,
         inWaitingList: data.inWaitingList,
+        allowWaitingList: prev.allowWaitingList, // Ensure allowWaitingList is set correctly
       }));
     } catch (error) {
       console.error("Error fetching waiting list status:", error);
     }
   };
-  
 
   const getRoomColor = (room) => {
     if (selectedRoom?.roomNumber === room.roomNumber) {
@@ -77,7 +103,10 @@ const RoomAllocation = () => {
 
   const handleConfirmSelection = async () => {
     if (!selectedRoom) return;
-  
+
+    console.log(allowWaitingList);
+
+    setAllowWaitingList(selectedRoom.allowWaitingList);
     const updatedPersonData = {
       roomNumber: selectedRoom.roomNumber,
       numberOfOccupants: selectedRoom.numberOfOccupants,
@@ -89,50 +118,60 @@ const RoomAllocation = () => {
       numberOfOccupants: selectedRoom.numberOfOccupants,
       allowWaitingList: selectedRoom.numberOfOccupants === 1 ? selectedRoom.allowWaitingList : allowWaitingList,
     };
+
+    console.log(updatedRoomData);
   
     try {
-      const response1 = await patchToBackend(
-        `http://127.0.0.1:5090/api/room-allocation/room`,
-        updatedRoomData
-      );
-      
-      console.log(response1)
+      // SHAYAD DELETE HO JAYE
+      // const response1 = await patchToBackend(
+      //   `http://127.0.0.1:5090/api/room-allocation/room`,
+      //   updatedRoomData
+      // );
+      // console.log(response1)
 
-      // Check if the room is already selected
-      if (response1.data.selected === false) {
+      const updatedRoomStatus = roomStatus.map((room) =>
+        room.roomNumber === selectedRoom.roomNumber
+          ? {
+              ...room,
+              numberOfOccupants: updatedRoomData.numberOfOccupants,
+              allowWaitingList: updatedRoomData.allowWaitingList,
+            }
+          : room
+      );
+      setRoomStatus(updatedRoomStatus);
+
+      // SOCKET EMITTING MESSAGE 
+      socket.emit("roomUpdated", {
+        ...updatedRoomData,
+        occupantsDetails: [updatedPersonData], // Include occupant details
+      },  (response) => {
+        setAllowWaitingList(response.allowWaitingList || false)
+
+        // Check if the room is already selected
+      if (response.selected === false) {
         setShowConfirmation(false); 
-        alert(response1.data.reason); 
+        alert(response.reason); 
         return; 
       }
-  
-      // Proceed to update the person's data
-      const response2 = await postToBackend(
-        `http://127.0.0.1:5090/api/room-allocation/person`,
-        updatedPersonData
-      );
-  
-      console.log("API Response:", response1); // Debug the response object
-  
-      if (response1.status === 200) {
-        const updatedRoomStatus = roomStatus.map((room) =>
-          room.roomNumber === selectedRoom.roomNumber
-            ? {
-                ...room,
-                numberOfOccupants: updatedRoomData.numberOfOccupants,
-              }
-            : room
-        );
-        setRoomStatus(updatedRoomStatus);
+        
         setShowConfirmation(false); // Close confirmation popup
-  
+
         // Now check and show waiting list alert, if applicable
         if (selectedRoom.allowWaitingList) {
           alert('You have been added to the waiting list for this room.');
         }
-      }
+    });
+
+      // YE BHI DELETE HO JAYE
+      // Proceed to update the person's data
+      // const response2 = await postToBackend(
+      //   `http://127.0.0.1:5090/api/room-allocation/person`,
+      //   updatedPersonData
+      // );
+      // console.log("API Response:", response1); // Debug the response object
+
     } catch (error) {
-      console.error("Error updating room data:", error); // Log the error
-      handleAxiosError(error); // Handle Axios errors
+      console.error("Error updating room data:", error);
     }
   };
 
@@ -158,6 +197,10 @@ const RoomAllocation = () => {
 
   const leftRooms = roomStatus.slice(0, roomsPerSide);
   const rightRooms = roomStatus.slice(roomsPerSide);
+
+  if (!socket || !socket.connected) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="flex flex-col gap-8 p-8 mt-14">
@@ -262,7 +305,6 @@ const RoomAllocation = () => {
               </div>
             )
           )}
-
           </div>
         )}
       </div>

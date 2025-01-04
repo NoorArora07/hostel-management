@@ -7,12 +7,12 @@ dotenv.config();
 export const fetchRooms = async (request, response) => {
     try {
         const floor = request.params.floor;
-        
+
         const result = await room.find({
             floorNumber: floor
         });
         console.log(result);
-        
+
         response.status(200).json({
             "rooms": result
         })
@@ -26,11 +26,12 @@ export const viewPartOf = async (request, response) => {
     try {
         const usersid = request.user.sid;
         const roomNumber = request.params.roomNumber;
+        console.log("this is the room number fetched from frontend: ", roomNumber);
 
         const personDetails = await person.findOne({sid: usersid});
         const roomDetails = await room.findOne({roomNumber: roomNumber});
 
-        if (personDetails.roomNumber === roomNumber) {
+        if (personDetails && personDetails.roomNumber === roomNumber) {
             if (personDetails.roomSelected === "pending")
                 return response.status(200).json({"occupant": false, "allowWaitingList": true, "inWaitingList": true});
             else if (roomDetails.allowWaitingList === true)

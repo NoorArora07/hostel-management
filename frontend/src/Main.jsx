@@ -8,6 +8,9 @@ import SignUp from './Components/Login/SignUp.jsx'
 import SignUp2 from './Components/Login/SignUp2.jsx'
 import Homepage from './Components/HomePage/homepage.jsx'
 import { AuthProvider } from './store/auth.jsx'
+import { reinitializeSocket } from "./store/socket.jsx";
+
+reinitializeSocket();
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <AuthProvider>
