@@ -1,124 +1,164 @@
-import React, { useState, useEffect } from "react";
-import { patchToBackend, getFromBackend } from "../../store/fetchdata";
+'use client'
+
+import React, { useState, useEffect } from "react"
+import { patchToBackend, getFromBackend } from "@/store/fetchdata"
+import { Button } from "@/Components/ui/button"
+import { Input } from "@/Components/ui/input"
+import { Skeleton } from "@/Components/ui/skeleton"
+import { Avatar, AvatarFallback, AvatarImage } from "@/Components/ui/avatar"
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/Components/ui/card"
+import { LogOut, User, Mail, Phone, MapPin, Briefcase, Calendar, Edit, Save, X } from 'lucide-react'
+import { useNavigate} from "react-router-dom"
 
 const Profile = () => {
-  const [userProfile, setUserProfile] = useState(null); // Original profile from backend
-  const [editedProfile, setEditedProfile] = useState({}); // Tracks changed fields
-  const [isEditing, setIsEditing] = useState(false); // Toggles edit mode
+  const navigate = useNavigate()
 
-  // Fetch user profile from backend
+  const [userProfile, setUserProfile] = useState(null)
+  const [editedProfile, setEditedProfile] = useState({})
+  const [isEditing, setIsEditing] = useState(false)
+
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await getFromBackend("http://127.0.0.1:5090/api/profile");
-        setUserProfile(response.data); // Set fetched profile data
+        const response = await getFromBackend("http://127.0.0.1:5090/api/profile")
+        setUserProfile(response.data)
       } catch (error) {
-        console.error("Error fetching profile:", error);
+        console.error("Error fetching profile:", error)
       }
-    };
-    fetchProfile();
-  }, []);
+    }
+    fetchProfile()
+  }, [])
 
-  // Handle input change for editable fields
   const handleInputChange = (field, value) => {
     if (userProfile[field] !== value) {
-      setEditedProfile((prev) => ({
-        ...prev,
-        [field]: value, // Update the edited field
-      }));
+      setEditedProfile((prev) => ({ ...prev, [field]: value }))
     } else {
-      // Remove from `editedProfile` if reverted to original value
       setEditedProfile((prev) => {
-        const updated = { ...prev };
-        delete updated[field];
-        return updated;
-      });
+        const updated = { ...prev }
+        delete updated[field]
+        return updated
+      })
     }
-  };
+  }
 
-  // Save changes to backend
   const handleSaveChanges = async () => {
     try {
-      await patchToBackend("http://127.0.0.1:5090/api/profile/edit", editedProfile);
-      setUserProfile((prev) => ({ ...prev, ...editedProfile })); // Update UI
-      setEditedProfile({});
-      setIsEditing(false);
+      await patchToBackend("http://127.0.0.1:5090/api/profile/edit", editedProfile)
+      setUserProfile((prev) => ({ ...prev, ...editedProfile }))
+      setEditedProfile({})
+      setIsEditing(false)
     } catch (error) {
-      console.error("Error saving changes:", error);
+      console.error("Error saving changes:", error)
     }
-  };
+  }
 
-  // Cancel editing
   const handleCancel = () => {
-    setEditedProfile({});
-    setIsEditing(false);
-  };
+    setEditedProfile({})
+    setIsEditing(false)
+  }
+
+  const handleLogout = () => {
+    navigate('/')
+  }
+
+  const getIcon = (key) => {
+    switch (key) {
+      case 'name': return <User className="h-4 w-4" />
+      case 'email': return <Mail className="h-4 w-4" />
+      case 'phone': return <Phone className="h-4 w-4" />
+      case 'address': return <MapPin className="h-4 w-4" />
+      case 'occupation': return <Briefcase className="h-4 w-4" />
+      case 'dateOfBirth': return <Calendar className="h-4 w-4" />
+      default: return null
+    }
+  }
 
   return (
-    <div className="w-full px-4 md:px-8 py-16 mt-16">
-      <div className="max-w-4xl mx-auto bg-white shadow-md rounded-md p-8"> {/* Increased width */}
-        <h1 className="text-3xl font-bold text-dark-teal mb-6 text-center font-mono ">Profile</h1>
+    <Card className="w-full items-center justify-between max-w-4xl mx-auto mt-24">
+      <CardHeader className="flex flex-row space-y-0 pb-2">
+        <CardTitle className="text-2xl font-bold">Profile</CardTitle>
+        <Button variant="ghost" onClick={handleLogout}>
+          <LogOut className="mr-2 h-4 w-4" />
+          Logout
+        </Button>
+      </CardHeader>
+      <CardContent>
         {userProfile ? (
-          <div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6"> {/* Flex/Grid layout */}
+          <div className="space-y-8">
+            <div className="flex items-center justify-center space-x-4">
+              <Avatar className="h-20 w-20">
+                <AvatarImage src="/placeholder-avatar.jpg" alt={userProfile.name} />
+                <AvatarFallback>{userProfile.name?.charAt(0)}</AvatarFallback>
+              </Avatar>
+              <div>
+                <h2 className="text-2xl font-semibold">{userProfile.name}</h2>
+                <p className="text-sm text-muted-foreground">{userProfile.email}</p>
+              </div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {Object.entries(userProfile).map(([key, value]) => (
-                <div key={key} className="flex flex-col">
-                  <label className="block text-sm font-medium text-gray-700 capitalize">
-                    {key.replace(/([A-Z])/g, " $1").trim()}
+                <div key={key} className="space-y-2">
+                  <label className="text-sm font-medium text-muted-foreground flex items-center space-x-2">
+                    {getIcon(key)}
+                    <span>{key.charAt(0).toUpperCase() + key.slice(1)}</span>
                   </label>
                   {key === "sid" || key === "name" ? (
-                    // Non-editable fields
-                    <p className="text-gray-800 mt-1 bg-gray-100 p-3 rounded-md">
-                      {value}
-                    </p>
+                    <p className="text-sm font-medium">{value}</p>
                   ) : isEditing ? (
-                    // Editable fields
-                    <input
+                    <Input
                       type="text"
-                      value={editedProfile[key] ?? value} // Show edited value if available, otherwise original
+                      value={editedProfile[key] ?? value}
                       onChange={(e) => handleInputChange(key, e.target.value)}
-                      className="w-full border border-blue-500 rounded-md px-3 py-2 mt-1 focus:ring-2 focus:ring-blue-400"
-                      style={{ backgroundColor: "#f0f9ff" }} // Highlighted appearance
+                      className="max-w-md"
                     />
                   ) : (
-                    // Display value when not editing
-                    <p className="text-gray-800 mt-1 bg-gray-100 p-3 rounded-md">
-                      {value}
-                    </p>
+                    <p className="text-sm font-medium">{value}</p>
                   )}
                 </div>
               ))}
             </div>
-            {isEditing ? (
-              <div className="flex gap-4 mt-6">
-                <button
-                  onClick={handleSaveChanges}
-                  className="bg-light-teal hover:bg-dark-teal text-white font-semibold py-2 px-4 rounded-md"
-                >
-                  Save Changes
-                </button>
-                <button
-                  onClick={handleCancel}
-                  className="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-md"
-                >
-                  Cancel
-                </button>
-              </div>
-            ) : (
-              <button
-                onClick={() => setIsEditing(true)}
-                className="mt-6 w-full bg-light-teal hover:bg-dark-teal text-white font-semibold py-2 px-4 rounded-md"
-              >
-                Edit Profile
-              </button>
-            )}
           </div>
         ) : (
-          <p className="text-gray-700">Loading profile...</p>
+          <div className="space-y-8">
+            <div className="flex items-center space-x-4">
+              <Skeleton className="h-20 w-20 rounded-full" />
+              <div className="space-y-2">
+                <Skeleton className="h-4 w-[250px]" />
+                <Skeleton className="h-4 w-[200px]" />
+              </div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {[...Array(6)].map((_, i) => (
+                <div key={i} className="space-y-2">
+                  <Skeleton className="h-4 w-[100px]" />
+                  <Skeleton className="h-4 w-[200px]" />
+                </div>
+              ))}
+            </div>
+          </div>
         )}
-      </div>
-    </div>
-  );
-};
+      </CardContent>
+      <CardFooter>
+        {isEditing ? (
+          <div className="flex space-x-2">
+            <Button onClick={handleSaveChanges}>
+              <Save className="mr-2 h-4 w-4" />
+              Save Changes
+            </Button>
+            <Button variant="outline" onClick={handleCancel}>
+              <X className="mr-2 h-4 w-4" />
+              Cancel
+            </Button>
+          </div>
+        ) : (
+          <Button onClick={() => setIsEditing(true)}>
+            <Edit className="mr-2 h-4 w-4" />
+            Edit Profile
+          </Button>
+        )}
+      </CardFooter>
+    </Card>
+  )
+}
 
-export default Profile;
+export default Profile

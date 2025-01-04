@@ -38,25 +38,29 @@ export const fetch = async(req ,res)=>{
       }
 };
 
-export const markSeen = async(req ,res)=>{
-    try {
-    
-        const updatedNotif = await Notif.findOneAndUpdate(
-          { userId: req.user.sid, 'notifications._id': req.body.notifId },
-          { $set: { 'notifications.$.seen': true } },
-          { new: true }
-        );
-        // notification.notifications.seen = true;
-        // await notification.save();
+export const markSeen = async (req, res) => {
+  try {
+    console.log("Request Body:", req.body);
+    console.log("User SID:", req.user.sid);
 
-        if (!updatedNotif) {
-          return res.status(404).json({ error: 'Notification not found' });
-        }
-        res.status(200).json({ message: 'Notification marked as seen' });
-      } catch (error) {
-        res.status(500).json({ error: 'Error updating notification' });
-      }
-    };
+    const updatedNotif = await Notif.findOneAndUpdate(
+      { userId: req.user.sid, 'notifications._id': req.body.notifId },
+      { $set: { 'notifications.$.seen': true } },
+      { new: true }
+    );
+
+    console.log("Updated Notification:", updatedNotif);
+
+    if (!updatedNotif) {
+      return res.status(404).json({ error: 'Notification not found' });
+    }
+
+    res.status(200).json({ message: 'Notification marked as seen' });
+  } catch (error) {
+    console.error("Error in markSeen:", error);
+    res.status(500).json({ error: 'Error updating notification', details: error.message });
+  }
+};
 
 export const deleteNotif = async (req, res) => {
   try {

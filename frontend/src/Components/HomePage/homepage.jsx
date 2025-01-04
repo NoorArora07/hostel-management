@@ -24,7 +24,7 @@ const FAQs = [
 
 const Homepage = () => {
   return (
-    <div className="min-h-screen overflow-hidden mt-20">
+    <div className=" mt-28 min-h-screen overflow-hidden">
       <BackgroundGradientAnimation>
         <main className="container mx-auto px-4 py-8">
           <section className="text-center mb-12">
@@ -40,10 +40,10 @@ const Homepage = () => {
             <CardContent className="p-6">
               <Tabs defaultValue="leaves" className="w-full">
                 <TabsList className="grid w-full grid-cols-4 bg-white/20">
-                  <TabsTrigger value="leaves" className='text-slate-900'>Leaves</TabsTrigger>
-                  <TabsTrigger value="mess" className='text-slate-900'>Mess</TabsTrigger>
-                  <TabsTrigger value="complaints" className='text-slate-900'>Complaints</TabsTrigger>
-                  <TabsTrigger value="room" className='text-slate-900'>Activities</TabsTrigger>
+                  <TabsTrigger value="leaves" className='text-slate-300'>Leaves</TabsTrigger>
+                  <TabsTrigger value="mess" className='text-slate-300'>Mess</TabsTrigger>
+                  <TabsTrigger value="complaints" className='text-slate-300'>Complaints</TabsTrigger>
+                  <TabsTrigger value="room" className='text-slate-300'>Activities</TabsTrigger>
                 </TabsList>
                 <TabsContent value="leaves" className="mt-4">
                   <div className="flex items-center space-x-4">

@@ -9,85 +9,58 @@ const Navbar = () => {
   const [showNotifications, setShowNotifications] = useState(false);
   const [notifications, setNotifications] = useState([]);
 
-  // Fetch notifications from the backend
   const fetchNotifications = async () => {
     try {
       const response = await getFromBackend("http://127.0.0.1:5090/api/notif/view");
       setNotifications(response.data || []);
       console.log("Notifications fetched successfully:", response.data);
+      console.log("Notifications in Navbar:", {notifications});
     } catch (error) {
       console.error("Error fetching notifications:", error);
     }
   };
 
-  // Fetch notifications on component mount
   useEffect(() => {
     fetchNotifications();
   }, []);
 
-  // Handle notification click (mark as seen and delete)
-  // const handleNotificationClick = async (seen, notifId) => {
-
-  //   const data = {
-  //     seen : true,
-  //     notifId : notifId,
-  //   }
-  //   try {
-  //     console.log("Clicked Notification ID:", notifId);
-
-  //     // Mark notification as seen
-  //     await patchToBackend(`http://127.0.0.1:5090/api/notif/markSeen/${notifId}`, data);
-
-  //     // Delete notification
-  //     await patchToBackend(`http://127.0.0.1:5090/api/notif/delete`, data);
-
-  //     // Update the state by removing the notification
-  //     setNotifications((prev) =>
-  //       prev.filter((notification) => notification._id !== notifId)
-  //     );
-
-  //     console.log("Notification deleted successfully");
-  //   } catch (error) {
-  //     console.error("Error handling notification click:", error);
-  //   }
-  // };
 
   const handleNotificationClick = async (notifId) => {
     try {
-        console.log("Clicked Notification ID:", notifId);
+      const data = {
+      notifId : notifId,
+      }
+        console.log("data:", data);
+        console.log(notifications)
+        console.log("iske baad garbar hai");
 
-        // Mark notification as seen
         const markSeenResponse = await patchToBackend(
-            `http://127.0.0.1:5090/api/notif/markSeen`,  { notifId }
+            `http://127.0.0.1:5090/api/notif/markSeen`, data
         ); 
         console.log("Mark Seen Response:", markSeenResponse);
 
-        // Delete notification if marked as seen
         const deleteResponse = await patchToBackend(
             `http://127.0.0.1:5090/api/notif/delete`
         );
         console.log("Delete Response:", deleteResponse);
 
-        // Update the state
         setNotifications((prev) =>
             prev.filter((notification) => notification._id !== notifId)
         );
+        
         console.log("Notification handled successfully");
 
     } catch (error) {
-        console.error("Error handling notification click:", error.response || error);
+      console.error('Request Error:', error.toJSON ? error.toJSON() : error);
     }
 };
 
-  
-
-  // Toggle notification visibility
   const toggleNotifications = () => {
     setShowNotifications((prev) => !prev);
   };
 
   return (
-    <nav className="bg-gradient-to-r from-violet-700 via-violet-950 to-destructive fixed top-0 left-0 right-0 z-50 shadow-lg">
+    <nav className="bg-black fixed top-0 left-0 right-0 z-50 shadow-lg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           <NavLink to="/Homepage" className="flex items-center space-x-4">
@@ -104,8 +77,8 @@ const Navbar = () => {
           </NavLink>
           <div className="flex items-center space-x-6">
             <ul className="hidden md:flex space-x-3">
-              {[ // Navigation menu
-                { path: "/mess", label: "Mess" },
+              {[ 
+                { path: "/mess", label: "Mess"},
                 { path: "/leaves", label: "Leaves" },
                 { path: "/complaints", label: "Complaints" },
                 { path: "/RoomsView", label: "Room Allocation" },
