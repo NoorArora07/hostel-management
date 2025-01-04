@@ -19,29 +19,30 @@ const RoomAllocation = () => {
   const navigate = useNavigate(); 
   const socket = getSocket();
 
+  const fetchRoomData = async () => {
+    try {
+      const response = await axios.get(
+        `http://127.0.0.1:5090/api/room-allocation/get-rooms/${floor}`
+      );
+      if (response.data && Array.isArray(response.data.rooms)) {
+        setRoomStatus(response.data.rooms);
+        console.log(response.data);
+      } else {
+        console.error("Unexpected data format:", response.data);
+        setRoomStatus([]);
+      }
+    } catch (error) {
+      console.error("Error fetching room data:", error);
+      setRoomStatus([]);
+    }
+  };
+
   // Fetch room data from the backend for the selected floor
   useEffect(() => {
     if (!socket) {
       console.error("Socket is not initialized.");
       return;
     }
-    const fetchRoomData = async () => {
-      try {
-        const response = await axios.get(
-          `http://127.0.0.1:5090/api/room-allocation/get-rooms/${floor}`
-        );
-        if (response.data && Array.isArray(response.data.rooms)) {
-          setRoomStatus(response.data.rooms);
-          console.log(response.data);
-        } else {
-          console.error("Unexpected data format:", response.data);
-          setRoomStatus([]);
-        }
-      } catch (error) {
-        console.error("Error fetching room data:", error);
-        setRoomStatus([]);
-      }
-    };
 
     socket.on("roomUpdated", (updatedRoom) => {
       console.log(updatedRoom);
@@ -151,6 +152,7 @@ const RoomAllocation = () => {
       if (response.selected === false) {
         setShowConfirmation(false); 
         alert(response.reason); 
+        fetchRoomData();
         return; 
       }
         

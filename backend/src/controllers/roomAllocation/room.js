@@ -7,9 +7,16 @@ dotenv.config();
 export const updateRoomSocket = async (data, callback) => {
     try {
         const usersid = data.sid; // Get user SID from socket data
-        const find = await person.findOne({ sid: usersid });
+        const roomNumber = data.roomNumber
+        const findPerson = await person.findOne({ sid: usersid });
+        const findRoom = await room.findOne({roomNumber: roomNumber});
 
-        if (find && (find.roomSelected === "true" || find.roomSelected === "pending")) {
+        console.log(`${findRoom.numberOfOccupants} and ${data.numberOfOccupants}`);
+        if (findRoom.numberOfOccupants != data.numberOfOccupants) {
+            return callback({ selected: false, reason: "Somebody else picked that room before you!"});
+        }
+
+        if (findPerson && (findPerson.roomSelected === "true" || findPerson.roomSelected === "pending")) {
             return callback({ selected: false, reason: "You have already selected a room!" });
         }
 
