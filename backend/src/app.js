@@ -26,6 +26,7 @@ import wardenLateLeaveRouters from './routes/wardenLateLeaves.js';
 import profileRoutes from './routes/profRoutes.js';
 import roomAllocationRoutes from './routes/roomAllocRoutes.js';
 import notifsRoutes from './routes/notifsRoutes.js';
+import forgotPassword from './routes/forgotPassword.js';
 
 import roleRoutes from './routes/roleRoutes.js';
 
@@ -70,6 +71,8 @@ app.use("/api/profile", profileRoutes);
 app.use("/api/check", roleRoutes);
 app.use("/api/room-allocation", roomAllocationRoutes);
 app.use("/api/notif",notifsRoutes);
+app.use("/api/pass_reset",forgotPassword);
+
 
 // 🟢 SOCKET.IO FOR ROOM ALLOCATION
 
