@@ -14,8 +14,11 @@ import longLeavesRoutes from './routes/longLeavesRoutes.js';
 import wardenLeavesRoutes from './routes/wardenLeaves.js';
 import messRoutes from './routes/messRoutes.js';
 import messpaymentRoutes from './routes/messpaymentRoutes.js';
+import hostelfeesRoutes from './routes/hostelfeesRoutes.js';
 import complaintsRoutes from './routes/complaintsRoutes.js';
 import wardenMessRoutes from './routes/wardenMessRoutes.js';
+//import messPayDetailsRoutes from './routes/messPayDetailsRoutes.js';
+//import warden_messPayDetailRoutes from './routes/warden_messPayDetailRoutes.js';
 import warden_complaintsRoutes from './routes/warden_complaintsRoutes.js';
 import wardenLongLeavesRoutes from './routes/wardenLeaves.js';
 import lateLeavesRouters from './routes/lateLeavesRoutes.js';
@@ -23,6 +26,7 @@ import wardenLateLeaveRouters from './routes/wardenLateLeaves.js';
 import profileRoutes from './routes/profRoutes.js';
 import roomAllocationRoutes from './routes/roomAllocRoutes.js';
 import notifsRoutes from './routes/notifsRoutes.js';
+import forgotPassword from './routes/forgotPassword.js';
 
 import roleRoutes from './routes/roleRoutes.js';
 
@@ -53,6 +57,9 @@ app.use("/api/leaves", longLeavesRoutes);
 app.use("/api/warden", wardenLeavesRoutes);
 app.use("/api/mess", messRoutes);
 app.use("/api/payments", messpaymentRoutes);
+app.use("/api/hostelFee",hostelfeesRoutes);
+//app.use("/api/details",messPayDetailsRoutes);
+//app.use("/api/warden_details",warden_messPayDetailRoutes);
 app.use("/api/complaint", complaintsRoutes);
 app.use("/api/warden-complaint", warden_complaintsRoutes);
 app.use("/api/mess-warden", wardenMessRoutes);
@@ -64,6 +71,8 @@ app.use("/api/profile", profileRoutes);
 app.use("/api/check", roleRoutes);
 app.use("/api/room-allocation", roomAllocationRoutes);
 app.use("/api/notif",notifsRoutes);
+app.use("/api/pass_reset",forgotPassword);
+
 
 // 🟢 SOCKET.IO FOR ROOM ALLOCATION
 
