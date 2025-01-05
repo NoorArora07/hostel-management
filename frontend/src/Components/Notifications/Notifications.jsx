@@ -1,38 +1,54 @@
-const Notifications = ({ notifications, onClose, onNotificationClick }) => {
+import React from 'react';
+import { motion } from 'framer-motion';
+
+const Notifications = ({ notifications, onNotificationClick }) => {
+  const smoothScrollStyle = {
+    WebkitOverflowScrolling: 'touch',
+    scrollBehavior: 'smooth',
+  };
+
   return (
-    <div className="absolute right-0 mt-2 w-96 bg-white shadow-lg rounded-lg z-50">
-      <div className="p-4">
-        <h2 className="text-lg font-semibold text-gray-800">Notifications</h2>
+    <motion.div 
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      className="absolute right-0 mt-2 w-96 bg-gradient-to-br from-white to-gray-100 shadow-2xl rounded-xl overflow-hidden z-50 border border-gray-200"
+    >
+      <div className="p-6 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-t-xl">
+        <h2 className="text-2xl font-bold text-white">Notifications</h2>
       </div>
-      <ul className="max-h-96 overflow-y-auto">
+      <ul 
+        className="max-h-[32rem] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 overscroll-contain rounded-b-xl"
+        style={smoothScrollStyle}
+      >
         {notifications.length > 0 ? (
           notifications.map((notification) => (
-            <li
+            <motion.li
               key={notification._id}
-              className="p-4 border-b cursor-pointer hover:bg-gray-200"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+              whileHover={{ scale: 1.02 }}
+              className="p-4 border-b border-gray-200 cursor-pointer hover:bg-gray-50 transition-all duration-200 ease-in-out"
               onClick={() => onNotificationClick(notification._id)}
             >
-              <ul>
-              <li className="font-bold">{notification.title}</li>
-              <li>{notification.message}</li>
-              </ul>
-              
-            </li>
+              <h3 className="font-semibold text-gray-800 mb-1">{notification.title}</h3>
+              <p className="text-gray-600 text-sm">{notification.message}</p>
+            </motion.li>
           ))
         ) : (
-          <li className="p-4 text-gray-500">No notifications available.</li>
+          <li className="p-8 text-center">
+            <svg className="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+            </svg>
+            <p className="text-gray-500 font-medium">No new notifications</p>
+            <p className="text-gray-400 text-sm mt-1">We'll notify you when something arrives</p>
+          </li>
         )}
       </ul>
-      <div>
-        <button
-          onClick={onClose}
-          className="text-gray-500 text-center justify-center text-pretty hover:bg-red-300 float-right"
-          >
-            Close
-        </button>
-      </div>
-    </div>
+    </motion.div>
   );
 };
 
 export default Notifications;
+

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { data, NavLink } from "react-router-dom";
+import { data, NavLink, useNavigate } from "react-router-dom";
 import { Bell } from "lucide-react";
 import dormify from "@/Photos/dormify-logo.jpg";
 import Notifications from "@/Components/Notifications/Notifications";
@@ -8,8 +8,10 @@ import { getFromBackend, patchToBackend } from "@/store/fetchdata";
 const Navbar = () => {
   const [showNotifications, setShowNotifications] = useState(false);
   const [notifications, setNotifications] = useState([]);
+  const navigate = useNavigate();
 
   const fetchNotifications = async () => {
+
     try {
       const response = await getFromBackend("http://127.0.0.1:5090/api/notif/view");
       setNotifications(response.data || []);
@@ -26,13 +28,13 @@ const Navbar = () => {
 
 
   const handleNotificationClick = async (notifId) => {
+
     try {
       const data = {
       notifId : notifId,
       }
         console.log("data:", data);
         console.log(notifications)
-        console.log("iske baad garbar hai");
 
         const markSeenResponse = await patchToBackend(
             `http://127.0.0.1:5090/api/notif/markSeen`, data
@@ -47,7 +49,28 @@ const Navbar = () => {
         setNotifications((prev) =>
             prev.filter((notification) => notification._id !== notifId)
         );
+
+        const notification = notifications.find((notif) => notif._id === notifId);
+        console.log("Handling notification:", notification);
+
+        switch (notification.field) {
+          case 'complaint':
+            navigate('/complaints');            
+            break;
+          case 'long_leave':
+            navigate("/LongLeavesView");            
+            break;
+          case 'late_leave':
+            navigate('/LateLeavesView');            
+            break;
+          case 'mess_event':
+            navigate('/mess-schedule-view');            
+            break;
         
+          default:
+            break;
+        }
+        toggleNotifications();
         console.log("Notification handled successfully");
 
     } catch (error) {
