@@ -1,5 +1,4 @@
 import Fee from '../models/messpayment.model.js';
-import Mess from '../models/mess.model.js';
 import Stripe from 'stripe';
 import dotenv from 'dotenv';
 import crypto from 'crypto';
@@ -68,15 +67,13 @@ export const updateFeeStatus = async (req, res) => {
     if (session.payment_status === 'paid') {
       const { studentId, name, amount } = session.metadata;
 
-      // Update the fee status to paid
       await Fee.findOneAndUpdate(
-        { studentId }, // Find by studentId
+        { studentId }, 
         {
           status: 'paid',
-          feeStatus: 'paid',
-          amount: amount, // Update the amount
+          amount: amount, 
         },
-        { new: true, upsert: true } // Update or insert
+        { new: true, upsert: true }
       );
 
       console.log(`Fee status updated to 'paid' for studentId: ${studentId}`);

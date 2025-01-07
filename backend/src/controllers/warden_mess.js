@@ -53,7 +53,7 @@ export const createEvent = async (request, response) => {
         let moreStudents = true;
 
         while(moreStudents){
-            const batch = await User.find()
+            const batch = await User.find({role:"student"})
                 .skip(page * BATCH_SIZE)
                 .limit(BATCH_SIZE);
 
@@ -77,49 +77,49 @@ export const createEvent = async (request, response) => {
     }
 };
 
-export const updateEvent = async (request, response) => {
-    try {
-        if (request.user.role !== "warden") {
-            return response.status(403).json({ message: "Access denied" });
-        }
+// export const updateEvent = async (request, response) => {
+//     try {
+//         if (request.user.role !== "warden") {
+//             return response.status(403).json({ message: "Access denied" });
+//         }
 
-        const { id } = request.params;
-        const { title, description, date } = request.body;
+//         const { id } = request.params;
+//         const { title, description, date } = request.body;
 
-        const updatedEvent = await Event.findByIdAndUpdate(
-            id,
-            { title, description, date },
-            { new: true }
-        );
+//         const updatedEvent = await Event.findByIdAndUpdate(
+//             id,
+//             { title, description, date },
+//             { new: true }
+//         );
 
-        if (!updatedEvent) {
-            return response.status(404).json({ error: "Event not found" });
-        }
+//         if (!updatedEvent) {
+//             return response.status(404).json({ error: "Event not found" });
+//         }
 
-        response.status(200).json({ message: "Event updated successfully", updatedEvent });
-    } catch (error) {
-        console.error("Error updating event:", error);
-        response.status(500).send("An error occurred while updating the event.");
-    }
-};
+//         response.status(200).json({ message: "Event updated successfully", updatedEvent });
+//     } catch (error) {
+//         console.error("Error updating event:", error);
+//         response.status(500).send("An error occurred while updating the event.");
+//     }
+// };
 
-export const deleteEvent = async (request, response) => {
-    try {
-        if (request.user.role !== "warden") {
-            return response.status(403).json({ message: "Access denied" });
-        }
+// export const deleteEvent = async (request, response) => {
+//     try {
+//         if (request.user.role !== "warden") {
+//             return response.status(403).json({ message: "Access denied" });
+//         }
 
-        const { id } = request.params;
+//         const { id } = request.params;
 
-        const deletedEvent = await Event.findByIdAndDelete(id);
+//         const deletedEvent = await Event.findByIdAndDelete(id);
 
-        if (!deletedEvent) {
-            return response.status(404).json({ error: "Event not found" });
-        }
+//         if (!deletedEvent) {
+//             return response.status(404).json({ error: "Event not found" });
+//         }
 
-        response.status(200).json({ message: "Event deleted successfully" });
-    } catch (error) {
-        console.error("Error deleting event:", error);
-        response.status(500).send("An error occurred while deleting the event.");
-    }
-};
+//         response.status(200).json({ message: "Event deleted successfully" });
+//     } catch (error) {
+//         console.error("Error deleting event:", error);
+//         response.status(500).send("An error occurred while deleting the event.");
+//     }
+// };

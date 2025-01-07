@@ -1,11 +1,6 @@
 import express from 'express';
 import { verifyToken } from '../middleware/verifyToken.js';
-import {
-    getEvents,
-    createEvent,
-    updateEvent,
-    deleteEvent,
-} from '../controllers/warden_mess.js';
+import {getEvents,createEvent,} from '../controllers/warden_mess.js';
 
 const router = express.Router();
 

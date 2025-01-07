@@ -1,6 +1,7 @@
 import Mess from '../models/mess.model.js';
 import Event from '../models/messEvents.model.js';
 import dotenv from 'dotenv';
+import moment from 'moment';
 
 dotenv.config();
 
@@ -11,18 +12,6 @@ export const getEvents = async (request, response) => {
     } catch (error) {
         console.error("Error fetching events:", error);
         response.status(500).send("An error occurred while fetching events.");
-    }
-};
-
-export const getMessStatus = async (request, response) => {
-    try {
-        const messData = await Mess.findOne({ sid: request.user.sid });
-        if (!messData) return response.status(404).send("No mess data found for the student.");
-
-        response.status(200).json(messData);
-    } catch (error) {
-        console.error("Error fetching mess status:", error);
-        response.status(500).send("An error occurred while fetching mess status.");
     }
 };
 
@@ -66,26 +55,18 @@ export const getMessLeaveDetails = async (req, res) => {
         const messOffDates = messData.messOffDates.map(leave => {
             const { dateOfLeaving, dateOfReturn, reason, lastMeal, firstMeal } = leave;
 
-            // Calculate the total number of leave days
-            // const startDate = new Date(dateOfLeaving);
-            // const endDate = new Date(dateOfReturn);
-            // const leaveDuration = (endDate - startDate) / (1000 * 3600 * 24); // Difference in days
-
             return {
                 dateOfLeaving,
                 dateOfReturn,
                 reason,
                 lastMeal,
                 firstMeal
-                //leaveDuration
             };
         });
 
-        //const totalLeaveDays = messOffDates.reduce((sum, leave) => sum + leave.leaveDuration, 0);
         console.log("successful");
         res.status(200).json({
             messOffDates,
-            //totalLeaveDays
         });
     } catch (error) {
         console.error("Error fetching mess leave details:", error);
@@ -93,3 +74,56 @@ export const getMessLeaveDetails = async (req, res) => {
     }
 };
 
+export const rebate = async(month,year)=>{
+    try {
+        const messData = await Mess.findOne({ sid: req.user.sid });
+
+        if (!messData) {
+            return 0;
+            //throw new Error('No mess leave data found.');
+        }
+
+        let leaveDays = 0;
+
+        messData.messOffDates.forEach(leave => {
+            const { dateOfLeaving, dateOfReturn, firstMeal, lastMeal } = leave;
+
+            let currentDate = moment(dateOfLeaving);
+            const endDate = moment(dateOfReturn);
+
+           
+            const leavingDay = currentDate.isoWeekday(); // 6 = Saturday, 7 = Sunday
+            const leavingMonth = currentDate.month() + 1;
+            const leavingYear = currentDate.year();
+
+            if ((leavingDay === 6 || leavingDay === 7) &&
+                leavingMonth === parseInt(month) &&
+                leavingYear === parseInt(year) &&
+                lastMeal === "None") {
+                leaveDays++; 
+            }
+
+            currentDate.add(1, 'days');
+
+            while (currentDate.isBefore(endDate)) {
+                const dayOfWeek = currentDate.isoWeekday();
+                const currentMonth = currentDate.month() + 1;
+                const currentYear = currentDate.year();
+
+                if ((dayOfWeek === 6 || dayOfWeek === 7) &&
+                    currentMonth === parseInt(month) &&
+                    currentYear === parseInt(year)) {
+                    leaveDays++;
+                }
+
+                currentDate.add(1, 'days');
+            }
+            });
+            console.log("Leave days = ", leaveDays);
+            return (35 * leaveDays);
+    } catch (error) {
+        console.error("Error calculating monthly leave days:", error);
+        throw new Error("An error occurred while calculating monthly leave days.");
+    }
+
+};
