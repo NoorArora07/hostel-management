@@ -46,6 +46,10 @@ import ComplaintsViewW from './Components/Warden/Complaintwarden';
 //room alloc
 import RoomsView from './Components/RoomAllocation/RoomsView';
 import WaitingList from './Components/RoomAllocation/WaitingList';
+//hostel fee 
+import Stripehf from './Components/HostelFee/stripehf';
+import PaymentCancelhf from './Components/HostelFee/cancelhf';
+import PaymentSuccesshf from './Components/HostelFee/successhf';
 
 function App() {
   const router = createBrowserRouter([
@@ -186,6 +190,19 @@ function App() {
       path: "/imageadd",
       element: <><Navbar /><Photo /><Footer /></>
     },
+    {
+      path: "/stripehf",
+      element: <><Navbar /><Stripehf /><Footer /></>
+    },
+    {
+      path: "/successhf",
+      element: <><Navbar /><PaymentSuccesshf /><Footer /></>
+    },
+    {
+      path: "/cancelhf",
+      element: <><Navbar /><PaymentCancelhf /><Footer /></>
+    },
+
     {
       path: "*",
       element: <NoPage />

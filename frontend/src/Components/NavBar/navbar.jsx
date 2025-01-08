@@ -1,24 +1,21 @@
-import React, { useEffect, useState } from "react";
-import { data, NavLink, useNavigate } from "react-router-dom";
-import { Bell, CircleUserRoundIcon } from "lucide-react";
+import React, { useEffect, useState, useRef } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import { Bell, CircleUserRoundIcon } from 'lucide-react';
 import dormify from "@/Photos/dormify-logo.jpg";
 import Notifications from "@/Components/Notifications/Notifications";
 import { getFromBackend, patchToBackend } from "@/store/fetchdata";
 
 const Navbar = () => {
-
-  //for notifications, ignore this and go down for navbar
+  // Notifications state and logic
   const [showNotifications, setShowNotifications] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const navigate = useNavigate();
+  const notificationsRef = useRef(null);
 
   const fetchNotifications = async () => {
-
     try {
       const response = await getFromBackend("http://127.0.0.1:5090/api/notif/view");
       setNotifications(response.data || []);
-      // console.log("Notifications fetched successfully:", response.data);
-      // console.log("Notifications in Navbar:", {notifications});
     } catch (error) {
       console.error("Error fetching notifications:", error);
     }
@@ -28,94 +25,97 @@ const Navbar = () => {
     fetchNotifications();
   }, []);
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        notificationsRef.current &&
+        !notificationsRef.current.contains(event.target)
+      ) {
+        setShowNotifications(false);
+      }
+    };
+
+    if (showNotifications) {
+      document.addEventListener("click", handleClickOutside);
+    } else {
+      document.removeEventListener("click", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [showNotifications]);
 
   const handleNotificationClick = async (notifId) => {
-
     try {
-      const data = {
-      notifId : notifId,
+      const notification = notifications.find((notif) => notif._id === notifId);
+      if (!notification) return;
+
+      await patchToBackend("http://127.0.0.1:5090/api/notif/markSeen", {
+        notifId,
+      });
+      await patchToBackend("http://127.0.0.1:5090/api/notif/delete", {
+        notifId,
+      });
+
+      setNotifications((prev) =>
+        prev.filter((notification) => notification._id !== notifId)
+      );
+
+      switch (notification.field) {
+        case "complaint":
+          navigate("/complaints");
+          break;
+        case "long_leave":
+          navigate("/LongLeavesView");
+          break;
+        case "late_leave":
+          navigate("/LateLeavesView");
+          break;
+        case "mess_event":
+          navigate("/mess-schedule-view");
+          break;
+        default:
+          break;
       }
-        // console.log("data:", data);
-        // console.log(notifications)
 
-        const markSeenResponse = await patchToBackend(
-            `http://127.0.0.1:5090/api/notif/markSeen`, data
-        ); 
-        console.log("Mark Seen Response:", markSeenResponse);
-
-        const deleteResponse = await patchToBackend(
-            `http://127.0.0.1:5090/api/notif/delete`
-        );
-        // console.log("Delete Response:", deleteResponse);
-
-        setNotifications((prev) =>
-            prev.filter((notification) => notification._id !== notifId)
-        );
-
-        const notification = notifications.find((notif) => notif._id === notifId);
-        console.log("Handling notification:", notification);
-
-        switch (notification.field) {
-          case 'complaint':
-            navigate('/complaints');            
-            break;
-          case 'long_leave':
-            navigate("/LongLeavesView");            
-            break;
-          case 'late_leave':
-            navigate('/LateLeavesView');            
-            break;
-          case 'mess_event':
-            navigate('/mess-schedule-view');            
-            break;
-        
-          default:
-            break;
-        }
-        toggleNotifications();
-        console.log("Notification handled successfully");
-
+      toggleNotifications();
     } catch (error) {
-      console.error('Request Error:', error.toJSON ? error.toJSON() : error);
+      console.error("Error handling notification:", error);
     }
-};
+  };
 
   const toggleNotifications = () => {
     setShowNotifications((prev) => !prev);
   };
 
-  //navbar starts here
-
+  // Navbar structure
   return (
     <nav className="bg-black fixed top-0 left-0 right-0 z-50 shadow-lg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           <NavLink to="/Homepage" className="flex items-center space-x-4">
-            <div className=" rounded-full p-3">
+            <div className="rounded-full p-2">
               <img
                 src={dormify}
                 alt="dormify"
                 className="w-12 h-12 object-cover rounded-full"
               />
             </div>
-            <h1 className="text-3xl font-bold text-white tracking-tight">
-              DORMIFY
-            </h1>
+            <h1 className="text-3xl font-bold text-white tracking-tight">DORMIFY</h1>
           </NavLink>
           <div className="flex items-center space-x-6">
-            <ul className="hidden md:flex space-x-3 mt-2">
-              {[ 
-                { path: "/hostelfee", label: "Hostel Fee"},
-                { path: "/mess", label: "Mess"},
+            <ul className="hidden md:flex items-center space-x-4">
+              {[
+                { path: "/stripehf", label: "Hostel Fee" },
+                { path: "/mess", label: "Mess" },
                 { path: "/leaves", label: "Leaves" },
                 { path: "/complaints", label: "Complaints" },
                 { path: "/RoomsView", label: "Room Allocation" },
                 {
                   path: "/profile",
                   label: (
-                    <CircleUserRoundIcon 
-                      className="w-10 h-10 rounded-full object-cover"
-                    />
+                    <CircleUserRoundIcon className="w-8 h-8" />
                   ),
                 },
               ].map((item) => (
@@ -123,7 +123,7 @@ const Navbar = () => {
                   key={item.path}
                   to={item.path}
                   className={({ isActive }) =>
-                    `text-lg font-semibold px-4 py-1 rounded-lg transition-colors duration-150 ease-in-out ${
+                    `text-base font-semibold px-3 py-2 rounded-lg transition-colors duration-150 ease-in-out ${
                       isActive
                         ? "bg-violet-700 text-white"
                         : "text-blue-100 hover:bg-violet-500 hover:text-white"
@@ -134,13 +134,18 @@ const Navbar = () => {
                 </NavLink>
               ))}
             </ul>
-            <div className="relative">
+            <div className="relative" ref={notificationsRef}>
               <button
                 onClick={toggleNotifications}
-                className="p-3 rounded-full text-blue-100 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-blue-800 focus:ring-white"
+                className="p-2 rounded-full text-blue-100 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-blue-800 focus:ring-white relative"
                 aria-label="View notifications"
               >
-                <Bell className="h-7 w-7" />
+                <Bell className="h-6 w-6" />
+                {notifications.length > 0 && (
+                  <span className="absolute -top-1 -right-1 inline-flex items-center justify-center h-5 w-5 text-xs font-bold text-white bg-red-600 rounded-full">
+                    {notifications.length}
+                  </span>
+                )}
               </button>
               {showNotifications && (
                 <Notifications
