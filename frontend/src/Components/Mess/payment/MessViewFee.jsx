@@ -1,23 +1,31 @@
 import pic from "@/Photos/messfee.jpg";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/Components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
-import { UtensilsIcon as CutleryIcon, LeafIcon, BeefIcon as MeatIcon, InfoIcon } from 'lucide-react';
+import { UtensilsIcon as CutleryIcon, InfoIcon } from 'lucide-react';
+import { getFromBackend } from "@/store/fetchdata";
 
 const MessFeeDetails = () => {
-  const vegFees = {
-    messFee: "₹2,000",
-    taxFee: "₹200",
-    maintenanceFee: "₹300",
+  const [feeDetails, setFeeDetails] = useState([]);
+
+  useEffect(() => {
+    fetchFeeDetails();
+  }, []);
+
+  const fetchFeeDetails = async () => {
+    try {
+      const response = await getFromBackend("http://127.0.0.1:5090/api/details");
+      if (!response.ok) {
+        throw new Error("Failed to fetch mess fee details");
+      }
+      const data = await response.json();
+      setFeeDetails(data);
+    } catch (error) {
+      console.error("Error fetching fee details:", error);
+    }
   };
 
-  const nonVegFees = {
-    messFee: "₹2,500",
-    taxFee: "₹250",
-    maintenanceFee: "₹300",
-  };
-
-  const rebateInfo = "Rebate is calculated as ₹50 per day of leave.";
+  const rebateInfo = "Rebate is calculated as \u20B950 per day of leave.";
 
   return (
     <div className="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-violet-400 via-pink-500 to-violet-400 mt-14">
@@ -33,7 +41,7 @@ const MessFeeDetails = () => {
             <div className="space-y-6">
               <div className="relative overflow-hidden rounded-xl shadow-lg transition-transform duration-300 hover:scale-105">
                 <img
-                  src= { pic }
+                  src={pic}
                   alt="Mess Illustration"
                   width={400}
                   height={300}
@@ -41,8 +49,8 @@ const MessFeeDetails = () => {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                 <div className="absolute bottom-4 left-4 text-white">
-                  <h3 className="text-xl font-semibold">Delicious Meals</h3>
-                  <p>Enjoy nutritious and tasty food</p>
+                  <h3 className="text-xl font-semibold">Homely Meals</h3>
+                  <p>Enjoy nutritious and tasty food at affordable price</p>
                 </div>
               </div>
               <Card className="bg-blue-50 border-l-4 border-blue-500">
@@ -55,8 +63,7 @@ const MessFeeDetails = () => {
               </Card>
             </div>
             <div className="space-y-6">
-              <FeeTable title="Veg Students" fees={vegFees} icon={<LeafIcon className="text-green-500" />} />
-              <FeeTable title="Non-Veg Students" fees={nonVegFees} icon={<MeatIcon className="text-red-500" />} />
+              <FeeTable feeDetails={feeDetails} />
             </div>
           </div>
         </CardContent>
@@ -65,29 +72,30 @@ const MessFeeDetails = () => {
   );
 };
 
-const FeeTable = ({ title, fees, icon }) => (
+const FeeTable = ({ feeDetails }) => (
   <Card>
     <CardHeader className="pb-2">
-      <CardTitle className="text-2xl font-semibold flex items-center">
-        {icon}
-        <span className="ml-2">{title}</span>
-      </CardTitle>
+      <CardTitle className="text-2xl font-semibold">Fee Summary</CardTitle>
     </CardHeader>
     <CardContent>
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-1/2">Fee Type</TableHead>
+            <TableHead>Month</TableHead>
+            <TableHead>Year</TableHead>
             <TableHead>Amount</TableHead>
+            <TableHead>Rebate</TableHead>
+            <TableHead>Final Amount</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {Object.entries(fees).map(([key, value], index) => (
+          {feeDetails.map((fee, index) => (
             <TableRow key={index} className="transition-colors hover:bg-gray-100">
-              <TableCell className="font-medium">
-                {key.replace(/([A-Z])/g, " $1").replace(/^./, (str) => str.toUpperCase())}
-              </TableCell>
-              <TableCell>{value}</TableCell>
+              <TableCell>{fee.month}</TableCell>
+              <TableCell>{fee.year}</TableCell>
+              <TableCell>{fee.amount}</TableCell>
+              <TableCell>{fee.rebate}</TableCell>
+              <TableCell>{fee.final_amount}</TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -97,4 +105,3 @@ const FeeTable = ({ title, fees, icon }) => (
 );
 
 export default MessFeeDetails;
-

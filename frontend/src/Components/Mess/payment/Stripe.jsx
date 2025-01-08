@@ -41,19 +41,7 @@ const Stripe = () => {
     console.log('Payment data:', paymentData);
 
     try {
-      // const response = await postToBackend('http://127.0.0.1:5090/api/payments/paynow', paymentData,);
-
-      const token = localStorage.getItem('token'); // Ensure token is retrieved
-        if (!token) {
-          throw new Error('No token found in localStorage');
-        }
-    
-        const response = await axios.post('http://127.0.0.1:5090/api/payments/paynow', paymentData, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        });
+      const response = await postToBackend('http://127.0.0.1:5090/api/payments/paynow', paymentData,);
 
       console.log("post to backend ho gya")
       console.log(response)
@@ -64,10 +52,8 @@ const Stripe = () => {
         return;
       }
 
-      console.log("kuch garbar nahi 1")
       const stripe = await loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
       console.log(stripe);
-      console.log("kuch garbar nahi 2");
       console.log(response.data.success);
       if (response.data.success) {
         const result = await stripe.redirectToCheckout({ sessionId: response.data.id });

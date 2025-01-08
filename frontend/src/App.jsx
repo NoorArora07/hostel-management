@@ -1,24 +1,36 @@
+//main
 import React from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import AccessDenied from './Components/HomePage/AccessDenied';
 import Login from './Components/Login/Login';
 import SignUp from './Components/Login/SignUp';
 import SignUp2 from './Components/Login/SignUp2';
-import WardenLogin from './Components/Login/WardenLogin';
 import Homepage from './Components/HomePage/homepage';
+import Profile from './Components/Profile/Profile';
+import NoPage from './Components/Login/NoPage';
+import Navbar from './Components/Navbar/Navbar';
+import Footer from './Components/NavBar/Footer';
+import Photo from '@/Components/Profile/imageadd'
+//warden
+import WardenNavbar from './Components/Warden/WardenNavbar';
+import WardenLogin from './Components/Login/WardenLogin';
 import WardenDash from './Components/Warden/WardenDash';
+//mess
 import Mess from './Components/Mess/Mess';
 import MessLeaveForm from './Components/Mess/mess-leave-form';
 import MessLeavesView from './Components/Mess/mess-leave-view';
 import MyCalendar from './Components/Mess/mess-schedule-view';
 import MessMenu from './Components/Mess/MessMenu'; 
-import MessPaymentPlan from './Components/Mess/payment/MessViewFee'; 
 import WCalendar from './Components/Warden/mess-schedule-warden';
+//mess payment
+import MessFeeForm from './Components/Warden/MessFeeWarden'
+import MessFeeDetails from './Components/Mess/payment/MessViewFee';
 import Payment from './Components/Mess/payment/MessPayment';
 import PaymentSuccess from './Components/Mess/payment/successpayment';
 import PaymentCancel from './Components/Mess/payment/cancelledpayment';
 import Stripe from './Components/Mess/payment/Stripe';
 import FeeStatus from './Components/Mess/payment/statuspayment';
+//leaves
 import LeavesDash from './Components/Leaves/LeavesDash';
 import LongLeavesView from './Components/Leaves/LongLeavesView';
 import LongLeaveForm from './Components/Leaves/LongLeaveForm';
@@ -26,18 +38,14 @@ import LongLeavesApprove from './Components/Warden/LongLeavesApprove';
 import LateLeavesView from './Components/Leaves/LateLeavesView';
 import LateLeaveForm from './Components/Leaves/LateLeaveForm';
 import LateLeavesApprove from './Components/Warden/LateLeavesApprove';
+//complaints
 import Complaints from './Components/Complaints/Complaints';
 import ComplaintsForm from './Components/Complaints/complaintform';
 import ComplaintsView from './Components/Complaints/complaintview';
 import ComplaintsViewW from './Components/Warden/Complaintwarden';
+//room alloc
 import RoomsView from './Components/RoomAllocation/RoomsView';
 import WaitingList from './Components/RoomAllocation/WaitingList';
-import Profile from './Components/Profile/Profile';
-import NoPage from './Components/Login/NoPage';
-import Navbar from './Components/Navbar/Navbar';
-import Footer from './Components/NavBar/Footer';
-import WardenNavbar from './Components/Warden/WardenNavbar';
-import Photo from '@/Components/Profile/imageadd'
 
 function App() {
   const router = createBrowserRouter([
@@ -69,6 +77,7 @@ function App() {
       path: "/WardenLogin",
       element: <WardenLogin />
     },
+    //mess starts here
     {
       path: "/mess",
       element: <><Navbar /><Mess /><Footer /></>
@@ -82,7 +91,11 @@ function App() {
     },
     {
       path: "/view-mess-fee",
-      element: <><Navbar /><MessPaymentPlan/><Footer /></>
+      element: <><Navbar /><MessFeeDetails/><Footer /></>
+    },
+    {
+      path: "/add-mess-fee",
+      element: <><Navbar /><MessFeeForm/><Footer /></>
     },
     {
       path: "/mess-leave-view",
@@ -112,6 +125,7 @@ function App() {
       path: "/stripe",
       element: <><Stripe /><Footer /></>
     },
+    //mess ends here
     {
       path: "/leaves",
       element: <><Navbar /><LeavesDash /><Footer /></>

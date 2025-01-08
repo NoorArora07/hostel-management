@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { data, NavLink, useNavigate } from "react-router-dom";
-import { Bell } from "lucide-react";
+import { Bell, CircleUserRoundIcon } from "lucide-react";
 import dormify from "@/Photos/dormify-logo.jpg";
 import Notifications from "@/Components/Notifications/Notifications";
 import { getFromBackend, patchToBackend } from "@/store/fetchdata";
 
 const Navbar = () => {
+
+  //for notifications, ignore this and go down for navbar
   const [showNotifications, setShowNotifications] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const navigate = useNavigate();
@@ -15,8 +17,8 @@ const Navbar = () => {
     try {
       const response = await getFromBackend("http://127.0.0.1:5090/api/notif/view");
       setNotifications(response.data || []);
-      console.log("Notifications fetched successfully:", response.data);
-      console.log("Notifications in Navbar:", {notifications});
+      // console.log("Notifications fetched successfully:", response.data);
+      // console.log("Notifications in Navbar:", {notifications});
     } catch (error) {
       console.error("Error fetching notifications:", error);
     }
@@ -33,8 +35,8 @@ const Navbar = () => {
       const data = {
       notifId : notifId,
       }
-        console.log("data:", data);
-        console.log(notifications)
+        // console.log("data:", data);
+        // console.log(notifications)
 
         const markSeenResponse = await patchToBackend(
             `http://127.0.0.1:5090/api/notif/markSeen`, data
@@ -44,7 +46,7 @@ const Navbar = () => {
         const deleteResponse = await patchToBackend(
             `http://127.0.0.1:5090/api/notif/delete`
         );
-        console.log("Delete Response:", deleteResponse);
+        // console.log("Delete Response:", deleteResponse);
 
         setNotifications((prev) =>
             prev.filter((notification) => notification._id !== notifId)
@@ -82,6 +84,8 @@ const Navbar = () => {
     setShowNotifications((prev) => !prev);
   };
 
+  //navbar starts here
+
   return (
     <nav className="bg-black fixed top-0 left-0 right-0 z-50 shadow-lg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -101,11 +105,19 @@ const Navbar = () => {
           <div className="flex items-center space-x-6">
             <ul className="hidden md:flex space-x-3">
               {[ 
+                { path: "/hostelfee", label: "Hostel Fee"},
                 { path: "/mess", label: "Mess"},
                 { path: "/leaves", label: "Leaves" },
                 { path: "/complaints", label: "Complaints" },
                 { path: "/RoomsView", label: "Room Allocation" },
-                { path: "/profile", label: "Profile" },
+                {
+                  path: "/profile",
+                  label: (
+                    <CircleUserRoundIcon 
+                      className="w-10 h-10 rounded-full object-cover"
+                    />
+                  ),
+                },
               ].map((item) => (
                 <NavLink
                   key={item.path}

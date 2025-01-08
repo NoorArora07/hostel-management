@@ -22,7 +22,7 @@ const features = [
     description: "Can't keep a track of your mess fee? We got you covered. Pay your mess fee online",
     icon: BanknotesIcon,
     actions: [
-      { text: 'View Fee Structure', path: '/view-mess-fee' },
+      { text: 'View Fee Details', path: '/view-mess-fee' },
       { text: 'Pay Now', path: '/mess-fee-payment' },
     ],
   },
