@@ -47,7 +47,7 @@ const Login = () => {
     };
 
     return (
-        <div className="flex justify-center items-center min-h-screen">
+        <div className="flex justify-center items-center min-h-screen bg-violet-200">
             <div className="bg-white shadow-md rounded-lg flex max-w-4xl w-full">
                 <div className="w-1/2 hidden lg:block shadow-lg shadow-purple-300">
                     <img

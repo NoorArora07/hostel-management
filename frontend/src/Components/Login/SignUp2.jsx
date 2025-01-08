@@ -32,7 +32,7 @@ const SignUp2 = () => {
     };
 
     return (
-        <div className="flex justify-center items-center min-h-screen">
+        <div className="flex justify-center items-center min-h-screen bg-violet-200">
             {/* Form and Image Container */}
             <div className="flex bg-white shadow-lg rounded-lg overflow-hidden w-full max-w-4xl">
                 {/* Form Section */}

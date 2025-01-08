@@ -1,7 +1,7 @@
 "use client"
 
 import React from 'react'
-import { BackgroundGradientAnimation } from "../ui/background-gradient-animation"
+import { AuroraBackground } from "../ui/aurora-background.tsx"
 import { Button } from "@/Components/ui/button"
 import { Card, CardContent } from "@/Components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/Components/ui/tabs"
@@ -24,15 +24,15 @@ const FAQs = [
 
 const Homepage = () => {
   return (
-    <div className=" mt-28 min-h-screen overflow-hidden">
-      <BackgroundGradientAnimation>
+    <div className=" mt-20 min-h-screen overflow-hidden">
+      <AuroraBackground>
         <main className="container mx-auto px-4 py-8">
           <section className="text-center mb-12">
             <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-4">
-              Welcome to the Hostel Management System
+              Welcome!
             </h1>
             <p className="text-xl text-gray-200 max-w-2xl mx-auto">
-              Your one-stop solution for managing hostel activities such as room allocation, mess, leaves, payments, complaints, and more.
+              Your one-stop solution for managing hostel activities.
             </p>
           </section>
 
@@ -99,7 +99,7 @@ const Homepage = () => {
             </div>
           </section>
         </main>
-      </BackgroundGradientAnimation>
+      </AuroraBackground>
     </div>
   )
 }

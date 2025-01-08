@@ -91,7 +91,7 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           <NavLink to="/Homepage" className="flex items-center space-x-4">
-            <div className="bg-white rounded-full p-3">
+            <div className=" rounded-full p-3">
               <img
                 src={dormify}
                 alt="dormify"
@@ -103,7 +103,7 @@ const Navbar = () => {
             </h1>
           </NavLink>
           <div className="flex items-center space-x-6">
-            <ul className="hidden md:flex space-x-3">
+            <ul className="hidden md:flex space-x-3 mt-2">
               {[ 
                 { path: "/hostelfee", label: "Hostel Fee"},
                 { path: "/mess", label: "Mess"},
@@ -123,10 +123,10 @@ const Navbar = () => {
                   key={item.path}
                   to={item.path}
                   className={({ isActive }) =>
-                    `text-lg font-semibold px-4 py-3 rounded-lg transition-colors duration-150 ease-in-out ${
+                    `text-lg font-semibold px-4 py-1 rounded-lg transition-colors duration-150 ease-in-out ${
                       isActive
-                        ? "bg-blue-700 text-white"
-                        : "text-blue-100 hover:bg-blue-700 hover:text-white"
+                        ? "bg-violet-700 text-white"
+                        : "text-blue-100 hover:bg-violet-500 hover:text-white"
                     }`
                   }
                 >
