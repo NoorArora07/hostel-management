@@ -22,7 +22,7 @@ const notifSchema = new mongoose.Schema({
 
 const notifs = mongoose.Schema({
   userId:{
-    type: String, 
+    type: Number, 
     required: false,
     unique:true},
   notifications: {

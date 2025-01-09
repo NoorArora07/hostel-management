@@ -15,7 +15,8 @@ export const add_notif = async (userId=null, title,field, message) => {
             { new: true, upsert: true } 
         );
 
-        console.log("Notification added successfully:", user);
+        console.log("Notification added successfully:");
+          // user);
     } catch (error) {
         console.error("Error adding notification:", error);
     }

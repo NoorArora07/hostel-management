@@ -36,22 +36,29 @@ export const addDetails = async (request, response) => {
                 .skip(page * BATCH_SIZE)
                 .limit(BATCH_SIZE);
 
+            if (batch.length === 0) {
+                    moreStudents = false;
+                    break;
+                }
+                
             if (batch.length < BATCH_SIZE) {
                 moreStudents = false;
             }
 
-            const detailPromises = batch.map(st => {
+            const detailPromises =batch.map(async(st) => {
                 const userId = st.sid;
                 const name = st.name;
-                const rebate_val = rebate(month, year);
-                const amt = amount - rebate_val;
+                const reb = (await rebate(userId, month, year)) ;                
+                const amt = amount - reb;
 
                 const title = "Monthly Payment Details";
-                const message = "Monthly payment details are out, kindly pay the mess fee before 20th of this month";
+                const message = "Monthly payment details are out! Kindly pay the mess fee before 20th of this month.";
                 add_notif(userId,title,"mess_payDetails",message);
 
-                return add_details(userId, name, month, year, amount, rebate_val, amt);
-            });
+                return add_details(userId, name, month, year, amount, reb, amt);
+        
+        
+    });
 
             await Promise.all(detailPromises);
             page++;
@@ -62,7 +69,7 @@ export const addDetails = async (request, response) => {
     }
     catch (error) {
         console.error("Error adding details:", error);
-        res.status(500).send("An error occurred while adding details.");
+        response.status(500).send("An error occurred while adding details.");
     }
 
 };

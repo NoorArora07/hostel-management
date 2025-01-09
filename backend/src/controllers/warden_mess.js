@@ -1,7 +1,7 @@
 import Event from '../models/messEvents.model.js';
 import User from '../models/users.model.js';
 import {add_notif} from "../controllers/notifsControllers.js";
-import {standardise} from "../controllers/convert in title form.js";
+//import {standardise} from "../controllers/convert in title form.js";
 
 
 const BATCH_SIZE = 100;  // to send notifs to all students but batch wise
@@ -41,7 +41,7 @@ export const createEvent = async (request, response) => {
         await newEvent.save();
 
     //notif
-    const eventTitle = standardise(title).trim();
+    const eventTitle = title.trim();
     const titlE = "New Event";
     const mssg = `An event titled "${eventTitle}" has been created.`;
 

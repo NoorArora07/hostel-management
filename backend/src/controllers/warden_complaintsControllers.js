@@ -1,6 +1,6 @@
 import Complaint from "../models/complaints.model.js";
 import {add_notif} from "../controllers/notifsControllers.js";
-import {standardise} from "../controllers/convert in title form.js";
+//import {standardise} from "../controllers/convert in title form.js";
 
 export const getAllComplaints = async (request, response) => {
   try {
@@ -63,7 +63,7 @@ export const updateComplaintStatus = async (request, response) => {
     await complaint.save();
 
     //notif
-    const complaintTitle = standardise(complaintToUpdate.title).trim();
+    const complaintTitle = complaintToUpdate.title.trim();
     const mssg = status==="resolved"
     ? `Your complaint titled "${complaintTitle}" has been resolved.` 
     : `Your complaint titled "${complaintTitle}" has been rejected.`

@@ -74,18 +74,36 @@ export const getMessLeaveDetails = async (req, res) => {
     }
 };
 
-export const rebate = async(month,year)=>{
+export const rebate = async(sid,month,year)=>{
     try {
-        const messData = await Mess.findOne({ sid: req.user.sid });
-
+        const messData = await Mess.findOne({ sid});
+        //console.log(messData);
         if (!messData) {
+            console.log("No mess leave data found for SID:", sid);
             return 0;
             //throw new Error('No mess leave data found.');
         }
+        //console.log("mess data : ", messData);
 
         let leaveDays = 0;
 
-        messData.messOffDates.forEach(leave => {
+        const months = {
+            "January": 1,
+            "February": 2,
+            "March": 3,
+            "April": 4,
+            "May": 5,
+            "June" : 6,
+            "July": 7,
+            "August" : 8,
+            "September": 9,
+            "October": 10,
+            "November": 11,
+            "December": 12,
+          }
+          
+
+        messData.messOffDates.forEach((leave) => {
             const { dateOfLeaving, dateOfReturn, firstMeal, lastMeal } = leave;
 
             let currentDate = moment(dateOfLeaving);
@@ -96,30 +114,36 @@ export const rebate = async(month,year)=>{
             const leavingMonth = currentDate.month() + 1;
             const leavingYear = currentDate.year();
 
+            console.log("date : ",leavingDay," ",leavingMonth," ",leavingYear)
+
+            console.log("date2 : ",typeof(leavingDay)," ",months[month]," ",parseInt(year))
+
             if ((leavingDay === 6 || leavingDay === 7) &&
-                leavingMonth === parseInt(month) &&
+                leavingMonth === months[month] &&
                 leavingYear === parseInt(year) &&
                 lastMeal === "None") {
                 leaveDays++; 
             }
-
+            console.log("curr date : ", currentDate);
             currentDate.add(1, 'days');
+            console.log("curr date2 : ", currentDate);
 
             while (currentDate.isBefore(endDate)) {
                 const dayOfWeek = currentDate.isoWeekday();
                 const currentMonth = currentDate.month() + 1;
                 const currentYear = currentDate.year();
 
-                if ((dayOfWeek === 6 || dayOfWeek === 7) &&
-                    currentMonth === parseInt(month) &&
+                if (
+                    (dayOfWeek === 6 || dayOfWeek === 7) &&
+                     currentMonth === months[month] &&
                     currentYear === parseInt(year)) {
-                    leaveDays++;
+                     leaveDays++;
                 }
 
                 currentDate.add(1, 'days');
             }
             });
-            console.log("Leave days = ", leaveDays);
+            console.log(`Leave days for sid ${sid} = `, leaveDays);
             return (35 * leaveDays);
     } catch (error) {
         console.error("Error calculating monthly leave days:", error);

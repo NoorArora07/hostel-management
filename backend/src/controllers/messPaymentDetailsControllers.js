@@ -16,19 +16,19 @@ export const getDetails = async (req,res) => {
 };
 
 
-export const add_details = async (userId,name,month,year,amount,rebate,final_amount) => {
+export const add_details = async (sid,name,month,year,amount,rebate,final_amount) => {
   try {
       const newDetails = {month,year,amount,rebate,final_amount};
 
       const student = await MessPayDetails.findOneAndUpdate(
-          { userId },
+          { sid },
           {
               $push: {details: newDetails }, 
           },
           { new: true, upsert: true } 
       );
 
-      console.log("Details added successfully:", student);
+      console.log("Details added successfully:");
   } catch (error) {
       console.error("Error adding details:", error);
   }
