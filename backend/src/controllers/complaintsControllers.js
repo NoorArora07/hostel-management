@@ -104,9 +104,9 @@ export const viewComplaints = async (request, response) => {
           message: "No complaints found.",
         });
       }
-  
+      const reversedComplaints = complaint.complaints.reverse();
       response.status(200).json({
-        complaints: complaint.complaints,
+        complaints: reversedComplaints,
       });
     } catch (error) {
       console.error("Error viewing complaints:", error);
@@ -132,9 +132,9 @@ export const viewComplaints = async (request, response) => {
       const filteredComplaints = complaint.complaints.filter(
         (complaint) => complaint.status === status
       );
-  
+      const reversedComplaints = filteredComplaints.reverse();
       response.status(200).json({
-        complaints: filteredComplaints,
+        complaints: reversedComplaints,
       });
     } catch (error) {
       console.error("Error filtering complaints:", error);

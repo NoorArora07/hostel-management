@@ -64,9 +64,11 @@ export const getMessLeaveDetails = async (req, res) => {
             };
         });
 
+        const reversedDates = messOffDates.reverse();
+
         console.log("successful");
         res.status(200).json({
-            messOffDates,
+            reversedDates,
         });
     } catch (error) {
         console.error("Error fetching mess leave details:", error);

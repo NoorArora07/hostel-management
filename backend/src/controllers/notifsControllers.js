@@ -31,8 +31,9 @@ export const fetch = async(req ,res)=>{
           return res.status(404).json({ error: 'No notifications found for this user' });
         }
 
-        console.log("notifications : ",user_notifications.notifications);
-        res.status(200).json(user_notifications.notifications);
+        //console.log("notifications : ",user_notifications.notifications);
+        const reversedNotifications = user_notifications.notifications.reverse();
+        res.status(200).json(reversedNotifications);
         
       } catch (error) {
         res.status(500).json({ error: 'Error fetching notifications' });
