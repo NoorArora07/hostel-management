@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { postToBackend } from '@/store/fetchdata'; // Ensure this function is correctly implemented
 import { Button } from "@/Components/ui/button";
 import { Input } from "@/Components/ui/input";
+import { AuroraBackground } from "../ui/aurora-background";
+import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
 
 export default function ComplaintsForm() {
     const [formData, setFormData] = useState({
@@ -16,8 +18,6 @@ export default function ComplaintsForm() {
 
     const handleChange = (event) => {
         const { name, value } = event.target;
-
-        // Handle roomNumber as a number
         const parsedValue = name === 'roomNumber' ? (value === '' ? '' : Number(value)) : value;
 
         setFormData((prevData) => ({
@@ -29,7 +29,6 @@ export default function ComplaintsForm() {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        // Basic validation
         if (!formData.title.trim() || !formData.description.trim()) {
             alert('Title and Grievance are required.');
             return;
@@ -37,66 +36,60 @@ export default function ComplaintsForm() {
 
         try {
             const response = await postToBackend('http://127.0.0.1:5090/api/complaint/add', formData);
-            console.log(response)
-            alert(`${response.data.message}`)
+            alert(`${response.data.message}`);
         } catch (error) {
             console.error('Error submitting complaint:', error);
             alert('An error occurred while submitting your complaint.');
-            console.log("hello")
         }
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <div className="p-5 mb-10 space-y-12 mt-32 bg-white placeholder-slate-100 rounded-xl border-green-600 border-2">
-                <div className="border-b border-gray-900/10 pb-12">
-                    <h2 className="text-base/7 font-bold text-gray-900">Submit Your Grievance Below:</h2>
-                    <p className="mt-1 text-sm/6 text-gray-600">
-                        This information will be displayed to the warden along with your details.
-                    </p>
+        <div className="relative min-h-screen bg-gray-50">
+            <AuroraBackground className="absolute inset-0 pointer-events-none z-0" />
 
-                    <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                        <div className="sm:col-span-4">
-                            <label htmlFor="roomNumber" className="block text-sm/6 font-medium text-gray-900">
-                                Enter your room number below: (not required)
-                            </label>
-                            <div className="mt-2">
-                                <input
+            <div className="relative min-h-screen flex flex-col items-center justify-center p-4 z-10">
+                <Card className="w-full max-w-xl bg-white shadow-lg rounded-lg mt-8">
+                    <CardHeader>
+                        <CardTitle className="text-2xl font-bold text-center text-black">
+                            Submit Your Complaint
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <form onSubmit={handleSubmit} className="space-y-6">
+                            <div>
+                                <label htmlFor="roomNumber" className="block text-sm font-medium text-gray-700">
+                                    Room Number (optional)
+                                </label>
+                                <Input
+                                    type="number"
                                     id="roomNumber"
                                     name="roomNumber"
-                                    type="number"
                                     value={formData.roomNumber}
                                     onChange={handleChange}
-                                    placeholder="eg. 170"
-                                    className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                                 />
                             </div>
-                        </div>
 
-                        <div className="col-span-full">
-                            <label htmlFor="title" className="block text-sm/6 font-medium text-gray-900">
-                                Title <span className="text-red-500">*</span>
-                            </label>
-                            <div className="mt-2">
-                                <input
+                            <div>
+                                <label htmlFor="title" className="block text-sm font-medium text-gray-700">
+                                    Title <span className="text-red-500">*</span>
+                                </label>
+                                <Input
                                     id="title"
                                     name="title"
                                     value={formData.title}
                                     onChange={handleChange}
                                     maxLength={maxTitleLength}
-                                    className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                                    placeholder="Write a concise title"
                                     required
                                 />
+                                <p className="text-sm text-gray-600 mt-1">
+                                    Write your title using a maximum of 30 characters.
+                                </p>
                             </div>
-                            <p className="mt-3 text-sm/6 text-gray-600">Write your title using (maximum of) 30 characters.</p>
-                        </div>
 
-                        <div className="col-span-full">
-                            <label htmlFor="description" className="block text-sm/6 font-medium text-gray-900">
-                                Grievance <span className="text-red-500">*</span>
-                            </label>
-                            <div className="mt-2">
+                            <div>
+                                <label htmlFor="description" className="block text-sm font-medium text-gray-700">
+                                    Complaint <span className="text-red-500">*</span>
+                                </label>
                                 <textarea
                                     id="description"
                                     name="description"
@@ -104,23 +97,24 @@ export default function ComplaintsForm() {
                                     onChange={handleChange}
                                     rows={5}
                                     maxLength={maxDescriptionLength}
-                                    className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                                    placeholder="Describe your grievance in detail"
+                                    className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
                                     required
                                 />
+                                <p className="text-sm text-gray-600 mt-1">
+                                    Write your complaint using a maximum of 500 characters.
+                                </p>
                             </div>
-                            <p className="mt-3 text-sm/6 text-gray-600">Write your complaint using (maximum of) 500 characters.</p>
-                        </div>
 
-                        <button
-                            type="submit"
-                            className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                        >
-                            Submit
-                        </button>
-                    </div>
-                </div>
+                            <Button
+                                type="submit"
+                                className="w-full bg-violet-500 hover:bg-violet-700 text-white font-semibold py-2 px-4 rounded-md shadow-lg"
+                            >
+                                Submit
+                            </Button>
+                        </form>
+                    </CardContent>
+                </Card>
             </div>
-        </form>
+        </div>
     );
 }

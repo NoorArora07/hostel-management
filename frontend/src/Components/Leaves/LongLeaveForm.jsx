@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { AuroraBackground } from "../ui/aurora-background.tsx";
 import { useNavigate } from 'react-router-dom';
 import { postToBackend } from '../../store/fetchdata';
 
@@ -40,9 +41,10 @@ const LongLeaveForm = () => {
   };
 
   return (
-    <div>
-    
-      {/* Form Section */}
+    <div className="relative min-h-screen mt-3">
+      <AuroraBackground className="absolute inset-0 pointer-events-none z-0" />
+
+      <div className="relative z-10 flex items-center justify-center min-h-screen mt-2">
       <div className="flex items-center justify-center min-h-screen mt-8">
         <div className=" max-w-3xl bg-white p-8 shadow-lg rounded-md">
           <h1 className="text-2xl font-bold mb-6 text-center">Create Long Leave Request</h1>
@@ -122,13 +124,14 @@ const LongLeaveForm = () => {
             <div className="col-span-2">
               <button
                 type="submit"
-                className="w-full bg-teal-500 hover:bg-teal-600 text-white font-semibold py-2 px-4 rounded-md shadow-md"
+                className="w-full bg-violet-500 hover:bg-violet-700 text-white font-semibold py-2 px-4 rounded-md shadow-md"
               >
                 Submit
               </button>
             </div>
           </form>
         </div>
+      </div>
       </div>
     </div>
   );
