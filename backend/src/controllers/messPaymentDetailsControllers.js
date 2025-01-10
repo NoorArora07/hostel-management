@@ -2,15 +2,16 @@ import MessPayDetails from '../models/messPaymentDetails.model.js';
 import dotenv from 'dotenv';
 
 export const getDetails = async (req,res) => {
-    const {sid} = req.user;
+    const {sid} = req.user.sid;
     try {
-        const detailS= await MessPayDetails.findOne({sid});
-        //console.log("detailS: ",detailS)
+        const detailS = await MessPayDetails.findOne({sid});
+        console.log("detailS : ",detailS);
         if (!detailS) {
             return res.json({ message: 'No details found for this SID' });
         }
-        const reversed_details=detailS.details.reverse();
-        res.status(200).json(reversed_details);
+        const reversedDetails = detailS.details.reverse();
+        res.status(200).json(reversedDetails);
+        
     } catch (error) {
         console.error("Error fetching details:", error);
         res.status(500).send("An error occurred while fetching details.");
