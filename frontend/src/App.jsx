@@ -29,7 +29,6 @@ import Payment from './Components/Mess/payment/MessPayment';
 import PaymentSuccess from './Components/Mess/payment/successpayment';
 import PaymentCancel from './Components/Mess/payment/cancelledpayment';
 import Stripe from './Components/Mess/payment/Stripe';
-import FeeStatus from './Components/Mess/payment/statuspayment';
 //leaves
 import LeavesDash from './Components/Leaves/LeavesDash';
 import LongLeavesView from './Components/Leaves/LongLeavesView';
@@ -47,6 +46,7 @@ import ComplaintsViewW from './Components/Warden/Complaintwarden';
 import RoomsView from './Components/RoomAllocation/RoomsView';
 import WaitingList from './Components/RoomAllocation/WaitingList';
 //hostel fee 
+import HostelPayment from './Components/HostelFee/HostelPayment';
 import Stripehf from './Components/HostelFee/stripehf';
 import PaymentCancelhf from './Components/HostelFee/cancelhf';
 import PaymentSuccesshf from './Components/HostelFee/successhf';
@@ -191,15 +191,19 @@ function App() {
       element: <><Navbar /><Photo /><Footer /></>
     },
     {
+      path: "/hostel-fee",
+      element: <><Navbar /><HostelPayment /><Footer /></>
+    },
+    {
       path: "/stripehf",
       element: <><Navbar /><Stripehf /><Footer /></>
     },
     {
-      path: "/successhf",
+      path: "/hostel_success",
       element: <><Navbar /><PaymentSuccesshf /><Footer /></>
     },
     {
-      path: "/cancelhf",
+      path: "/hostel_cancel",
       element: <><Navbar /><PaymentCancelhf /><Footer /></>
     },
 

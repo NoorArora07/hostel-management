@@ -74,6 +74,8 @@ const Navbar = () => {
           break;
         case "mess_event":
           navigate("/mess-schedule-view");
+        case "mess_payDetails":
+        navigate("/view-mess-fee");
           break;
         default:
           break;
@@ -107,7 +109,7 @@ const Navbar = () => {
           <div className="flex items-center space-x-6">
             <ul className="hidden md:flex items-center space-x-4">
               {[
-                { path: "/stripehf", label: "Hostel Fee" },
+                { path: "/hostel-fee", label: "Hostel Fee" },
                 { path: "/mess", label: "Mess" },
                 { path: "/leaves", label: "Leaves" },
                 { path: "/complaints", label: "Complaints" },

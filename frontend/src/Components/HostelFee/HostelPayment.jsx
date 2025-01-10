@@ -1,6 +1,6 @@
-import payment from "@/Photos/payment.jpg";
+import photo from "@/Photos/hostel-fee.jpg";
 
-export default function Payment() {
+export default function HostelPayment() {
     return (
       <div className="bg-white w-full">
         <div className="mx-auto py-24 sm:px-6 sm:py-32 lg:px-8 w-screen">
@@ -20,19 +20,19 @@ export default function Payment() {
             </svg>
             <div className="mx-auto max-w-md text-center lg:mx-0 lg:flex-auto lg:py-32 lg:text-left">
               <h2 className="text-balance text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-                Pay your Mess Fee <br /> in seconds.
+                Pay your Hostel Fee <br /> in seconds.
               </h2>
               <p className="mt-6 text-pretty text-lg/8 text-gray-300">
-                Stripe is a payment processing platform that handles billions of dollars every year for forward-thinking businesses around the world.
+                Stripe is a payment processing platform that handles billions of dollars safely, every year. You can trust us with your fee, and expect efficient services.
               </p>
               <div className="mt-10 flex items-center justify-center gap-x-6 lg:justify-start">
                 <a
-                  href="/view-mess-fee"
+                  href="/view-hostel-fee"
                   className="rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                 >
                   Payment Details
                 </a>
-                <a href="/stripe" className="text-sm/6 font-semibold text-white">
+                <a href="/stripehf" className="text-sm/6 font-semibold text-white">
                   Complete Payment <span aria-hidden="true">→</span>
                 </a>
               </div>
@@ -40,7 +40,7 @@ export default function Payment() {
             <div className="relative mt-16 h-80 lg:mt-8">
               <img
                 alt="App screenshot"
-                src= {payment}
+                src= {photo}
                 width={1824}
                 height={1080}
                 className="absolute left-0 top-0 w-[57rem] max-w-none rounded-md bg-white/5 ring-1 ring-white/10"
