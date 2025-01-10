@@ -56,7 +56,8 @@ export const sendOTP = async (req, res) => {
 
 
 export const verifyOTP = async (req, res) => {
-  const { email, otp } = req.body;
+  const { otp } = req.body;
+  const { email } = req.user;
 
   try {
     
@@ -78,7 +79,8 @@ export const verifyOTP = async (req, res) => {
 
 
 export const resetPassword = async (req, res) => {
-  const { email, password } = req.body;
+  const { password } = req.body;
+  const { email } = req.user;
 
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
