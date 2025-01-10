@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../store/auth";
-import { initializeSocket, updateSocketToken, getSocket } from "../../store/socket"; // Import socket functions
+import { initializeSocket, updateSocketToken, getSocket } from "../../store/socket";
 import loginside from '../../Photos/loginside.jpg';
 
 const Login = () => {
