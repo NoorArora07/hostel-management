@@ -10,7 +10,7 @@ const notifSchema = new mongoose.Schema({
     field:{
       type:String,
       required:true,
-      enum: ['complaint' , 'long_leave' , 'late_leave' , 'room' , 'mess_event','mess_payDetails' ] ,
+      enum: ['complaint' , 'long_leave' , 'late_leave' , 'rooM' , 'mess_event','mess_payDetails' ] ,
     },
     seen: {
         type: Boolean,

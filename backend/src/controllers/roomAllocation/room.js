@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import { person } from '../../models/roomalloc_person.model.js';
 import { room } from '../../models/roomalloc_person.model.js';
+import {add_notif} from '../notifsControllers.js';
 import UserDetail from '../../models/userDetail.model.js';
 dotenv.config();
 
@@ -63,6 +64,11 @@ const updateEmptySocket = async (data, callback) => {
             }
         );
 
+        //notif
+        const title = "Room Allotted";
+        const message = `You have been allotted room no. ${roomNumber}`;
+        add_notif(sid,title ,"rooM", message);
+
         callback({ selected: true, updatedRoom: result });
     } catch (error) {
         console.log("Error while updating empty room:", error);
@@ -93,6 +99,12 @@ const updateAnotherSocket = async (data, callback) => {
                     $push: { waitingList: info },
                 }
             );
+            
+            //notif
+            const title = "Entered Waiting List";
+            const message = `You have entered the waiting list for room no. ${roomNumber}.`;
+            add_notif(sid,title,"rooM",message);
+
         } else {
             await room.updateOne(
                 { roomNumber: roomNumber },
@@ -106,6 +118,11 @@ const updateAnotherSocket = async (data, callback) => {
                     },
                 }
             );
+            
+            //notif
+            const title = "Room Allotted";
+            const message = `You have been allotted room no. ${roomNumber}.`;
+            add_notif(sid,title,"rooM",message);
         }
 
         callback({ selected: true });

@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import { person } from '../../models/roomalloc_person.model.js';
 import { room } from '../../models/roomalloc_person.model.js';
+import { add_notif } from '../notifsControllers.js';
 import UserDetail from '../../models/userDetail.model.js';
 
 dotenv.config();
@@ -67,7 +68,11 @@ export const declineInWaitingList = async (request, response) => {
             }
         });
 
-        //send notification to person that your status has been updated from "pending" to "false"
+        //notif
+        const title = "Removed from Waiting List";
+        const message = `You have been removed from the waiting list for room no. ${roomNumber}.`
+        //  Your status has now been updated from "pending" to "false". `
+        add_notif(declinesid,title ,"rooM",message);
 
         return response.status(200).json({
             "updated": true
@@ -147,7 +152,10 @@ export const acceptInWaitingList = async (request, response) => {
             }
         });
         
-        //send notification to person that your status has been updated from "pending" to "false"
+            //notif
+            const title = "Room Allotted";
+            const message = `You have been allotted room no. ${roomNumber}.`
+            add_notif(info.sid,title ,"rooM",message);
         }
     
         return response.status(200).json({
