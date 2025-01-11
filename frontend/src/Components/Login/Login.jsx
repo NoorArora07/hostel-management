@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../store/auth";
 import { initializeSocket, updateSocketToken, getSocket } from "../../store/socket";
 import loginside from '../../Photos/loginside.jpg';
+import { postToBackend } from "@/store/fetchdata";
 
 const Login = () => {
     const [formData, setFormData] = useState({
@@ -43,6 +44,22 @@ const Login = () => {
         } catch (error) {
             console.error(error.response?.data || "Login failed");
             alert("Login failed");
+        }
+    };
+
+    const handleForgotPassword = async () => {
+        try {
+            const email = formData.email;
+            if (!email) {
+                alert("Please enter your email to reset the password.");
+                return;
+            }            
+            const temp = await axios.post("http://127.0.0.1:5090/api/pass_reset/forgot-password", { email });
+            alert("Password reset link has been sent to your email.");
+            navigate('/otp-page')
+        } catch (error) {
+            console.error(error.response?.data || "Failed to send password reset link");
+            alert("Failed to send password reset link");
         }
     };
 
@@ -95,6 +112,13 @@ const Login = () => {
                             className="w-full bg-violet-500 text-white py-2 px-4 rounded-md hover:bg-violet-600 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:ring-offset-2"
                         >
                             Login
+                        </button>
+                        <button
+                            type="button"
+                            onClick={handleForgotPassword}
+                            className="w-full bg-gray-200 text-violet-500 py-2 px-4 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:ring-offset-2 mt-4"
+                        >
+                            Forgot Password
                         </button>
                     </form>
 

@@ -10,7 +10,7 @@ const WardenNavbar = () => {
   };
 
   return (
-    <nav className="bg-teal-700 p-4 flex justify-between items-center fixed top-0 left-0 right-0 z-10 shadow-lg w-full">
+    <nav className="bg-purple-700 p-4 flex justify-between items-center fixed top-0 left-0 right-0 z-10 shadow-lg w-full">
       {/* Logo and Name */}
       <NavLink to="/WardenDash" className="flex items-center space-x-3">
         <img src={logo} alt="Logo" className="w-10 h-auto" />
@@ -48,7 +48,7 @@ const WardenNavbar = () => {
 
         {/* Complaints Link */}
         <NavLink 
-          to="/complaints" 
+          to="/complaintsviewwarden" 
           className={({ isActive }) => isActive ? "text-red-500" : "text-white hover:text-gray-300"}
         >
           <li className="px-4 py-2 text-lg font-medium">Complaints</li>

@@ -75,7 +75,7 @@ const Navbar = () => {
         case "mess_event":
           navigate("/mess-schedule-view");
         case "mess_payDetails":
-        navigate("/view-mess-fee");
+          navigate("/view-mess-fee");
           break;
         default:
           break;
