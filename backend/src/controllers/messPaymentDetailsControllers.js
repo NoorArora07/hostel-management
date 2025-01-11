@@ -2,7 +2,7 @@ import MessPayDetails from '../models/messPaymentDetails.model.js';
 import dotenv from 'dotenv';
 
 export const getDetails = async (req,res) => {
-    const {sid} = req.user.sid;
+    const {sid} = req.user;
     try {
         const detailS = await MessPayDetails.findOne({sid});
         console.log("detailS : ",detailS);

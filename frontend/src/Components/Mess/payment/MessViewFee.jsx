@@ -20,8 +20,9 @@ const MessFeeDetails = () => {
       
       const data = response.data; 
       console.log("Parsed data:", data);
-  
-      if (!data || data.length === 0) {
+
+      if (typeof(data.message) === "string" || !data || data.length === 0) {
+        return ;
         throw new Error("No fee details available.");
       }
   

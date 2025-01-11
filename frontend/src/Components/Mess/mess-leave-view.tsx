@@ -35,8 +35,9 @@ const MessLeavesView: React.FC = () => {
     const fetchMessLeaves = async () => {
       try {
           const response = await getFromBackend(`${baseUrl}/api/mess/leave-details`);
-  
-          const messData = response.data.messOffDates.map((application: any) => ({
+          console.log(response);
+
+          const messData = response.data.reversedDates.map((application: any) => ({
               id: application._id || Math.random(), // Use a unique key
               dateOfLeaving: application.dateOfLeaving,
               dateOfReturn: application.dateOfReturn,
