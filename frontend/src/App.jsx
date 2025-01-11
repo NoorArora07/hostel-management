@@ -3,6 +3,8 @@ import React from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import AccessDenied from './Components/HomePage/AccessDenied';
 import Login from './Components/Login/Login';
+import OtpVerificationPage from './Components/Login/forgotpwotp';
+import ChangePasswordPage from './Components/Login/forgotpwnew';
 import SignUp from './Components/Login/SignUp';
 import SignUp2 from './Components/Login/SignUp2';
 import Homepage from './Components/HomePage/homepage';
@@ -47,6 +49,7 @@ import RoomsView from './Components/RoomAllocation/RoomsView';
 import WaitingList from './Components/RoomAllocation/WaitingList';
 //hostel fee 
 import HostelPayment from './Components/HostelFee/HostelPayment';
+import HostelFeeDetails from './Components/HostelFee/ViewHostelFee';
 import Stripehf from './Components/HostelFee/stripehf';
 import PaymentCancelhf from './Components/HostelFee/cancelhf';
 import PaymentSuccesshf from './Components/HostelFee/successhf';
@@ -76,6 +79,14 @@ function App() {
     {
       path: "/signup2",
       element: <SignUp2 />
+    },
+    {
+      path: "/otp-page",
+      element: <><Navbar /><OtpVerificationPage /><Footer /></>
+    },
+    {
+      path: "/new-password-page",
+      element: <><ChangePasswordPage /><Footer /></>
     },
     {
       path: "/WardenLogin",
@@ -193,6 +204,10 @@ function App() {
     {
       path: "/hostel-fee",
       element: <><Navbar /><HostelPayment /><Footer /></>
+    },
+    {
+      path: "/view-hostel-fee",
+      element: <><Navbar /><HostelFeeDetails /><Footer /></>
     },
     {
       path: "/stripehf",

@@ -1,18 +1,27 @@
-import pic from "@/Photos/messfee.jpg";
-import React, { useEffect, useState } from "react";
+import pic from "@/Photos/messfee.jpg"; 
+import React from "react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/Components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
-import { UtensilsIcon as CutleryIcon, InfoIcon } from 'lucide-react';
+import { HomeIcon } from 'lucide-react';
+import { BackgroundGradientAnimation } from "../ui/background-gradient-animation";
 
-const MessFeeDetails = () => {
-  
+const HostelFeeDetails = () => {
+  const feeDetails = [
+    { year: "1st Year", amount: "₹25,000" },
+    { year: "2nd Year", amount: "₹24,000" },
+    { year: "3rd Year", amount: "₹23,000" },
+    { year: "4th Year", amount: "₹22,000" },
+  ];
+
   return (
-    <div className="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-violet-400 via-pink-500 to-violet-400 mt-14">
+    <div>
+    <BackgroundGradientAnimation>
+    <div className="min-h-screen flex items-center justify-center p-6">
       <Card className="w-full max-w-4xl bg-white/90 backdrop-blur-sm shadow-2xl rounded-3xl overflow-hidden">
         <CardHeader className="bg-purple-700 text-white p-6">
           <CardTitle className="text-3xl font-bold flex items-center justify-center">
-            <CutleryIcon className="mr-2" />
-            Mess Fee Details
+            <HomeIcon className="justify-center mr-3 size-20" />
+            Hostel Fee Details
           </CardTitle>
         </CardHeader>
         <CardContent className="p-6">
@@ -28,8 +37,8 @@ const MessFeeDetails = () => {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                 <div className="absolute bottom-4 left-4 text-white">
-                  <h3 className="text-xl font-semibold">Homely Meals</h3>
-                  <p>Enjoy nutritious and tasty food at affordable price</p>
+                  <h3 className="text-xl font-semibold">Houses can be brought</h3>
+                  <p>but home has no price. We wish to bring you the closest experience to yoour homes!</p>
                 </div>
               </div>
             </div>
@@ -40,13 +49,15 @@ const MessFeeDetails = () => {
         </CardContent>
       </Card>
     </div>
+    </BackgroundGradientAnimation>
+    </div>
   );
 };
 
 const FeeTable = ({ feeDetails }) => (
   <Card>
     <CardHeader className="pb-2">
-      <CardTitle className="text-2xl font-semibold">Fee Summary</CardTitle>
+      <CardTitle className="text-2xl font-semibold">Fee Details:</CardTitle>
     </CardHeader>
     <CardContent>
       <Table>
@@ -69,4 +80,4 @@ const FeeTable = ({ feeDetails }) => (
   </Card>
 );
 
-export default MessFeeDetails;
+export default HostelFeeDetails;
