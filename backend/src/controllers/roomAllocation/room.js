@@ -66,7 +66,7 @@ const updateEmptySocket = async (data, callback) => {
 
         //notif
         const title = "Room Allotted";
-        const message = `You have been allotted room no. ${roomNumber}`;
+        const message = `You have been allotted room number ${roomNumber}`;
         add_notif(sid,title ,"rooM", message);
 
         callback({ selected: true, updatedRoom: result });
@@ -99,10 +99,17 @@ const updateAnotherSocket = async (data, callback) => {
                     $push: { waitingList: info },
                 }
             );
+
+            const findRoom = await room.findOne({roomNumber: roomNumber});
+            const occupantSid = findRoom.occupantsDetails[0].sid;
+            console.log(occupantSid)
+            const title1 = "Somebody Entered Your Waiting List";
+            const message1 = `${name} has entered the waiting list for your room ${roomNumber}.`;
+            add_notif(occupantSid,title1,"rooM",message1);
             
             //notif
             const title = "Entered Waiting List";
-            const message = `You have entered the waiting list for room no. ${roomNumber}.`;
+            const message = `You have entered the waiting list for room number ${roomNumber}.`;
             add_notif(sid,title,"rooM",message);
 
         } else {
@@ -121,7 +128,7 @@ const updateAnotherSocket = async (data, callback) => {
             
             //notif
             const title = "Room Allotted";
-            const message = `You have been allotted room no. ${roomNumber}.`;
+            const message = `You have been allotted room number ${roomNumber}.`;
             add_notif(sid,title,"rooM",message);
         }
 

@@ -70,7 +70,7 @@ export const declineInWaitingList = async (request, response) => {
 
         //notif
         const title = "Removed from Waiting List";
-        const message = `You have been removed from the waiting list for room no. ${roomNumber}.`
+        const message = `You have been removed from the waiting list for room number ${roomNumber}.`
         //  Your status has now been updated from "pending" to "false". `
         add_notif(declinesid,title ,"rooM",message);
 
@@ -152,11 +152,15 @@ export const acceptInWaitingList = async (request, response) => {
             }
         });
         
-            //notif
-            const title = "Room Allotted";
-            const message = `You have been allotted room no. ${roomNumber}.`
-            add_notif(info.sid,title ,"rooM",message);
-        }
+        const title = "Removed from Waiting List";
+        const message = `You have been removed from the waiting list for room number ${roomNumber}.`
+        //  Your status has now been updated from "pending" to "false". `
+        add_notif(infos.sid,title ,"rooM",message);
+    }
+        //notif
+        const title = "Room Allotted";
+        const message = `You have been allotted room number ${roomNumber}.`
+        add_notif(info.sid,title ,"rooM",message);
     
         return response.status(200).json({
             "updated": true
