@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
+import { baseUrl } from '@/urls';
 
 export const getFromBackend = async (link) => {
   try {
@@ -86,7 +87,7 @@ export const postToBackend = async (link, data) => {
   export const checkWarden = async () => {
     // const navigate = useNavigate();
     try {
-      const result = await getFromBackend("http://127.0.0.1:5090/api/check/check-role");
+      const result = await getFromBackend(`${baseUrl}/api/check/check-role`);
       console.log(result);
       // if (result.data.message === "access denied") {
       //     navigate("/AccessDenied");
