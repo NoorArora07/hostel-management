@@ -9,7 +9,7 @@ export const initializeSocket = (token) => {
         return socket;
     }
 
-    socket = io("https://hostel-management-nqlh.onrender.com", {
+    socket = io(`${baseUrl}`, {
         auth: { token },
         reconnection: true, // Enable auto-reconnection
         reconnectionAttempts: 5, // Number of reconnection attempts
