@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../store/auth";
+import { initializeSocket, updateSocketToken, getSocket } from "../../store/socket";
 import signup1 from "../../Photos/signup1.jpg";
 
 const SignUp = () => {
@@ -26,8 +27,18 @@ const SignUp = () => {
                 "http://127.0.0.1:5090/api/auth/signup",
                 formData
             );
-            storeTokeninLS(response.data.token);
-            navigate("/signup2");
+
+            const token = response.data.token;
+            storeTokeninLS(token); // Store the token in local storage
+
+            // Initialize or update the socket
+            if (!getSocket()) {
+                initializeSocket(token); // Initialize the socket for the first time
+            } else {
+                updateSocketToken(token); // Update the token if socket already exists
+            }
+
+            navigate("/signup2"); // Navigate to the next signup step
         } catch (error) {
             console.error(error.response?.data || "Signup failed");
             alert("Signup failed");
@@ -35,7 +46,7 @@ const SignUp = () => {
     };
 
     return (
-        <div className="flex justify-center items-center min-h-screen bg-violet-200 ">
+        <div className="flex justify-center items-center min-h-screen bg-violet-200">
             {/* Form and Image Container */}
             <div className="flex bg-white shadow-lg rounded-lg overflow-hidden w-full max-w-4xl">
                 {/* Form Section */}

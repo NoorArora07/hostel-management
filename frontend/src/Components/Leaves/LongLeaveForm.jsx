@@ -42,7 +42,7 @@ const LongLeaveForm = () => {
 
   return (
     <div className="relative min-h-screen mt-3">
-      <AuroraBackground className="absolute inset-0 pointer-events-none z-0" />
+      <AuroraBackground className="fixed inset-0 pointer-events-none z-0" />
 
       <div className="relative z-10 flex items-center justify-center min-h-screen mt-2">
       <div className="flex items-center justify-center min-h-screen mt-8">
