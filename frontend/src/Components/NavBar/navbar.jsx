@@ -4,6 +4,7 @@ import { Bell, CircleUserRoundIcon } from 'lucide-react';
 import dormify from "@/Photos/dormify-logo.jpg";
 import Notifications from "@/Components/Notifications/Notifications";
 import { getFromBackend, patchToBackend } from "@/store/fetchdata";
+import { baseUrl } from "@/urls";
 
 const Navbar = () => {
   // Notifications state and logic
@@ -14,7 +15,7 @@ const Navbar = () => {
 
   const fetchNotifications = async () => {
     try {
-      const response = await getFromBackend("http://127.0.0.1:5090/api/notif/view");
+      const response = await getFromBackend(`${baseUrl}/api/notif/view`);
       setNotifications(response.data || []);
     } catch (error) {
       console.error("Error fetching notifications:", error);
@@ -51,10 +52,10 @@ const Navbar = () => {
       const notification = notifications.find((notif) => notif._id === notifId);
       if (!notification) return;
 
-      await patchToBackend("http://127.0.0.1:5090/api/notif/markSeen", {
+      await patchToBackend(`${baseUrl}/api/notif/markSeen`, {
         notifId,
       });
-      await patchToBackend("http://127.0.0.1:5090/api/notif/delete", {
+      await patchToBackend(`${baseUrl}/api/notif/delete`, {
         notifId,
       });
 

@@ -8,6 +8,7 @@ import { AuroraBackground } from "../ui/aurora-background";
 import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/Components/ui/select";
 import axios from 'axios';
+import { baseUrl } from '@/urls';
 
 const MessLeaveForm = () => {
   const navigate = useNavigate();
@@ -45,7 +46,7 @@ const MessLeaveForm = () => {
     };
 
     try {
-      const result = await postToBackend('http://127.0.0.1:5090/api/mess/off', messData);
+      const result = await postToBackend(`${baseUrl}/api/mess/off`, messData);
       console.log(`Application data`, messData, result);
       console.log('Mess leave request submitted successfully');
       navigate('/Homepage');

@@ -3,6 +3,7 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import { AlertCircle } from 'lucide-react'
+import { baseUrl } from '@/urls.jsx'
 
 
 const PaymentCancelhf = () => {

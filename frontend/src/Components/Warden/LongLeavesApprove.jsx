@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { getFromBackend, patchToBackend } from '../../store/fetchdata';
 import { checkWarden } from '../../store/fetchdata';
 import { useNavigate } from 'react-router-dom';
+import { baseUrl } from '@/urls';
 
 const LongLeavesApprove = () => {
   const [applications, setApplications] = useState([]);
@@ -33,7 +34,7 @@ const LongLeavesApprove = () => {
   }, [timeFrame]);
 
   const fetchApplications = (time) => {
-    getFromBackend(`http://127.0.0.1:5090/api/warden/long-leaves/${time}`)
+    getFromBackend(`${baseUrl}/api/warden/long-leaves/${time}`)
       .then((response) => {
         setApplications(response.data || []);
       })
@@ -55,7 +56,7 @@ const LongLeavesApprove = () => {
     const sid = applications.sid;
 
     if (action === 'decline') {
-      patchToBackend(`http://127.0.0.1:5090/api/warden/long-leaves/delete/`, { sid:sid, object_id: longLeaveId })
+      patchToBackend(`${baseUrl}/api/warden/long-leaves/delete/`, { sid:sid, object_id: longLeaveId })
         .then(() => {
           setApplications((prev) => prev.filter((app) => app.longLeaves._id !== longLeaveId));
         })
@@ -64,7 +65,7 @@ const LongLeavesApprove = () => {
           alert('Failed to decline application.');
         });
     } else if (action === 'approve') {
-      patchToBackend(`http://127.0.0.1:5090/api/warden/long-leaves/approve/`, { sid:sid, object_id: longLeaveId })
+      patchToBackend(`${baseUrl}/api/warden/long-leaves/approve/`, { sid:sid, object_id: longLeaveId })
         .then(() => {
           setApplications((prev) => prev.filter((app) => app.longLeaves._id !== longLeaveId));
         })

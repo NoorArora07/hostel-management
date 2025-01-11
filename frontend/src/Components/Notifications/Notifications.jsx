@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { baseUrl } from '@/urls';
 
 const Notifications = ({ notifications, onNotificationClick }) => {
   const smoothScrollStyle = {

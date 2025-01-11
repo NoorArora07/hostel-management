@@ -3,6 +3,7 @@ import { ClipboardList, PlusCircle } from "lucide-react";
 import pic from "@/Photos/complaints.jpg";
 import { AuroraBackground } from '../ui/aurora-background.tsx';
 import { useNavigate } from "react-router-dom";
+import { baseUrl } from "@/urls.jsx";
 
 export default function Complaints() {
   const navigate = useNavigate();

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { AuroraBackground } from "../ui/aurora-background.tsx";
 import { useNavigate } from 'react-router-dom';
 import { postToBackend } from '../../store/fetchdata';
+import { baseUrl } from '@/urls.jsx';
 
 const LongLeaveForm = () => {
   const navigate = useNavigate();
@@ -31,7 +32,7 @@ const LongLeaveForm = () => {
     ];
 
     try {
-      const result = await postToBackend('http://127.0.0.1:5090/api/leaves/long-leaves/', applicationData);
+      const result = await postToBackend(`${baseUrl}/api/leaves/long-leaves/`, applicationData);
       console.log(`application data`, applicationData, result);
       navigate('/LongLeavesView');
     } catch (error) {

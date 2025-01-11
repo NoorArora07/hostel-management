@@ -15,6 +15,7 @@ import {
   TableRow,
 } from "@/Components/ui/table";
 import { getFromBackend }  from "@/store/fetchdata";
+import { baseUrl } from "@/urls";
 
 interface MessLeave {
   id: number;
@@ -33,7 +34,7 @@ const MessLeavesView: React.FC = () => {
   useEffect(() => {
     const fetchMessLeaves = async () => {
       try {
-          const response = await getFromBackend("http://127.0.0.1:5090/api/mess/leave-details");
+          const response = await getFromBackend(`${baseUrl}/api/mess/leave-details`);
   
           const messData = response.data.messOffDates.map((application: any) => ({
               id: application._id || Math.random(), // Use a unique key

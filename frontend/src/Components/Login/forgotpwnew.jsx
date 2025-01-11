@@ -7,6 +7,7 @@ import { Button } from '@/Components/ui/button'
 import { Card, CardHeader, CardContent, CardFooter, CardTitle } from '@/Components/ui/card'
 import { Label } from '@/Components/ui/label'
 import { Alert, AlertDescription } from '@/Components/ui/alert'
+import { baseUrl } from '@/urls'
 
 export default function ChangePasswordPage() {
   const [newPassword, setNewPassword] = useState('')
@@ -28,7 +29,7 @@ export default function ChangePasswordPage() {
     setError('')
 
     try {
-      const response = await fetch('http://127.0.0.1:5090/api/pass_reset/reset-password', {
+      const response = await fetch(`${baseUrl}/api/pass_reset/reset-password`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

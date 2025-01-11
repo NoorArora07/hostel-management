@@ -4,6 +4,7 @@ import "react-calendar/dist/Calendar.css";
 import { getFromBackend } from "../../store/fetchdata"; // Ensure the import path is correct
 import FormComponent from "./FormMessWarden";
 import EventListComponent from "./EventListWarden";
+import { baseUrl } from "@/urls";
 
 const WCalendar = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -16,7 +17,7 @@ const WCalendar = () => {
 
   const fetchData = async () => {
     try {
-      const response = await getFromBackend("http://127.0.0.1:5090/api/mess-warden/getEvent");
+      const response = await getFromBackend(`${baseUrl}/api/mess-warden/getEvent`);
       const transformedEvents = response.data.map(({ title, description, date }) => ({
         date: new Date(date), // Convert date string to Date object
         title,

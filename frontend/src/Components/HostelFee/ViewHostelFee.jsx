@@ -4,6 +4,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
 import { HomeIcon } from 'lucide-react';
 import { BackgroundGradientAnimation } from "../ui/background-gradient-animation";
+import { baseUrl } from "@/urls";
 
 const HostelFeeDetails = () => {
   const feeDetails = [

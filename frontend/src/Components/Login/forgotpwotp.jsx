@@ -4,6 +4,7 @@ import {Input} from '@/Components/ui/input';
 import { Button, buttonVariants } from '@/Components/ui/button';
 import {Card, CardHeader, CardContent, CardTitle, CardFooter} from '@/Components/ui/card';
 import { Label } from '@/Components/ui/label'
+import { baseUrl } from '@/urls';
 
 const OtpVerificationPage = () => {
   const [otp, setOtp] = useState('');
@@ -20,7 +21,7 @@ const OtpVerificationPage = () => {
     setIsLoading(true)
 
     try {
-      const response = await fetch('http://127.0.0.1:5090/api/pass_reset/verify-otp', {
+      const response = await fetch(`${baseUrl}/api/pass_reset/verify-otp`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

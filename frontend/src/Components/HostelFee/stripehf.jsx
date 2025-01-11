@@ -22,6 +22,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { postToBackend } from '@/store/fetchdata';
 import { loadStripe } from '@stripe/stripe-js';
+import { baseUrl } from '@/urls.jsx';
 
 const Stripehf = () => {
   const navigate = useNavigate();
@@ -41,7 +42,7 @@ const Stripehf = () => {
     console.log('Payment data:', paymentData);
 
     try {
-      const response = await postToBackend('http://127.0.0.1:5090/api/hostelFee/paynow', paymentData,);
+      const response = await postToBackend(`${baseUrl}/api/hostelFee/paynow`, paymentData,);
 
       console.log("post to backend ho gya")
       console.log(response)

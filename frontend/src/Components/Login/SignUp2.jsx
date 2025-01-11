@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { postToBackend } from "../../store/fetchdata";
 import signup1 from "../../Photos/signup1.jpg";
+import { baseUrl } from "@/urls";
 
 const SignUp2 = () => {
     const [formData, setFormData] = useState({
@@ -23,7 +24,7 @@ const SignUp2 = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await postToBackend("http://127.0.0.1:5090/api/auth/signup2", formData);
+            await postToBackend(`${baseUrl}/api/auth/signup2`, formData);
             navigate("/Homepage");
         } catch (error) {
             const errorMessage = error.response?.data?.message || "Signup failed";

@@ -24,6 +24,7 @@ import { Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { BadgeDollarSign } from 'lucide-react';
 import { useLocation } from 'react-router-dom'; // for getting query params
+import { baseUrl } from '@/urls';
 
 const PaymentSuccess = () => {
   const [session, setSession] = useState(null);
@@ -35,7 +36,7 @@ const PaymentSuccess = () => {
     if (sessionId) {
       const sendPaymentSuccess = async () => {
         try {
-          const response = await postToBackend('http://127.0.0.1:5090/api/payments/updateStatus', {
+          const response = await postToBackend(`${baseUrl}/api/payments/updateStatus`, {
             success: true,
             sessionId,  // send sessionId
           });
@@ -93,7 +94,7 @@ export default PaymentSuccess;
 
 //     const sendPaymentSuccess = async () => {
 //       try {
-//         const response = await postToBackend('http://127.0.0.1:5090/api/payments/updateStatus', {
+//         const response = await postToBackend('${baseUrl}/api/payments/updateStatus', {
 //           success: true,
 //           id: session.id,
 //         });

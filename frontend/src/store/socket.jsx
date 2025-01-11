@@ -1,4 +1,5 @@
 import { io } from "socket.io-client";
+import { baseUrl } from "@/urls";
 
 let socket = null;
 
@@ -8,7 +9,7 @@ export const initializeSocket = (token) => {
         return socket;
     }
 
-    socket = io("http://localhost:5090/", {
+    socket = io("https://hostel-management-nqlh.onrender.com", {
         auth: { token },
         reconnection: true, // Enable auto-reconnection
         reconnectionAttempts: 5, // Number of reconnection attempts

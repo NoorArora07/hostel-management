@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { getFromBackend } from "../../store/fetchdata";
 import { AuroraBackground } from "../ui/aurora-background.tsx";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { baseUrl } from "@/urls";
 
 const LateLeavesView = () => {
   const navigate = useNavigate();
@@ -13,10 +14,10 @@ const LateLeavesView = () => {
     const fetchApplications = async () => {
       try {
         const sentResponse = await getFromBackend(
-          "http://127.0.0.1:5090/api/leaves/late-leaves/pending"
+          `${baseUrl}/api/leaves/late-leaves/pending`
         );
         const approvedResponse = await getFromBackend(
-          "http://127.0.0.1:5090/api/leaves/late-leaves/accepted/"
+          `${baseUrl}/api/leaves/late-leaves/accepted/`
         );
 
         setSentApplications(

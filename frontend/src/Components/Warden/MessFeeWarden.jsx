@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { postToBackend } from "@/store/fetchdata";
 import { Button } from "@/Components/ui/button";
 import { Input } from "@/Components/ui/input";
+import { baseUrl } from "@/urls";
 
 export default function MessFeeForm() {
     const months = [
@@ -51,7 +52,7 @@ export default function MessFeeForm() {
         };
 
         try {
-            const response = await postToBackend("http://127.0.0.1:5090/api/warden_details/add", data);
+            const response = await postToBackend(`${baseUrl}/api/warden_details/add`, data);
             console.log("Response:", response);
             
         } catch (error) {

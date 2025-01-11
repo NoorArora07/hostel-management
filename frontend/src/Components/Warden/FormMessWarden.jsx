@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { postToBackend } from "../../store/fetchdata";
+import { baseUrl } from "@/urls";
 
 const FormComponent = ({ handleAddEvent, selectedDate }) => {
   const [title, setTitle] = useState("");
@@ -18,7 +19,7 @@ const FormComponent = ({ handleAddEvent, selectedDate }) => {
     try {
       // Send the data to the backend
       const result = await postToBackend(
-        "http://127.0.0.1:5090/api/mess-warden/createEvent",
+        `${baseUrl}/api/mess-warden/createEvent`,
         messData
       );
       console.log("Application data sent to backend:", messData, result);

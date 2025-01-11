@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../store/auth";
 import { initializeSocket, updateSocketToken, getSocket } from "../../store/socket";
 import signup1 from "../../Photos/signup1.jpg";
+import { baseUrl } from "@/urls";
 
 const SignUp = () => {
     const [formData, setFormData] = useState({
@@ -24,7 +25,7 @@ const SignUp = () => {
         e.preventDefault();
         try {
             const response = await axios.post(
-                "http://127.0.0.1:5090/api/auth/signup",
+                `${baseUrl}/api/auth/signup`,
                 formData
             );
 

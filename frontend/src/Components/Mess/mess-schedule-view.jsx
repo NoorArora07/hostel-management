@@ -14,7 +14,7 @@ const MyCalendar = () => {
 
   const fetchData = async () => {
     try {
-      const response = await getFromBackend("http://127.0.0.1:5090/api/mess/getEvent");
+      const response = await getFromBackend(`${baseUrl}/api/mess/getEvent`);
       const transformedEvents = response.data.map(({ title, description, date }) => ({
         date: new Date(date),
         title,

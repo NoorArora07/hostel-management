@@ -4,6 +4,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
 import { UtensilsIcon as CutleryIcon, InfoIcon } from 'lucide-react';
 import { getFromBackend } from "@/store/fetchdata";
+import { baseUrl } from "@/urls";
 
 const MessFeeDetails = () => {
   const [feeDetails, setFeeDetails] = useState([]);
@@ -14,7 +15,7 @@ const MessFeeDetails = () => {
 
   const fetchFeeDetails = async () => {
     try {
-      const response = await getFromBackend("http://127.0.0.1:5090/api/details");
+      const response = await getFromBackend(`${baseUrl}/api/details`);
       console.log("Raw Axios response:", response);
       
       const data = response.data; 

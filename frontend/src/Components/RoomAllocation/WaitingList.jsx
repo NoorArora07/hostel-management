@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getFromBackend, patchToBackend } from '../../store/fetchdata'; // Import the functions
 import { useNavigate } from 'react-router-dom';
+import { baseUrl } from '@/urls';
 
 const WaitingList = () => {
   const [waitingList, setWaitingList] = useState([]);
@@ -14,7 +15,7 @@ const WaitingList = () => {
     const fetchWaitingList = async () => {
       try {
         const response = await getFromBackend(
-          `http://127.0.0.1:5090/api/room-allocation/waiting-list/`
+          `${baseUrl}/api/room-allocation/waiting-list/`
         );
         const roomNumberFromResponse = response.data.roomNumber; // Extract roomNumber from response
         setRoomNumber(roomNumberFromResponse); // Set roomNumber from the response
@@ -29,7 +30,7 @@ const WaitingList = () => {
       try {
         if (roomNumber) { // Fetch user info only if roomNumber is available
           const response = await getFromBackend(
-            `http://127.0.0.1:5090/api/room-allocation/get-info/${roomNumber}`
+            `${baseUrl}/api/room-allocation/get-info/${roomNumber}`
           );
           setUserInfo(response.data);
         }
@@ -46,7 +47,7 @@ const WaitingList = () => {
   const handleLeaveWaitingList = async () => {
     try {
       const response = await patchToBackend(
-        `http://127.0.0.1:5090/api/room-allocation/waiting-list/leave`
+        `${baseUrl}/api/room-allocation/waiting-list/leave`
       );
       const sid = response.data.sid;
       setWaitingList((prevList) => prevList.filter((person) => person.sid !== sid));
@@ -63,7 +64,7 @@ const WaitingList = () => {
             sid:sid,name:name,branch:branch
         }
       const response = await patchToBackend(
-        `http://127.0.0.1:5090/api/room-allocation/waiting-list/accept`, {info:info,roomNumber:roomNumber}
+        `${baseUrl}/api/room-allocation/waiting-list/accept`, {info:info,roomNumber:roomNumber}
       );
       console.log('Application accepted:', response.data);
       setWaitingList((prevList) => prevList.slice(1)); // Remove the first person from the waiting list
@@ -76,7 +77,7 @@ const WaitingList = () => {
   const handleDeclineApplication = async (declinedSid) => {
     try {
       const response = await patchToBackend(
-        `http://127.0.0.1:5090/api/room-allocation/waiting-list/decline`, {sid:declinedSid, roomNumber:roomNumber}
+        `${baseUrl}/api/room-allocation/waiting-list/decline`, {sid:declinedSid, roomNumber:roomNumber}
       );
       console.log('Application declined:', response.data);
       setWaitingList((prevList) => prevList.filter((person) => person.sid !== declinedSid));

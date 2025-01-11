@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { getFromBackend, patchToBackend } from '../../store/fetchdata';
 import { checkWarden } from '../../store/fetchdata';
 import { useNavigate } from 'react-router-dom';
+import { baseUrl } from '@/urls';
 
 const LateLeavesApprove = () => {
   const [applications, setApplications] = useState([]);
@@ -33,7 +34,7 @@ const LateLeavesApprove = () => {
   }, [leaveStatus]);
 
   const fetchApplications = (status) => {
-    getFromBackend(`http://127.0.0.1:5090/api/warden/late-leaves/${status}`)
+    getFromBackend(`${baseUrl}/api/warden/late-leaves/${status}`)
       .then((response) => {
         setApplications(response.data || []);
       })
@@ -55,7 +56,7 @@ const LateLeavesApprove = () => {
     const sid = applications.sid;
 
     if (action === 'decline') {
-      patchToBackend(`http://127.0.0.1:5090/api/warden/late-leaves/disapprove/`, { sid:sid, object_id: lateLeaveId })
+      patchToBackend(`${baseUrl}/api/warden/late-leaves/disapprove/`, { sid:sid, object_id: lateLeaveId })
         .then(() => {
           setApplications((prev) => prev.filter((app) => app.lateLeaves._id !== lateLeaveId));
         })
@@ -64,7 +65,7 @@ const LateLeavesApprove = () => {
           alert('Failed to decline application.');
         });
     } else if (action === 'approve') {
-      patchToBackend(`http://127.0.0.1:5090/api/warden/late-leaves/approve/`, { sid:sid, object_id: lateLeaveId })
+      patchToBackend(`${baseUrl}/api/warden/late-leaves/approve/`, { sid:sid, object_id: lateLeaveId })
         .then(() => {
           setApplications((prev) => prev.filter((app) => app.lateLeaves._id !== lateLeaveId));
         })

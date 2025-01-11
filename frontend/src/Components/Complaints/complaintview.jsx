@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Search, ChevronLeft, ChevronRight } from 'lucide-react'
 import { AuroraBackground } from "../ui/aurora-background.tsx";
+import { baseUrl } from "@/urls.jsx";
 
 export default function ComplaintsView() {
   const [complaints, setComplaints] = useState([])
@@ -21,7 +22,7 @@ export default function ComplaintsView() {
     const fetchComplaints = async () => {
       try {
         setLoading(true)
-        const response = await getFromBackend("http://127.0.0.1:5090/api/complaint/view")
+        const response = await getFromBackend(`${baseUrl}/api/complaint/view`)
         const complaintsArray = response.data.complaints || []
         console.log(response)
         setComplaints(Array.isArray(complaintsArray) ? complaintsArray : [])

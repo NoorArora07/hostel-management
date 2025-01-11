@@ -4,6 +4,7 @@ import {getSocket} from '../../store/socket';
 import { getFromBackend, patchToBackend, postToBackend } from "../../store/fetchdata";
 import { HoverCard, HoverCardTrigger, HoverCardContent } from "../ui/hover-card";
 import { useNavigate } from "react-router-dom"; 
+import { baseUrl } from "@/urls";
 
 const RoomAllocation = () => {
   
@@ -22,7 +23,7 @@ const RoomAllocation = () => {
   const fetchRoomData = async () => {
     try {
       const response = await axios.get(
-        `http://127.0.0.1:5090/api/room-allocation/get-rooms/${floor}`
+        `${baseUrl}/api/room-allocation/get-rooms/${floor}`
       );
       if (response.data && Array.isArray(response.data.rooms)) {
         setRoomStatus(response.data.rooms);
@@ -68,7 +69,7 @@ const RoomAllocation = () => {
   const checkWaitingListStatus = async (roomNumber) => {
     if (!roomNumber) return;
     try {
-      const response = await getFromBackend(`http://127.0.0.1:5090/api/room-allocation/get-info/${roomNumber}`);
+      const response = await getFromBackend(`${baseUrl}/api/room-allocation/get-info/${roomNumber}`);
       const data = response.data;
       console.log(data);
       // Set the allowWaitingList value in state
@@ -125,7 +126,7 @@ const RoomAllocation = () => {
     try {
       // SHAYAD DELETE HO JAYE
       // const response1 = await patchToBackend(
-      //   `http://127.0.0.1:5090/api/room-allocation/room`,
+      //   `${baseUrl}/api/room-allocation/room`,
       //   updatedRoomData
       // );
       // console.log(response1)
@@ -167,7 +168,7 @@ const RoomAllocation = () => {
       // YE BHI DELETE HO JAYE
       // Proceed to update the person's data
       // const response2 = await postToBackend(
-      //   `http://127.0.0.1:5090/api/room-allocation/person`,
+      //   `${baseUrl}/api/room-allocation/person`,
       //   updatedPersonData
       // );
       // console.log("API Response:", response1); // Debug the response object

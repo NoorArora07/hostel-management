@@ -5,6 +5,7 @@ import { useAuth } from "../../store/auth";
 import { initializeSocket, updateSocketToken, getSocket } from "../../store/socket";
 import loginside from '../../Photos/loginside.jpg';
 import { postToBackend } from "@/store/fetchdata";
+import { baseUrl } from "@/urls";
 
 const Login = () => {
     const [formData, setFormData] = useState({
@@ -22,7 +23,7 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post("http://127.0.0.1:5090/api/auth/login", formData);
+            const response = await axios.post(`${baseUrl}/api/auth/login`, formData);
 
             const token = response.data.token;
             storeTokeninLS(token); // Store token in local storage
@@ -54,7 +55,7 @@ const Login = () => {
                 alert("Please enter your email to reset the password.");
                 return;
             }            
-            const temp = await axios.post("http://127.0.0.1:5090/api/pass_reset/forgot-password", { email });
+            const temp = await axios.post(`${baseUrl}/api/pass_reset/forgot-password`, { email });
             alert("Password reset link has been sent to your email.");
             navigate('/otp-page')
         } catch (error) {

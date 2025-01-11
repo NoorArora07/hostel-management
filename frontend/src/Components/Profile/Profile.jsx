@@ -10,6 +10,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/Componen
 import { LogOut, User, Mail, Phone, MapPin, Briefcase, Calendar, Edit, Save, X } from "lucide-react";
 import { AuroraBackground } from "../ui/aurora-background.tsx";
 import { useNavigate } from "react-router-dom";
+import { baseUrl } from "@/urls.jsx";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ const Profile = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await getFromBackend("http://127.0.0.1:5090/api/profile");
+        const response = await getFromBackend(`${baseUrl}/api/profile`);
         setUserProfile(response.data);
         setError(null); // Clear any existing error
       } catch (error) {
@@ -47,7 +48,7 @@ const Profile = () => {
 
   const handleSaveChanges = async () => {
     try {
-      await patchToBackend("http://127.0.0.1:5090/api/profile/edit", editedProfile);
+      await patchToBackend(`${baseUrl}/api/profile/edit`, editedProfile);
       setUserProfile((prev) => ({ ...prev, ...editedProfile }));
       setEditedProfile({});
       setIsEditing(false);

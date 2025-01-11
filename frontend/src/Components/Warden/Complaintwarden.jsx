@@ -13,6 +13,7 @@ import { getFromBackend, postToBackend, patchToBackend } from "@/store/fetchdata
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Loader2 } from 'lucide-react'
+import { baseUrl } from "@/urls"
 
 export default function ComplaintsViewW() {
   const [complaints, setComplaints] = useState([])
@@ -22,7 +23,7 @@ export default function ComplaintsViewW() {
     const fetchComplaints = async () => {
       try {
         setLoading(true);
-        const response = await getFromBackend("http://127.0.0.1:5090/api/warden-complaint/all");
+        const response = await getFromBackend(`${baseUrl}/api/warden-complaint/all`);
         const complaintsArray = response.data.complaints || [];
         setComplaints(Array.isArray(complaintsArray) ? complaintsArray : []);
       } catch (error) {
@@ -39,7 +40,7 @@ export default function ComplaintsViewW() {
     const info = {sid: sid, complaintId: complaintId, status: status.toLowerCase()}
     try {
       const response = await patchToBackend(
-        "http://127.0.0.1:5090/api/warden-complaint/update-status", info
+        `${baseUrl}/api/warden-complaint/update-status`, info
       );
   
       setComplaints((prevComplaints) =>

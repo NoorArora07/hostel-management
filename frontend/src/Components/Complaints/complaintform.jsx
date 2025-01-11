@@ -5,6 +5,7 @@ import { Button } from "@/Components/ui/button";
 import { Input } from "@/Components/ui/input";
 import { AuroraBackground } from "../ui/aurora-background";
 import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
+import { baseUrl } from '@/urls.jsx';
 
 export default function ComplaintsForm() {
     const [formData, setFormData] = useState({
@@ -35,7 +36,7 @@ export default function ComplaintsForm() {
         }
 
         try {
-            const response = await postToBackend('http://127.0.0.1:5090/api/complaint/add', formData);
+            const response = await postToBackend(`${baseUrl}/api/complaint/add`, formData);
             alert(`${response.data.message}`);
         } catch (error) {
             console.error('Error submitting complaint:', error);

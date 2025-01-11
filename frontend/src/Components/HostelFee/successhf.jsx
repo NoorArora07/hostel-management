@@ -24,6 +24,7 @@ import { Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { BadgeDollarSign } from 'lucide-react';
 import { useLocation } from 'react-router-dom'; // for getting query params
+import { baseUrl } from '@/urls';
 
 const PaymentSuccesshf = () => {
   const [session, setSession] = useState(null);
@@ -35,7 +36,7 @@ const PaymentSuccesshf = () => {
     if (sessionId) {
       const sendPaymentSuccess = async () => {
         try {
-          const response = await postToBackend('http://127.0.0.1:5090/api/hostelFee/updateStatus', {
+          const response = await postToBackend(`${baseUrl}/api/hostelFee/updateStatus`, {
             success: true,
             sessionId,  // send sessionId
           });

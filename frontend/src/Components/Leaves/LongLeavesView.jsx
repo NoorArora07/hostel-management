@@ -4,6 +4,7 @@ import { getFromBackend } from "../../store/fetchdata";
 import { Button } from "@/Components/ui/button";
 import { AuroraBackground } from "../ui/aurora-background.tsx";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { baseUrl } from "@/urls";
 
 const LongLeavesView = () => {
   const navigate = useNavigate();
@@ -14,10 +15,10 @@ const LongLeavesView = () => {
     const fetchApplications = async () => {
       try {
         const sentResponse = await getFromBackend(
-          "http://127.0.0.1:5090/api/leaves/long-leaves/pending"
+          `${baseUrl}/api/leaves/long-leaves/pending`
         );
         const approvedResponse = await getFromBackend(
-          "http://127.0.0.1:5090/api/leaves/long-leaves/accepted/"
+          `${baseUrl}/api/leaves/long-leaves/accepted/`
         );
 
         setSentApplications(

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { AuroraBackground } from "../ui/aurora-background.tsx";
 import { useNavigate } from 'react-router-dom';
 import { postToBackend } from '../../store/fetchdata';
+import { baseUrl } from '@/urls.jsx';
 
 const LateLeaveForm = () => {
   const navigate = useNavigate();
@@ -35,7 +36,7 @@ const LateLeaveForm = () => {
     };
 
     try {
-      const result = await postToBackend('http://127.0.0.1:5090/api/leaves/late-leaves/', applicationData);
+      const result = await postToBackend(`${baseUrl}/api/leaves/late-leaves/`, applicationData);
       console.log('Application Data:', applicationData, result);
       if (result.data.sent === false) {
         alert(`${result.data.reason}`);
