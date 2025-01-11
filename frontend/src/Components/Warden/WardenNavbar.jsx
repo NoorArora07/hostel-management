@@ -37,7 +37,7 @@ const WardenNavbar = () => {
                 Long Leave
               </NavLink>
               <NavLink
-                to="/leaves/late"
+                to="/LateLeavesApprove"
                 className="block px-4 py-2 text-lg font-medium hover:bg-teal-100"
               >
                 Late Leave
