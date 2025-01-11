@@ -55,7 +55,7 @@ export default function LeaveDashboardPage() {
   return (
     <div className="relative min-h-screen">
       {/* Aurora Background */}
-      <AuroraBackground className="absolute top-0 left-0 right-0 z-0 h-full" />
+      <AuroraBackground className="fixed top-0 left-0 right-0 z-0 h-full" />
 
       {/* Leave Dashboard Section */}
       <div className="flex flex-col lg:flex-row items-center justify-between gap-10 p-8 bg-white/20 backdrop-blur-lg mt-16 relative z-10">

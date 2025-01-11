@@ -90,7 +90,9 @@ const LongLeavesView = () => {
 
   return (
     <div className="relative min-h-screen bg-gray-100">
-      <AuroraBackground className="absolute inset-0 pointer-events-none z-0" />
+      <AuroraBackground className="fixed inset-0 pointer-events-none z-0" />
+
+      <div className="h-20"></div>
 
       <div className="relative z-10 flex flex-col items-center px-6 py-12 mt-16">
         <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">

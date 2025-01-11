@@ -57,7 +57,7 @@ const MessLeaveForm = () => {
 
   return (
     <div className="relative min-h-screen bg-gray-50">
-      <AuroraBackground className="absolute inset-0 pointer-events-none z-0" />
+      <AuroraBackground className="fixed inset-0 pointer-events-none z-0" />
 
       <div className="relative min-h-screen flex flex-col items-center justify-center p-4 z-10 ">
         <Card className="w-full max-w-xl bg-white shadow-lg rounded-lg mt-8">

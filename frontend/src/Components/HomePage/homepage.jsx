@@ -24,9 +24,13 @@ const FAQs = [
 
 const Homepage = () => {
   return (
-    <div className=" mt-20 min-h-screen overflow-hidden">
-      <AuroraBackground>
-        <main className="container mx-auto px-4 py-8">
+    <div className="relative min-h-screen bg-gray-100">
+      {/* Aurora Background */}
+      <AuroraBackground className="fixed inset-0 pointer-events-none z-0" />
+
+      <div className="h-24"></div>
+
+        <main className="container mx-auto px-4 py-8 relative z-10">
           <section className="text-center mb-12">
             <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-4">
               Welcome!
@@ -99,7 +103,6 @@ const Homepage = () => {
             </div>
           </section>
         </main>
-      </AuroraBackground>
     </div>
   )
 }

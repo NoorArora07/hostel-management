@@ -18,12 +18,12 @@ const LateLeavesView = () => {
         const approvedResponse = await getFromBackend(
           "http://127.0.0.1:5090/api/leaves/late-leaves/accepted/"
         );
-  
+
         setSentApplications(
           Array.isArray(sentResponse.data)
             ? sentResponse.data.map((application) => ({
-                dateOfLeaving: application.date, 
-                status: application.status,     
+                dateOfLeaving: application.date,
+                status: application.status,
               }))
             : []
         );
@@ -31,7 +31,7 @@ const LateLeavesView = () => {
           Array.isArray(approvedResponse.data)
             ? approvedResponse.data.map((application) => ({
                 dateOfLeaving: application.date,
-                status: application.status,    
+                status: application.status,
               }))
             : []
         );
@@ -41,10 +41,10 @@ const LateLeavesView = () => {
         setApprovedApplications([]);
       }
     };
-  
+
     fetchApplications();
   }, []);
-  
+
   const handleCreateNewRequest = () => {
     navigate("/LateLeaveForm");
   };
@@ -95,11 +95,15 @@ const LateLeavesView = () => {
 
   return (
     <div className="relative min-h-screen bg-gray-100">
-      <AuroraBackground className="absolute inset-0 pointer-events-none z-0" />
+      {/* Aurora Background */}
+      <AuroraBackground className="fixed inset-0 pointer-events-none z-0" />
 
-      <div className="relative z-10 flex flex-col items-center px-6 py-12 mt-16">
+      <div className="h-24"></div>
+
+      {/* Main Content */}
+      <div className="relative z-10 flex flex-col items-center px-6 py-12 mt-24">
         <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
-          {/* StatsCards */}
+          {/* Stats Cards */}
           <div className="flex flex-col gap-6 h-full">
             <StatCard
               title="Sent Applications"
@@ -113,18 +117,17 @@ const LateLeavesView = () => {
             />
           </div>
 
-          {/* Main Content */}
+          {/* Main Content Section */}
           <div className="lg:col-span-2 bg-white/20 backdrop-blur-lg rounded-lg shadow-lg p-8 space-y-8 h-full">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-              {/* Sent Applications */}
+              {/* Sent Applications Table */}
               <ApplicationsTable
                 title="Sent Applications"
                 applications={sentApplications}
                 emptyMessage="No sent applications."
               />
 
-              {/* Approved Applications */}
+              {/* Approved Applications Table */}
               <ApplicationsTable
                 title="Approved Applications"
                 applications={approvedApplications}
