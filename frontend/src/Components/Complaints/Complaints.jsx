@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { ClipboardList, PlusCircle } from "lucide-react";
 import pic from "@/Photos/complaints.jpg";
+import { AuroraBackground } from '../ui/aurora-background.tsx';
 import { useNavigate } from "react-router-dom";
 
 export default function Complaints() {
@@ -13,11 +14,14 @@ export default function Complaints() {
   };
 
   return (
-    <div className="bg-gradient-to-b from-blue-100 to-white mt-20">
-      <main className="container mx-auto px-4 py-16">
+    <div className="relative min-h-screen">
+      {/* Aurora Background */}
+      <AuroraBackground className="fixed top-0 left-0 right-0 z-0 h-full" />
+
+      <main className="container mx-auto px-4 py-16 relative z-10 bg-white/20 backdrop-blur-lg mt-16 max-w-3xl">
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-800 mb-4">Hostel Complaints Portal</h1>
-          <p className="text-xl text-gray-600">Your voice matters. Report and track issues easily.</p>
+          <h1 className="text-4xl font-bold text-white mb-4">Hostel Complaints Portal</h1>
+          <p className="text-xl text-violet-100">Your voice matters. Report and track issues easily.</p>
         </div>
 
         <div className="flex flex-col md:flex-row items-center justify-center gap-8 mb-16">
@@ -33,7 +37,7 @@ export default function Complaints() {
           </div>
           <div>
             <Button
-              className="w-64 h-16 text-lg"
+              className="w-64 h-16 text-lg bg-violet-100 hover:bg-violet-200"
               variant="outline"
               onClick={() => handleNavigation(pathf)}
             >
@@ -50,7 +54,7 @@ export default function Complaints() {
             className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
           />
         </div>
-        <p className="text-center text-gray-500 mt-8">
+        <p className="text-center text-violet-100 mt-8">
           We're committed to improving your hostel experience. Your feedback helps us make it better for everyone.
         </p>
       </main>
