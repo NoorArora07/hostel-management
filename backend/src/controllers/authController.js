@@ -43,7 +43,7 @@ export const signup1 =  async (request, response) => {
             sid: data.sid, 
             email: data.email,
             role: data.role
-         }, JWT_SECRET, { expiresIn: "30m",}
+         }, JWT_SECRET, { expiresIn: "2h",}
         );
 
         console.log("Successful signup (part 1)!");
