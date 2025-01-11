@@ -1,24 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { getFromBackend, patchToBackend } from '../../store/fetchdata'; // Import the functions
+import { getFromBackend, patchToBackend } from '../../store/fetchdata';
 import { useNavigate } from 'react-router-dom';
 import { baseUrl } from '@/urls';
+import {Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter} from '../ui/card'; 
+import { AuroraBackground } from "../ui/aurora-background.tsx"
 
 const WaitingList = () => {
   const [waitingList, setWaitingList] = useState([]);
-  const [userInfo, setUserInfo] = useState(null); // State for user details
-  const [roomNumber, setRoomNumber] = useState(null); // State for room number
+  const [userInfo, setUserInfo] = useState(null);
+  const [roomNumber, setRoomNumber] = useState(null);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  // Fetch waiting list data and user info when the component mounts
   useEffect(() => {
     const fetchWaitingList = async () => {
       try {
         const response = await getFromBackend(
           `${baseUrl}/api/room-allocation/waiting-list/`
         );
-        const roomNumberFromResponse = response.data.roomNumber; // Extract roomNumber from response
-        setRoomNumber(roomNumberFromResponse); // Set roomNumber from the response
+        const roomNumberFromResponse = response.data.roomNumber;
+        setRoomNumber(roomNumberFromResponse);
         setWaitingList(response.data.waitingList);
       } catch (err) {
         setError('Failed to fetch waiting list');
@@ -28,7 +29,7 @@ const WaitingList = () => {
 
     const fetchUserInfo = async () => {
       try {
-        if (roomNumber) { // Fetch user info only if roomNumber is available
+        if (roomNumber) {
           const response = await getFromBackend(
             `${baseUrl}/api/room-allocation/get-info/${roomNumber}`
           );
@@ -42,7 +43,7 @@ const WaitingList = () => {
 
     fetchWaitingList();
     fetchUserInfo();
-  }, [roomNumber]); // Fetch user info whenever roomNumber is updated
+  }, [roomNumber]);
 
   const handleLeaveWaitingList = async () => {
     try {
@@ -58,16 +59,19 @@ const WaitingList = () => {
     }
   };
 
-  const handleAcceptApplication = async (sid,name,branch) => {
+  const handleAcceptApplication = async (sid, name, branch) => {
     try {
-        const info = {
-            sid:sid,name:name,branch:branch
-        }
+      const info = {
+        sid: sid,
+        name: name,
+        branch: branch,
+      };
       const response = await patchToBackend(
         `${baseUrl}/api/room-allocation/waiting-list/accept`, {info:info,roomNumber:roomNumber}
       );
       console.log('Application accepted:', response.data);
-      setWaitingList((prevList) => prevList.slice(1)); // Remove the first person from the waiting list
+      setWaitingList((prevList) => prevList.slice(1));
+      navigate('/RoomsView');
     } catch (err) {
       setError('Failed to accept the application');
       console.error('Error accepting the application:', err);
@@ -81,70 +85,87 @@ const WaitingList = () => {
       );
       console.log('Application declined:', response.data);
       setWaitingList((prevList) => prevList.filter((person) => person.sid !== declinedSid));
-  
-      // Optional: Update user status to not be in the waiting list anymore
+
       if (userInfo && userInfo.sid === declinedSid) {
-        const updatedUserInfo = { ...userInfo, inWaitingList: false }; // Update the user status
-        setUserInfo(updatedUserInfo); // Update userInfo state
+        const updatedUserInfo = { ...userInfo, inWaitingList: false };
+        setUserInfo(updatedUserInfo);
       }
     } catch (err) {
       setError('Failed to decline the application');
       console.error('Error declining the application:', err);
     }
   };
-  
 
   return (
-    <div className="container p-8 mt-16">
-      <h2 className="text-2xl font-semibold mb-4">
-        Waiting List for Room {roomNumber ? roomNumber : 'Loading...'}
-      </h2>
+    <div className="relative min-h-screen bg-gray-100">
+        {/* Aurora Background */}
+        <AuroraBackground className="fixed inset-0 pointer-events-none z-0" />
 
-      {error && <div className="text-red-600">{error}</div>}
+    <div className="flex items-center justify-center h-screen bg-gray-100">
+      <Card className="w-full max-w-lg relative z-10">
+        <CardHeader>
+          <CardTitle className="text-center text-3xl">
+            Waiting List for Room {roomNumber ? roomNumber : 'Loading...'}
+          </CardTitle>
+          {error && <CardDescription className="text-red-600">{error}</CardDescription>}
+        </CardHeader>
 
-      {waitingList.length === 0 ? (
-        <p>No one is currently on the waiting list for this room.</p>
-      ) : (
-        <ul>
-          {waitingList.map((person, index) => (
-        <li key={index} className="mb-4 p-4 border-b">
-            <strong>Name:</strong> {person.name} <br />
-            <strong>SID:</strong> {person.sid} <br />
-            <strong>Branch:</strong> {person.branch}
-            {userInfo && userInfo.occupant && (
-            <div className="mt-4 flex space-x-4">
-                <button
-                onClick={() => handleAcceptApplication(person.sid,person.name,person.branch)} // Passing person.sid
-                className="px-4 py-2 rounded bg-green-600 text-white hover:bg-green-800"
-                >
-                Accept
-                </button>
-                <button
-                onClick={() => handleDeclineApplication(person.sid)} // Passing person.sid
-                className="px-4 py-2 rounded bg-red-600 text-white hover:bg-red-800"
-                >
-                Decline
-                </button>
-            </div>
-            )}
-        </li>
-        ))}
+        <CardContent>
+          {waitingList.length === 0 ? (
+            <p className="text-center text-gray-600">
+              No one is currently on the waiting list for this room.
+            </p>
+          ) : (
+            <ul className="divide-y divide-gray-200">
+              {waitingList.map((person, index) => (
+                <li key={index} className="p-4 flex flex-col md:flex-row justify-between items-center">
+                  <div className="text-gray-700">
+                    <p> <strong>Name:</strong> {person.name} </p>
+                    <p> <strong>SID:</strong> {person.sid} </p>                                    
+                    <p> <strong>Branch:</strong> {person.branch} </p>                 
+                  </div>
+                  
+                  {userInfo && userInfo.occupant && (
+                    <div className="mt-4 md:mt-0 flex space-x-4">
+                      <button
+                        onClick={() =>
+                          handleAcceptApplication(person.sid, person.name, person.branch)
+                        }
+                        className="px-4 py-2 rounded bg-green-600 text-white hover:bg-green-800"
+                      >
+                        Accept
+                      </button>
+                      <button
+                        onClick={() => handleDeclineApplication(person.sid)}
+                        className="px-4 py-2 rounded bg-red-600 text-white hover:bg-red-800"
+                      >
+                        Decline
+                      </button>
+                    </div>
+                  )}
+                </li>
+              ))}
+            </ul>
+          )}
+        </CardContent>
 
-        </ul>
-      )}
-
-      {/* Check if userInfo is available and in waiting list */}
-      {userInfo ? (
-        userInfo.inWaitingList ? (
-          <button
-            onClick={handleLeaveWaitingList}
-            disabled={userInfo.occupant} // Disables the button if userInfo.occupant is true
-            className={`mt-4 px-4 py-2 rounded ${userInfo.occupant ? 'bg-gray-400 text-white cursor-not-allowed' : 'bg-red-600 text-white hover:bg-red-800'}`}
-          >
-            {userInfo.occupant ? 'You are the Occupant' : 'Leave Waiting List'}
-          </button>
-        ) : null
-      ) : null}
+        {userInfo && userInfo.inWaitingList && (
+          <CardFooter className="flex justify-center">
+            <button
+              onClick={handleLeaveWaitingList}
+              disabled={userInfo.occupant}
+              className={`px-4 py-2 rounded ${
+                userInfo.occupant
+                  ? 'bg-gray-400 text-white cursor-not-allowed'
+                  : 'bg-red-600 text-white hover:bg-red-800'
+              }`}
+            >
+              {userInfo.occupant ? 'You are the Occupant' : 'Leave Waiting List'}
+            </button>
+          </CardFooter>
+        )}
+      </Card>
+    </div>
     </div>
   );
 };

@@ -4,6 +4,8 @@ import {getSocket} from '../../store/socket';
 import { getFromBackend, patchToBackend, postToBackend } from "../../store/fetchdata";
 import { HoverCard, HoverCardTrigger, HoverCardContent } from "../ui/hover-card";
 import { useNavigate } from "react-router-dom"; 
+import roomalloc from '../../Photos/roomalloc.jpg'
+import roomallocinstruct from '../../Photos/roomallocinstruct.jpg'
 import { baseUrl } from "@/urls";
 
 const RoomAllocation = () => {
@@ -124,13 +126,6 @@ const RoomAllocation = () => {
     console.log(updatedRoomData);
   
     try {
-      // SHAYAD DELETE HO JAYE
-      // const response1 = await patchToBackend(
-      //   `${baseUrl}/api/room-allocation/room`,
-      //   updatedRoomData
-      // );
-      // console.log(response1)
-
       const updatedRoomStatus = roomStatus.map((room) =>
         room.roomNumber === selectedRoom.roomNumber
           ? {
@@ -164,15 +159,6 @@ const RoomAllocation = () => {
           alert('You have been added to the waiting list for this room.');
         }
     });
-
-      // YE BHI DELETE HO JAYE
-      // Proceed to update the person's data
-      // const response2 = await postToBackend(
-      //   `${baseUrl}/api/room-allocation/person`,
-      //   updatedPersonData
-      // );
-      // console.log("API Response:", response1); // Debug the response object
-
     } catch (error) {
       console.error("Error updating room data:", error);
     }
@@ -206,14 +192,34 @@ const RoomAllocation = () => {
   }
 
   return (
-    <div className="flex flex-col gap-8 p-8 mt-14">
+    <>
+    {/* Image Section */}
+    <div className="w-full max-h-screen flex justify-center mb-6 mt-30 relative">
+      <img
+        src={roomalloc}
+        alt="Hostel Top Banner"
+        className="w-full object-cover rounded-lg shadow-lg"
+      />
+      <div className="absolute top-1/2 left-6 transform -translate-y-1/2 flex items-center text-white text-4xl font-bold p-6 animate-slide-in">
+        <div className="mr-6">
+          <div>Welcome to <br /> Room Allocation System!</div>
+          <div className="text-2xl font-normal">Streamlining room allocation <br /> for a hassle-free hostel experience.</div>
+        </div>
+      </div>
+      <div className=" absolute ml-auto pb-20 pt-40 right-10">
+        <img src={roomallocinstruct} alt="Side Image" className=" object-cover rounded-lg shadow-lg" />
+        </div>
+    </div>
+    
+    <div className="flex flex-col gap-8 p-8 mt-10">
+
       {/* Floor Tabs */}
       <div className="flex justify-center gap-4 mb-4">
         {[...Array(floors)].map((_, floorIndex) => (
           <button
             key={floorIndex}
             onClick={() => setFloor(floorIndex + 1)}
-            className={`px-4 py-2 rounded-md text-white font-medium ${floor === floorIndex + 1 ? "bg-blue-600" : "bg-gray-400"}`}
+            className={`px-4 py-2 rounded-md text-white font-medium ${floor === floorIndex + 1 ? "bg-violet-500" : "bg-gray-400"}`}
           >
             Floor {floorIndex + 1}
           </button>
@@ -221,9 +227,9 @@ const RoomAllocation = () => {
       </div>
 
       {/* Floor Layout */}
-      <div className="flex flex-row gap-8">
+      <div className="flex flex-row gap-8 justify-center">
         {/* Rooms */}
-        <div className="border rounded-lg p-4 bg-gray-50 shadow-md">
+        <div className="border rounded-lg p-4 bg-violet-100 shadow-md">
           <h2 className="text-xl font-semibold text-center mb-4">Floor {floor}</h2>
           {roomStatus.length === 0 ? (
             <div>No room data available for Floor {floor}</div>
@@ -238,7 +244,7 @@ const RoomAllocation = () => {
 
         {/* Selected Room Details */}
         {selectedRoom && (
-          <div className="w-64 p-4 border rounded-lg bg-gray-100 shadow-md flex flex-col items-center justify-start min-h-full overflow-auto">
+          <div className="w-64 p-4 border rounded-lg bg-violet-100 shadow-md flex flex-col items-center justify-start min-h-full overflow-auto">
             <h3 className="text-lg font-semibold mb-4">Selected Room:</h3>
             <p className="text-sm mb-2">
               <strong>Room Number:</strong> {selectedRoom.roomNumber}
@@ -256,12 +262,20 @@ const RoomAllocation = () => {
               </div>
             )}
 
-            {selectedRoom.allowWaitingList === true ?
-              (<div>
-              <p>The room has a Waiting List.</p>
-              </div>)
-              : " "
-            }
+            <div>
+              {selectedRoom.allowWaitingList === true ? (
+                <HoverCard>
+                  <HoverCardTrigger>
+                    <p><strong>The room has a <u>Waiting List.</u></strong></p>
+                    </HoverCardTrigger>
+                    <HoverCardContent>
+                      <p>Waiting List means that the current occupant of the room has the ability to choose the person to be alloted to the room with them.</p>
+                    </HoverCardContent>
+                </HoverCard>
+              ) : (
+                " "
+              )}
+            </div>
 
             {selectedRoom.numberOfOccupants === 2 ? (
               <p className="text-red-600 font-semibold">
@@ -277,7 +291,14 @@ const RoomAllocation = () => {
                       onChange={(e) => setAllowWaitingList(e.target.checked)}
                       className="w-4 h-4"
                     />
-                    <span>Create a waiting list?</span>
+                    <HoverCard>
+                    <HoverCardTrigger>
+                    <span>Create a <u>waiting list?</u></span>
+                    </HoverCardTrigger>
+                    <HoverCardContent>
+                      <p>Waiting List means that the current occupant of the room has the ability to choose the person to be alloted to the room with them.</p>
+                    </HoverCardContent>
+                    </HoverCard>
                   </label>
                 </div>
               )
@@ -287,7 +308,7 @@ const RoomAllocation = () => {
               className={`mt-4 px-4 py-2 rounded-md ${
                 selectedRoom.numberOfOccupants === 2
                   ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-blue-600 text-white"
+                  : "bg-violet-500 text-white"
               }`}
               disabled={selectedRoom.numberOfOccupants === 2}
               onClick={() => setShowConfirmation(true)}
@@ -300,8 +321,8 @@ const RoomAllocation = () => {
             (selectedRoom.occupant || selectedRoom.inWaitingList) && (
               <div className="mt-4">
                 <button
-                  onClick={() => navigate(`/WaitingList`)} // Navigate to waiting list page
-                  className="px-4 py-2 bg-yellow-500 text-white rounded-md"
+                  onClick={() => navigate(`/WaitingList`)} 
+                  className="px-4 py-2 bg-violet-700 text-white rounded-md"
                 >
                   View Waiting List
                 </button>
@@ -322,13 +343,13 @@ const RoomAllocation = () => {
             <div className="flex justify-center gap-4">
               <button
                 onClick={handleConfirmSelection}
-                className="px-4 py-2 bg-blue-600 text-white rounded-md"
+                className="px-4 py-2 bg-violet-500 text-white rounded-md"
               >
                 Confirm
               </button>
               <button
                 onClick={() => setShowConfirmation(false)}
-                className="px-4 py-2 bg-red-600 text-white rounded-md"
+                className="px-4 py-2 bg-black text-white rounded-md"
               >
                 Cancel
               </button>
@@ -337,6 +358,7 @@ const RoomAllocation = () => {
         </div>
       )}
     </div>
+    </>
   );
 };
 

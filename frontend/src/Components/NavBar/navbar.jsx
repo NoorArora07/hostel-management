@@ -75,6 +75,7 @@ const Navbar = () => {
           break;
         case "mess_event":
           navigate("/mess-schedule-view");
+          break;
         case "mess_payDetails":
           navigate("/view-mess-fee");
           break;
@@ -115,12 +116,6 @@ const Navbar = () => {
                 { path: "/leaves", label: "Leaves" },
                 { path: "/complaints", label: "Complaints" },
                 { path: "/RoomsView", label: "Room Allocation" },
-                {
-                  path: "/profile",
-                  label: (
-                    <CircleUserRoundIcon className="w-8 h-8" />
-                  ),
-                },
               ].map((item) => (
                 <NavLink
                   key={item.path}
@@ -137,6 +132,8 @@ const Navbar = () => {
                 </NavLink>
               ))}
             </ul>
+
+            {/* Notifications Icon */}
             <div className="relative" ref={notificationsRef}>
               <button
                 onClick={toggleNotifications}
@@ -158,6 +155,20 @@ const Navbar = () => {
                 />
               )}
             </div>
+
+            {/* Profile Icon */}
+            <NavLink
+              to="/profile"
+              className={({ isActive }) =>
+                `text-base font-semibold px-3 py-2 rounded-lg transition-colors duration-150 ease-in-out ${
+                  isActive
+                    ? "bg-violet-700 text-white"
+                    : "text-blue-100 hover:bg-violet-500 hover:text-white"
+                }`
+              }
+            >
+              <CircleUserRoundIcon className="w-8 h-8" />
+            </NavLink>
           </div>
         </div>
       </div>

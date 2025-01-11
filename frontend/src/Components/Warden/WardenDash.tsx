@@ -90,7 +90,7 @@ const WardenDash = () => {
                 <Button className="w-full mb-2" onClick={() => handleNavigation('/LongLeavesApprove')}>
                   <FileText className="mr-2 h-4 w-4" /> Long Leaves
                 </Button>
-                <Button className="w-full" onClick={() => handleNavigation('/late-leaves-approve')}>
+                <Button className="w-full" onClick={() => handleNavigation('/LateLeavesApprove')}>
                   <Clock className="mr-2 h-4 w-4" /> Late Leaves
                 </Button>
               </CardContent>
