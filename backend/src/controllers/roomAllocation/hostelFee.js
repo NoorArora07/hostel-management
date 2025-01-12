@@ -5,13 +5,13 @@ import crypto from 'crypto';
 
 dotenv.config();
 
+//console.log("stripe key : ",process.env.STRIPE_SECRET_KEY);
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export const initiatePayment = async (req, res) => {
   try {
     const name = req.user.name;
     const studentId = req.user.sid;
-
 
     //calculating amount of hostel fee
 
@@ -48,12 +48,12 @@ export const initiatePayment = async (req, res) => {
       return res.status(400).json({ message: "Invalid academic year calculation." });
     }
 
-    // 1st year - 81,500
-    // 2nd yr - 75500
-    // 3rd yr - 75100
-    // 4th yr - 69100
+    // 1st year - 81500            
+    // 2nd yr - 75500        
+    // 3rd yr - 75100         
+    // 4th yr - 69100               
 
-    const feeStructure = {
+    const feeStructure = {  
       1: 81500,
       2: 75500,
       3: 75100,
@@ -87,13 +87,13 @@ export const initiatePayment = async (req, res) => {
         studentId,
         name,
         amount,
-      },
+      }, 
       success_url: "http://localhost:5173/hostel_success?session_id={CHECKOUT_SESSION_ID}",
       cancel_url: "http://localhost:5173/hostel_cancel",
 
-    });
+    }); 
     console.log("done");
-    res.json({ success: true, id: session.id });
+    res.json({ success: true, id: session.id, amount: amount });        
   } catch (error) {
     console.error("Payment gateway failed:", error);
 
@@ -121,8 +121,8 @@ export const updateFeeStatus = async (req, res) => {
           amount: amount,
         },
         { new: true, upsert: true }
-      );
-
+      );  
+    
       console.log(`Fee status updated to 'paid' for studentId: ${studentId}`);
       res.redirect('http://localhost:5173/hostel_success');
     } else {

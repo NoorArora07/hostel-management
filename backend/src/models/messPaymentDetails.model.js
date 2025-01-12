@@ -9,7 +9,8 @@ const pay_details = new mongoose.Schema(
         year:{type:Number,required:true},
         amount:{type:Number,required:true},
         rebate:{type:Number,required:true,default:0},
-        final_amount:{type:Number,required:true}
+        final_amount:{type:Number,required:true},
+        status:{type:String, enum:['Paid','Pending']}
     }
 ]
     },

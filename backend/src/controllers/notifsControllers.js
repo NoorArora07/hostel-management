@@ -28,7 +28,7 @@ export const fetch = async(req ,res)=>{
         const user_notifications = await Notif.findOne({ userId: sid });
 
         if (!user_notifications) {
-          return res.status(404).json({ error: 'No notifications found for this user' });
+          return res.status(200).json({ error: 'No notifications found for this user' });
         }
 
         //console.log("notifications : ",user_notifications.notifications);

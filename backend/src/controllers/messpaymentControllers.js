@@ -1,4 +1,5 @@
 import Fee from '../models/messpayment.model.js';
+import MessPayDetails from '../models/messPaymentDetails.model.js';
 import Stripe from 'stripe';
 import dotenv from 'dotenv';
 import crypto from 'crypto';
@@ -44,7 +45,7 @@ export const initiatePayment= async (req, res) => {
           cancel_url: "http://localhost:5173/cancel",
  
       });
-      res.json({success:true, id: session.id});
+      res.json({success:true, id: session.id, amount: amount});
   } catch (error) {
         console.error("Payment gateway failed:", error);
 
@@ -67,7 +68,7 @@ export const updateFeeStatus = async (req, res) => {
     if (session.payment_status === 'paid') {
       const { studentId, name, amount } = session.metadata;
 
-      await Fee.findOneAndUpdate(
+      await Fee.findOneAndUpdate( 
         { studentId }, 
         {
           status: 'paid',
@@ -76,6 +77,19 @@ export const updateFeeStatus = async (req, res) => {
         { new: true, upsert: true }
       );
 
+      await MessPayDetails.findOneAndUpdate(
+        { 
+          sid: studentId, 
+          "details.amount": amount 
+        }, 
+        {
+          $set: {
+            "details.$.status": "Paid",
+          }
+        },
+        { new: true }
+      );
+      
       console.log(`Fee status updated to 'paid' for studentId: ${studentId}`);
       res.redirect('http://localhost:5173/success');
     } else {

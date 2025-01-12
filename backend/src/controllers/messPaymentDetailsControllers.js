@@ -19,9 +19,9 @@ export const getDetails = async (req,res) => {
 };
 
 
-export const add_details = async (sid,name,month,year,amount,rebate,final_amount) => {
+export const add_details = async (sid,name,month,year,amount,rebate,final_amount,status) => {
   try {
-      const newDetails = {month,year,amount,rebate,final_amount};
+      const newDetails = {month,year,amount,rebate,final_amount,status};
 
       const student = await MessPayDetails.findOneAndUpdate(
           { sid },
