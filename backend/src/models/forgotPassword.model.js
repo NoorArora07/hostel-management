@@ -4,7 +4,7 @@ const pass_reset = new mongoose.Schema({
     email: {
       type: String,
       required: true,
-      unique: true,
+      trim : true
     },
     otp: {
       type: String,
@@ -14,6 +14,10 @@ const pass_reset = new mongoose.Schema({
       type: Date,
       required: true,
     },
+    tempToken:{
+      type:String,
+      required:true,
+    }
   });
 
 export default mongoose.model("Pw_Reset", pass_reset);

@@ -9,6 +9,7 @@ import nodemailer from 'nodemailer';
 import bcrypt from 'bcrypt';
 import User from '../models/users.model.js'; 
 import jwt from 'jsonwebtoken';
+import { JWT_SECRET } from '../middleware/verifyToken.js';
 
 
 export const sendOTP = async (req, res) => {
@@ -17,14 +18,22 @@ export const sendOTP = async (req, res) => {
   try {
     // Generate OTP
     const otp = crypto.randomBytes(3).toString('hex'); 
+    console.log("otp : ",otp);
     const expires = Date.now() + 10 * 60 * 1000; // OTP expires in 10 minutes
+
+    //creating temporary jwt token for password reset 
+    const tempToken = jwt.sign({email},JWT_SECRET,{expiresIn:'15m'});
+    console.log("Temp token generated:", tempToken);
 
     const passwordReset = new Pw_Reset({
       email,
       otp,
       expires,
+      tempToken
     });
+    console.log("saving otp");
     await passwordReset.save();
+    console.log("saved otp");
 
     // Send OTP via email
     const transporter = nodemailer.createTransport({
@@ -42,25 +51,31 @@ export const sendOTP = async (req, res) => {
       text: `Your OTP to reset your password is ${otp}. It will expire in 10 minutes.`,
     };
 
+    console.log("sending mail");
+
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
         return res.status(500).json({ message: 'Error sending OTP' });
       } else {
-        return res.status(200).json({ message: 'OTP sent successfully' });
+        console.log("temp token : ", tempToken);
+        return res.status(200).json({ message: `OTP sent successfully, your temp token is ${tempToken}` });
       }
     });
   } catch (error) {
+    console.log("unable to send mail, error : ",error);
     return res.status(500).json({ message: 'Error generating OTP' });
   }
 };
 
 
 export const verifyOTP = async (req, res) => {
-  const { otp } = req.body;
-  const { email } = req.user;
+  const { otp, tempToken } = req.body;
 
   try {
-    
+    // Verify temporary token
+    const decoded = jwt.verify(tempToken,JWT_SECRET);
+    const email = decoded.email;
+
     const record = await Pw_Reset.findOne({ email, otp });
 
     if (!record) {
@@ -79,10 +94,13 @@ export const verifyOTP = async (req, res) => {
 
 
 export const resetPassword = async (req, res) => {
-  const { password } = req.body;
-  const { email } = req.user;
+  const { password, tempToken} = req.body;
 
   try {
+    // Verify temporary token
+    const decoded = jwt.verify(tempToken,JWT_SECRET);
+    const email = decoded.email;
+  
     const hashedPassword = await bcrypt.hash(password, 10);
 
     await User.updateOne({ email }, { password: hashedPassword });
