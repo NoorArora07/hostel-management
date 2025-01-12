@@ -1,3 +1,4 @@
+'use client'
 import React from "react";
 import {
   Table,
@@ -7,8 +8,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/Components/ui/table";
+import pic from '@/Photos/messmenu.jpg';
 
-const MessMenu = () => {
+export default function MessMenu() {
   // Sample mess menu data
   const menu = [
     {
@@ -56,48 +58,49 @@ const MessMenu = () => {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-gray-100">
-      <h1 className="text-3xl font-bold mb-6 text-purple-700">
-        Weekly Mess Menu
-      </h1>
-      <Table className="w-full max-w-4xl bg-white shadow-md rounded-lg">
-        <TableHeader>
-          <TableRow>
-            <TableHead className="px-4 py-2 text-left text-purple-600 justify-center">
-              Day
-            </TableHead>
-            <TableHead className="px-4 py-2 text-left text-purple-600 justify-center">
-              Breakfast
-            </TableHead>
-            <TableHead className="px-4 py-2 text-left text-purple-600 justify-center">
-              Lunch
-            </TableHead>
-            <TableHead className="px-4 py-2 text-left text-purple-600 justify-center">
-              Dinner
-            </TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {menu.map((meal, index) => (
-            <TableRow key={index}>
-              <TableCell className="border px-4 py-2 font-medium text-gray-800">
-                {meal.day}
-              </TableCell>
-              <TableCell className="border px-4 py-2 text-gray-700">
-                {meal.breakfast}
-              </TableCell>
-              <TableCell className="border px-4 py-2 text-gray-700">
-                {meal.lunch}
-              </TableCell>
-              <TableCell className="border px-4 py-2 text-gray-700">
-                {meal.dinner}
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+      <div
+        className="min-h-screen flex items-center justify-center"
+        style={{
+          backgroundImage: `url(${pic})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}>
+      <div className="bg-white bg-opacity-90 p-8 rounded-lg shadow-xl max-w-4xl w-full">
+        <h1 className="text-3xl font-bold mb-6 text-purple-700 text-center">
+          Weekly Mess Menu
+        </h1>
+        <div className="overflow-x-auto">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="px-4 py-2 text-left text-purple-600">Day</TableHead>
+                <TableHead className="px-4 py-2 text-left text-purple-600">Breakfast</TableHead>
+                <TableHead className="px-4 py-2 text-left text-purple-600">Lunch</TableHead>
+                <TableHead className="px-4 py-2 text-left text-purple-600">Dinner</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {menu.map((meal, index) => (
+                <TableRow key={index}>
+                  <TableCell className="border px-4 py-2 font-medium text-gray-800">
+                    {meal.day}
+                  </TableCell>
+                  <TableCell className="border px-4 py-2 text-gray-700">
+                    {meal.breakfast}
+                  </TableCell>
+                  <TableCell className="border px-4 py-2 text-gray-700">
+                    {meal.lunch}
+                  </TableCell>
+                  <TableCell className="border px-4 py-2 text-gray-700">
+                    {meal.dinner}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      </div>
     </div>
   );
-};
+}
 
-export default MessMenu;

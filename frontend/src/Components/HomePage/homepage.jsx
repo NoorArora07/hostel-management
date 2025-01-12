@@ -18,14 +18,13 @@ const FAQs = [
   },
   {
     question: "Will I get a rebate for mess leaves?",
-    answer: "Yes, you will get a rebate for mess leaves of Rs. 300 provided the leave is for more than 2 days."
+    answer: "Yes, only for the weeknends. Rebate is calculated as ₹35 per Saturday or Sunday, only if no meal was consumed on either day!"
   }
 ]
 
 const Homepage = () => {
   return (
     <div className="relative min-h-screen bg-gray-100">
-      {/* Aurora Background */}
       <AuroraBackground className="fixed inset-0 pointer-events-none z-0" />
 
       <div className="h-24"></div>

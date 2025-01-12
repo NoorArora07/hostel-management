@@ -8,10 +8,10 @@ import { baseUrl } from "@/urls";
 
 const HostelFeeDetails = () => {
   const feeDetails = [
-    { year: "1st Year", amount: "₹25,000" },
-    { year: "2nd Year", amount: "₹24,000" },
-    { year: "3rd Year", amount: "₹23,000" },
-    { year: "4th Year", amount: "₹22,000" },
+    { year: "1st Year", amount: "₹81,500" },
+    { year: "2nd Year", amount: "₹75,500" },
+    { year: "3rd Year", amount: "₹75,100" },
+    { year: "4th Year", amount: "₹69,100" },
   ];
 
   return (

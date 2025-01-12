@@ -3,6 +3,7 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import EventListComponent from "./EventListComponent";
 import { getFromBackend } from "../../store/fetchdata";
+import { baseUrl } from "@/urls";
 
 const MyCalendar = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
