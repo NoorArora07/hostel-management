@@ -9,7 +9,9 @@ export const getDetails = async (req,res) => {
         if (!detailS) {
             return res.json({ message: 'No details found for this SID' });
         }
-        const reversedDetails = detailS.details.reverse();
+        // Filtering the details for status 'pending'
+        const pendingDetails = detailS.details.filter(detail => detail.status === 'pending');
+        const reversedDetails = pendingDetails.reverse();
         res.status(200).json(reversedDetails);
         
     } catch (error) {

@@ -22,20 +22,43 @@ export const MessLeaveForm = async (request, response) => {
         if (!dateOfLeaving || !dateOfReturn || !reason|| !lastMeal || !firstMeal)
             return response.status(400).send("All fields are required!");
 
+        // Convert dates to Date objects for comparison
+        const leaveStart = new Date(dateOfLeaving);
+        const leaveEnd = new Date(dateOfReturn);
+
+        if (leaveStart > leaveEnd)
+            return response.status(400).send("Date of leaving cannot be later than date of return!");
+
         const messData = await Mess.findOne({ sid: request.user.sid });
 
-        if (!messData) {
+        if (messData) {
+            for (const leave of messData.messOffDates) {
+                const existingLeaveStart = new Date(leave.dateOfLeaving);
+                const existingLeaveEnd = new Date(leave.dateOfReturn);
+
+                if (
+                    (leaveStart >= existingLeaveStart && leaveStart <= existingLeaveEnd) || // Overlaps with existing leave
+                    (leaveEnd >= existingLeaveStart && leaveEnd <= existingLeaveEnd) ||     // Ends during existing leave
+                    (leaveStart <= existingLeaveStart && leaveEnd >= existingLeaveEnd)     // Encloses existing leave
+                ) {
+                    return response.status(400).send("Overlapping leave dates. Please submit valid leave dates!");
+                }
+            }
+
+             // Add new leave and sort by dateOfLeaving
+             messData.messOffDates.push({ dateOfLeaving, dateOfReturn, reason, lastMeal, firstMeal });
+             messData.messOffDates.sort((a, b) => new Date(a.dateOfLeaving) - new Date(b.dateOfLeaving));
+             await messData.save();
+         } 
+         else {
+            // Create new entry if none exists
             const newMessData = new Mess({
-                name:request.user.name,
+                name: request.user.name,
                 sid: request.user.sid,
-                messOffDates: [{dateOfLeaving, dateOfReturn, reason, lastMeal, firstMeal}],
+                messOffDates: [{ dateOfLeaving, dateOfReturn, reason, lastMeal, firstMeal }],
             });
             await newMessData.save();
-        } else {
-            messData.messOffDates.push({ dateOfLeaving, dateOfReturn, reason,lastMeal, firstMeal });
-            await messData.save();
         }
-
         response.status(200).json({ message: "Mess off dates added successfully!" });
     } catch (error) {
         console.error("Error marking mess off:", error);
