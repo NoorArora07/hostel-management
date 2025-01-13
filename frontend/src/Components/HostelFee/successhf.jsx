@@ -38,7 +38,7 @@ const PaymentSuccesshf = () => {
         try {
           const response = await postToBackend(`${baseUrl}/api/hostelFee/updateStatus`, {
             success: true,
-            sessionId,  // send sessionId
+            sessionId,  
           });
           console.log('Payment success data sent to backend.');
         } catch (error) {

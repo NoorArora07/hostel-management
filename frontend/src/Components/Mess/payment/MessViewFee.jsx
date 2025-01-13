@@ -1,4 +1,5 @@
 import pic from "@/Photos/messfee.jpg";
+import picbg from '@/Photos/messdetailsbg.jpg'
 import React, { useEffect, useState } from "react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/Components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
@@ -35,7 +36,12 @@ const MessFeeDetails = () => {
   const rebateInfo = "Rebate is calculated as \u20B935 per Saturday or Sunday, only if no meal was consumed on either day!";
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-violet-400 via-pink-500 to-violet-400 mt-14">
+    <div className="min-h-screen flex items-center justify-center p-6"
+    style={{
+      backgroundImage: `url(${picbg})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+    }}>
       <Card className="w-full max-w-4xl bg-white/90 backdrop-blur-sm shadow-2xl rounded-3xl overflow-hidden">
         <CardHeader className="bg-purple-700 text-white p-6">
           <CardTitle className="text-3xl font-bold flex items-center justify-center">
@@ -93,6 +99,7 @@ const FeeTable = ({ feeDetails }) => (
             <TableHead>Amount</TableHead>
             <TableHead>Rebate</TableHead>
             <TableHead>Final Amount</TableHead>
+            <TableHead>Status</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -103,6 +110,7 @@ const FeeTable = ({ feeDetails }) => (
               <TableCell>{fee.amount}</TableCell>
               <TableCell>{fee.rebate}</TableCell>
               <TableCell>{fee.final_amount}</TableCell>
+              <TableCell>{fee.status}</TableCell>
             </TableRow>
           ))}
         </TableBody>

@@ -4,44 +4,31 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../store/auth";
 import { initializeSocket, updateSocketToken, getSocket } from "../../store/socket";
 import loginside from '../../Photos/loginside.jpg';
-import { postToBackend } from "@/store/fetchdata";
 import { baseUrl } from "@/urls";
 
 const Login = () => {
-    const [formData, setFormData] = useState({
-        email: "",
-        password: "",
-    });
+    const [formData, setFormData] = useState({ email: "", password: "" });
+    const navigate = useNavigate();
+    const { storeTokenInLS } = useAuth();
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const navigate = useNavigate();
-    const { storeTokeninLS } = useAuth();
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             const response = await axios.post(`${baseUrl}/api/auth/login`, formData);
-
             const token = response.data.token;
-            storeTokeninLS(token); // Store token in local storage
-            console.log(response.data);
+            storeTokenInLS(token);
 
-            // Initialize or update the socket
             if (!getSocket()) {
-                initializeSocket(token); // Initialize the socket for the first time
+                initializeSocket(token);
             } else {
-                updateSocketToken(token); // Update the token if socket already exists
+                updateSocketToken(token);
             }
 
-            // Navigate based on user role
-            if (response.data.role === "warden") {
-                navigate("/WardenDash");
-            } else {
-                navigate("/Homepage");
-            }
+            navigate(response.data.role === "warden" ? "/WardenDash" : "/Homepage");
         } catch (error) {
             console.error(error.response?.data || "Login failed");
             alert("Login failed");
@@ -49,18 +36,19 @@ const Login = () => {
     };
 
     const handleForgotPassword = async () => {
+        if (!formData.email) {
+            alert("Please enter your email to reset the password.");
+            return;
+        }
+
         try {
-            const email = formData.email;
-            if (!email) {
-                alert("Please enter your email to reset the password.");
-                return;
-            }            
-            const temp = await axios.post(`${baseUrl}/api/pass_reset/forgot-password`, { email });
-            alert("Password reset link has been sent to your email.");
-            navigate('/otp-page')
+            const response = await axios.post(`${baseUrl}/api/pass_reset/forgot-password`, { email: formData.email });
+            localStorage.setItem('tempToken', response.data.tempToken);
+            alert("OTP has been sent to your email.");
+            navigate('/otp-page');
         } catch (error) {
-            console.error(error.response?.data || "Failed to send password reset link");
-            alert("Failed to send password reset link");
+            console.error('Error sending OTP:', error.response?.data || error.message);
+            alert("Failed to send OTP.");
         }
     };
 
@@ -68,20 +56,13 @@ const Login = () => {
         <div className="flex justify-center items-center min-h-screen bg-violet-200">
             <div className="bg-white shadow-md rounded-lg flex max-w-4xl w-full">
                 <div className="w-1/2 hidden lg:block shadow-lg shadow-purple-300">
-                    <img
-                        src={loginside}
-                        alt="Login illustration"
-                        className="h-full w-full object-cover rounded-l-lg"
-                    />
+                    <img src={loginside} alt="Login illustration" className="h-full w-full object-cover rounded-l-lg" />
                 </div>
-
                 <div className="w-full lg:w-1/2 p-8 flex flex-col items-center justify-center space-y-6 shadow-lg shadow-purple-300">
                     <form className="space-y-6 w-full max-w-md" onSubmit={handleSubmit}>
                         <h2 className="text-2xl font-semibold text-gray-800 text-center">Login</h2>
                         <div>
-                            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                                Email:
-                            </label>
+                            <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email:</label>
                             <input
                                 type="email"
                                 id="email"
@@ -94,9 +75,7 @@ const Login = () => {
                             />
                         </div>
                         <div>
-                            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                                Password:
-                            </label>
+                            <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password:</label>
                             <input
                                 type="password"
                                 id="password"
@@ -122,7 +101,6 @@ const Login = () => {
                             Forgot Password
                         </button>
                     </form>
-
                     <div className="mt-4 text-center">
                         <p className="text-sm text-gray-600">
                             Don't have an account?{" "}

@@ -9,8 +9,7 @@ import { useNavigate } from 'react-router-dom';
 const features = [
   {
     name: 'Get Your Mess Details',
-    description:
-      'Including a calendar to keep track of your mess schedule and mess menu, plan your meals accordingly :)',
+    description: 'Track your mess schedule and menu with ease!',
     icon: PencilSquareIcon,
     actions: [
       { text: 'View Updates', path: '/mess-schedule-view' },
@@ -19,7 +18,7 @@ const features = [
   },
   {
     name: 'Pay Your Mess Fee',
-    description: "Can't keep a track of your mess fee? We got you covered. Pay your mess fee online",
+    description: 'Manage and pay your mess fee online effortlessly :)',
     icon: BanknotesIcon,
     actions: [
       { text: 'View Fee Details', path: '/view-mess-fee' },
@@ -28,14 +27,14 @@ const features = [
   },
   {
     name: 'Update Mess Leave Days',
-    description: 'Going out for a vacation? Update your leave days and we will take care of the rest.',
+    description: 'Update leave days for your time away <3',
     icon: ClipboardDocumentCheckIcon,
     actions: [
       { text: 'View Leaves', path: '/mess-leave-view' },
       { text: 'Update Leaves', path: '/mess-leave-form' },
     ],
   },
-]
+];
 
 export default function Mess() {
   const navigate = useNavigate();
@@ -45,43 +44,45 @@ export default function Mess() {
 
   return (
     <div>
-    <div className="overflow-hidden bg-white py-24 sm:py-32">
+    <div className="overflow-hidden bg-white py-24 sm:py-32" style={{ overflowY: 'scroll', scrollbarGutter: 'stable' }}>
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
           <div className="lg:pr-8 lg:pt-4">
             <div className="lg:max-w-lg">
-              <h2 className="font-bold text-indigo-600">Dormify Mess</h2>
-              <p className="mt-5 text-pretty text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl">
-                Manage Your Mess
-              </p>
-              <dl className="mt-10 max-w-xl space-y-8 text-base/7 text-gray-600 lg:max-w-none">
-                {features.map((feature) => (
-                  <div key={feature.name} className="relative pl-9">
-                    <dt className="inline font-semibold text-gray-900">
-                      <feature.icon aria-hidden="true" className="absolute left-1 top-1 size-5 text-indigo-600" />
-                      {feature.name}
-                    </dt>{' '}
-                    <dd className="inline">{feature.description}</dd>
-                    <dd className="mt-2">
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button className="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white 
-                            font-semibold py-2 px-4 rounded-md shadow-md transition duration-300 ease-in-out transform hover:scale-105">
-                            Options
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent>
-                          {feature.actions.map((action, index) => (
-                            <DropdownMenuItem key={index} onSelect={() => handleNavigation(action.path)}>
-                              {action.text}
-                            </DropdownMenuItem>
-                          ))}
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </dd>
-                  </div>
-                ))}
-              </dl>
+              <h2 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">
+              Dormify Mess
+            </h2>
+            <p className="mt-4 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
+              Manage Your Mess
+            </p>
+            <dl className="mt-10 max-w-xl space-y-8 text-base/7 text-gray-600 lg:max-w-none">
+              {features.map((feature) => (
+                <div key={feature.name} className="relative pl-9">
+                  <dt className="inline font-semibold text-gray-900">
+                    <feature.icon aria-hidden="true" className="absolute left-1 top-1 size-5 text-indigo-600" />
+                    {feature.name}
+                  </dt>
+                  <dd className="mt-1 text-gray-600">{feature.description}</dd>
+                  <dd className="mt-4">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button className="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white 
+                          font-semibold py-2 px-4 rounded-md shadow-md transition duration-300 ease-in-out transform hover:scale-105">
+                          Options
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent>
+                        {feature.actions.map((action, index) => (
+                          <DropdownMenuItem key={index} onSelect={() => handleNavigation(action.path)}>
+                            {action.text}
+                          </DropdownMenuItem>
+                        ))}
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </dd>
+                </div>
+              ))}
+            </dl>
             </div>
           </div>
           <img

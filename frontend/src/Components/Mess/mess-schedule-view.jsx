@@ -44,19 +44,24 @@ const MyCalendar = () => {
 
   return (
     <div className="container mx-auto p-4 max-w-4xl mt-20 mb-5">
-      <h1 className="text-3xl font-bold text-center mb-8 text-indigo-950">
+      <h1 className="text-4xl font-bold text-center mb-12 text-purple-800">
         Mess Calendar
       </h1>
       <div className="grid md:grid-cols-2 gap-8">
-        <div className="bg-white p-6 rounded-lg shadow-md">
+        <div className="bg-white p-6 rounded-2xl shadow-lg">
           <Calendar
             className="react-calendar border-none w-full"
             onChange={handleDateChange}
             value={selectedDate}
-            tileContent={({ date }) =>
-              isDateWithEvent(date) && (
-                <div className="w-2 h-2 bg-blue-500 rounded-full mx-auto"></div>
-              )
+            tileContent={({ date, view }) =>
+              view === 'month' && isDateWithEvent(date) ? (
+                <div className="w-2 h-2 bg-purple-500 rounded-full mx-auto mt-1"></div>
+              ) : null
+            }
+            tileClassName={({ date, view }) => 
+              view === 'month' && selectedDate.toDateString() === date.toDateString() 
+                ? 'bg-purple-100 text-purple-800 rounded-full' 
+                : null
             }
           />
         </div>

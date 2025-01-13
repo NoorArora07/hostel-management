@@ -11,7 +11,6 @@ import User from '../models/users.model.js';
 import jwt from 'jsonwebtoken';
 import { JWT_SECRET } from '../middleware/verifyToken.js';
 
-
 export const sendOTP = async (req, res) => {
   const { email } = req.body;
 
@@ -58,7 +57,10 @@ export const sendOTP = async (req, res) => {
         return res.status(500).json({ message: 'Error sending OTP' });
       } else {
         console.log("temp token : ", tempToken);
-        return res.status(200).json({ message: `OTP sent successfully, your temp token is ${tempToken}` });
+        return res.status(200).json({ 
+          message: 'OTP sent successfully', 
+          tempToken 
+        });
       }
     });
   } catch (error) {
@@ -69,11 +71,12 @@ export const sendOTP = async (req, res) => {
 
 
 export const verifyOTP = async (req, res) => {
-  const { otp, tempToken } = req.body;
+  const { otp } = req.body;
+  const tempToken = req.headers.authorization.split(' ')[1]; // Extract token from Authorization header
 
   try {
     // Verify temporary token
-    const decoded = jwt.verify(tempToken,JWT_SECRET);
+    const decoded = jwt.verify(tempToken,JWT_SECRET); // Make sure JWT_SECRET is correctly defined in your environment variables
     const email = decoded.email;
 
     const record = await Pw_Reset.findOne({ email, otp });
@@ -88,21 +91,25 @@ export const verifyOTP = async (req, res) => {
 
     res.status(200).json({ message: 'OTP verified successfully' });
   } catch (error) {
+    console.error('Error verifying OTP:', error.message || error);
     return res.status(500).json({ message: 'Error verifying OTP' });
   }
 };
 
 
 export const resetPassword = async (req, res) => {
-  const { password, tempToken} = req.body;
+  const { password } = req.body;
+  const tempToken = req.headers.authorization.split(' ')[1]; // Extract token from Authorization header
 
   try {
     // Verify temporary token
-    const decoded = jwt.verify(tempToken,JWT_SECRET);
+    const decoded = jwt.verify(tempToken,JWT_SECRET); // Use environment variable
     const email = decoded.email;
   
+    // Hash the new password
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    // Update the user's password
     await User.updateOne({ email }, { password: hashedPassword });
 
     // Clean up the OTP record
@@ -110,8 +117,8 @@ export const resetPassword = async (req, res) => {
 
     res.status(200).json({ message: 'Password reset successful' });
   } catch (error) {
+    console.error('Error resetting password:', error.message || error);
     return res.status(500).json({ message: 'Error resetting password' });
   }
 };
-
 
