@@ -145,7 +145,55 @@ export const getFeeStatus = async (req, res) => {
     }
 
     let fee = await HostelFee.findOne({ studentId });
-    res.json({ name: fee.name, studentId: fee.studentId, status: fee.status, amount: fee.amount });
+    if(!fee){
+      //calculating amount of hostel fee
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    const currentMonth = currentDate.getMonth(); // 0 = January, 11 = December
+
+    // Extract admission year from the first two characters of studentId
+    const admissionYear = 2000 + parseInt(String(studentId).substring(0, 2), 10); 
+
+    // Determine the student's current year of study
+    let studyYear;
+    if (
+      (currentYear === admissionYear && currentMonth >= 6) || // July to December of admission year
+      (currentYear === admissionYear + 1 && currentMonth <= 4) // January to May of next year
+    ) {
+      studyYear = 1;
+    } else if (
+      (currentYear === admissionYear + 1 && currentMonth >= 5) ||
+      (currentYear === admissionYear + 2 && currentMonth <= 4)
+    ) {
+      studyYear = 2;
+    } else if (
+      (currentYear === admissionYear + 2 && currentMonth >= 5) ||
+      (currentYear === admissionYear + 3 && currentMonth <= 4)
+    ) {
+      studyYear = 3;
+    } else if (
+      (currentYear === admissionYear + 3 && currentMonth >= 5) ||
+      (currentYear === admissionYear + 4 && currentMonth <= 4)
+    ) {
+      studyYear = 4;
+    } else {
+      return res.status(400).json({ message: "Invalid academic year calculation." });
+    }              
+
+    const feeStructure = {  
+      1: 81500,
+      2: 75500,
+      3: 75100,
+      4: 69100,
+    };
+    const amount = feeStructure[studyYear];
+    //console.log("amount : ",amount);
+
+      res.json({name:name,studentId:studentId,status:"pending", amount:amount});
+    }
+    else{
+      res.json({ name: fee.name, studentId: fee.studentId, status: fee.status, amount: fee.amount });
+    }
   }
   catch (error) {
     console.error({ error: error.message });

@@ -1,15 +1,15 @@
 import React, { useEffect, useState, useRef } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { Bell, CircleUserRoundIcon } from 'lucide-react';
+import { Bell, CircleUserRoundIcon } from "lucide-react";
 import dormify from "@/Photos/dormify-logo.jpg";
 import Notifications from "@/Components/Notifications/Notifications";
 import { getFromBackend, patchToBackend } from "@/store/fetchdata";
 import { baseUrl } from "@/urls";
 
 const Navbar = () => {
-  // Notifications state and logic
   const [showNotifications, setShowNotifications] = useState(false);
   const [notifications, setNotifications] = useState([]);
+  const [showPopup, setShowPopup] = useState(false); // State for popup
   const navigate = useNavigate();
   const notificationsRef = useRef(null);
 
@@ -93,7 +93,25 @@ const Navbar = () => {
     setShowNotifications((prev) => !prev);
   };
 
-  // Navbar structure
+  const checkRoomAllocationStatus = async () => {
+    try {
+      const response = await getFromBackend(`${baseUrl}/api/hostelFee/status`);
+      const status = response.data.status;
+
+      if (status === "paid") {
+        navigate("/RoomsView");
+      } else {
+        setShowPopup(true);
+      }
+    } catch (error) {
+      console.error("Error checking room allocation status:", error);
+    }
+  };
+
+  const handlePopupClose = () => {
+    setShowPopup(false);
+  };
+
   return (
     <nav className="bg-black fixed top-0 left-0 right-0 z-50 shadow-lg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -115,22 +133,30 @@ const Navbar = () => {
                 { path: "/mess", label: "Mess" },
                 { path: "/leaves", label: "Leaves" },
                 { path: "/complaints", label: "Complaints" },
-                { path: "/RoomsView", label: "Room Allocation" },
               ].map((item) => (
-                <NavLink
-                  key={item.path}
-                  to={item.path}
-                  className={({ isActive }) =>
-                    `text-base font-semibold px-3 py-2 rounded-lg transition-colors duration-150 ease-in-out ${
-                      isActive
-                        ? "bg-violet-700 text-white"
-                        : "text-blue-100 hover:bg-violet-500 hover:text-white"
-                    }`
-                  }
-                >
-                  <li>{item.label}</li>
-                </NavLink>
+                <li key={item.label}>
+                  <NavLink
+                    to={item.path}
+                    className={({ isActive }) =>
+                      `text-base font-semibold px-3 py-2 rounded-lg transition-colors duration-150 ease-in-out ${
+                        isActive
+                          ? "bg-violet-700 text-white"
+                          : "text-blue-100 hover:bg-violet-500 hover:text-white"
+                      }`
+                    }
+                  >
+                    {item.label}
+                  </NavLink>
+                </li>
               ))}
+              <li>
+                <button
+                  onClick={checkRoomAllocationStatus}
+                  className="text-base font-semibold px-3 py-2 rounded-lg text-blue-100 hover:bg-violet-500 hover:text-white transition-colors duration-150 ease-in-out"
+                >
+                  Room Allocation
+                </button>
+              </li>
             </ul>
 
             {/* Notifications Icon */}
@@ -172,6 +198,35 @@ const Navbar = () => {
           </div>
         </div>
       </div>
+
+      {/* Popup */}
+      {showPopup && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg">
+            <h2 className="text-lg font-bold mb-4">Hostel Fee Pending</h2>
+            <p className="mb-4">
+              You need to pay the hostel fee before accessing room allocation.
+            </p>
+            <div className="flex justify-end space-x-4">
+              <button
+                className="px-4 py-2 bg-gray-200 rounded-lg"
+                onClick={handlePopupClose}
+              >
+                Close
+              </button>
+              <button
+                className="px-4 py-2 bg-violet-500 text-white rounded-lg"
+                onClick={() => {
+                  setShowPopup(false);
+                  navigate("/hostel-fee");
+                }}
+              >
+                Pay Hostel Fee
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </nav>
   );
 };
