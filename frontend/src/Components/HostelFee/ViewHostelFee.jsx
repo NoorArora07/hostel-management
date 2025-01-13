@@ -15,7 +15,7 @@ import {
   CardTitle,
 } from "@/Components/ui/card";
 import { HomeIcon } from "lucide-react";
-import { BackgroundGradientAnimation } from "../ui/background-gradient-animation";
+import { AuroraBackground } from "../ui/aurora-background";
 import { baseUrl } from "@/urls";
 import { getFromBackend } from "@/store/fetchdata";
 
@@ -51,11 +51,12 @@ const HostelFeeDetails = () => {
   }, []);
 
   return (
-    <div>
-      <BackgroundGradientAnimation>
+    <div className="relative min-h-screen">
+      <AuroraBackground className="fixed top-0 left-0 right-0 z-0 h-full" />
+
         <div className="mt-14 min-h-screen flex items-center justify-center p-6">
-          <Card className="w-full max-w-4xl bg-white/90 backdrop-blur-sm shadow-2xl rounded-3xl overflow-hidden">
-            <CardHeader className="bg-purple-700 text-white p-6">
+          <Card className="w-full max-w-4xl bg-white/20 backdrop-blur-sm shadow-2xl rounded-3xl overflow-hidden">
+            <CardHeader className="bg-black text-white p-6">
               <CardTitle className="text-3xl font-bold flex items-center justify-center">
                 <HomeIcon className="justify-center mr-3" size={20} />
                 Hostel Fee Details
@@ -89,7 +90,6 @@ const HostelFeeDetails = () => {
             </CardContent>
           </Card>
         </div>
-      </BackgroundGradientAnimation>
     </div>
   );
 };

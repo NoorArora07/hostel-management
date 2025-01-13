@@ -43,7 +43,7 @@ const MessFeeDetails = () => {
       backgroundPosition: 'center',
     }}>
       <Card className="w-full max-w-4xl bg-white/90 backdrop-blur-sm shadow-2xl rounded-3xl overflow-hidden">
-        <CardHeader className="bg-purple-700 text-white p-6">
+        <CardHeader className="bg-black text-white p-6">
           <CardTitle className="text-3xl font-bold flex items-center justify-center">
             <CutleryIcon className="mr-2" />
             Mess Fee Details
@@ -66,12 +66,12 @@ const MessFeeDetails = () => {
                   <p>Enjoy nutritious and tasty food at affordable price</p>
                 </div>
               </div>
-              <Card className="bg-blue-50 border-l-4 border-blue-500">
+              <Card className="bg-violet-100 border-l-4 border-violet-500">
                 <CardContent className="p-4">
-                  <h3 className="flex items-center text-lg font-semibold text-blue-700 mb-2">
+                  <h3 className="flex items-center text-lg font-semibold text-violet-700 mb-2">
                     <InfoIcon className="mr-2" /> Rebate Information
                   </h3>
-                  <p className="text-blue-600">{rebateInfo}</p>
+                  <p className="text-violet-600">{rebateInfo}</p>
                 </CardContent>
               </Card>
             </div>

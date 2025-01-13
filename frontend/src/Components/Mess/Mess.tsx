@@ -5,6 +5,7 @@ import { Button } from "@/Components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/Components/ui/dropdown-menu";
 import messPic from '@/Photos/mess-pic.jpg';
 import { useNavigate } from 'react-router-dom';
+import { AuroraBackground } from "../ui/aurora-background";
 
 const features = [
   {
@@ -43,30 +44,41 @@ export default function Mess() {
   };
 
   return (
-    <div>
-    <div className="overflow-hidden bg-white py-24 sm:py-32" style={{ overflowY: 'scroll', scrollbarGutter: 'stable' }}>
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
-          <div className="lg:pr-8 lg:pt-4">
-            <div className="lg:max-w-lg">
-              <h2 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">
-              Dormify Mess
-            </h2>
-            <p className="mt-4 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
-              Manage Your Mess
-            </p>
-            <dl className="mt-10 max-w-xl space-y-8 text-base/7 text-gray-600 lg:max-w-none">
-              {features.map((feature) => (
-                <div key={feature.name} className="relative pl-9">
-                  <dt className="inline font-semibold text-gray-900">
-                    <feature.icon aria-hidden="true" className="absolute left-1 top-1 size-5 text-indigo-600" />
-                    {feature.name}
-                  </dt>
-                  <dd className="mt-1 text-gray-600">{feature.description}</dd>
-                  <dd className="mt-4">
+    <div className="relative min-h-screen">
+        {/* Aurora Background */}
+        <AuroraBackground className="fixed top-0 left-0 right-0 z-[-1] h-full" />
+
+        <div className="h-24"></div>
+        
+        <div className="overflow-auto py-16 sm:py-20 bg-white/20 backdrop-blur-lg rounded-xl shadow-lg mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto flex flex-col lg:flex-row gap-8">
+            
+            {/* Image on the Left */}
+            <div className="lg:w-1/2">
+              <img
+                src={messPic} 
+                alt="Mess"
+                className="w-full rounded-xl shadow-xl ring-1 ring-gray-400/10"
+              />
+            </div>
+
+            {/* Option Cards on the Right */}
+            <div className="lg:w-1/2">
+              <h2 className="text-3xl font-bold text-center text-white mb-8">Manage Your Mess</h2>
+              <div className="grid grid-cols-1 gap-6">
+                {features.map((feature) => (
+                  <div key={feature.name} className="bg-white rounded-xl shadow-lg p-6 flex items-center justify-between">
+                    <div className="flex items-center w-full">
+                      <feature.icon className="w-10 h-10 text-violet-800 mr-4" />
+                      <div className="w-full">
+                        <h3 className="text-2xl font-semibold text-gray-900">{feature.name}</h3>
+                        <p className="mt-2 text-gray-600">{feature.description}</p>
+                      </div>
+                    </div>
+                    {/* Dropdown Button on the Same Row */}
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <Button className="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white 
+                        <Button className="bg-violet-500 hover:bg-violet-700 text-white 
                           font-semibold py-2 px-4 rounded-md shadow-md transition duration-300 ease-in-out transform hover:scale-105">
                           Options
                         </Button>
@@ -79,22 +91,13 @@ export default function Mess() {
                         ))}
                       </DropdownMenuContent>
                     </DropdownMenu>
-                  </dd>
-                </div>
-              ))}
-            </dl>
+                  </div>
+                ))}
+              </div>
             </div>
+
           </div>
-          <img
-            src={messPic} 
-            alt="Mess"
-            width={2432}
-            height={1442}
-            className="w-[48rem] max-w-none rounded-xl shadow-xl ring-1 ring-gray-400/10 sm:w-[57rem] md:-ml-4 lg:-ml-0"
-          />
         </div>
-      </div>
     </div>
-    </div>
-  )
+  );
 }
