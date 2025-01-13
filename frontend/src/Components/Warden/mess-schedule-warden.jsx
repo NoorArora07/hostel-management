@@ -5,6 +5,7 @@ import { getFromBackend } from "../../store/fetchdata"; // Ensure the import pat
 import FormComponent from "./FormMessWarden";
 import EventListComponent from "./EventListWarden";
 import { baseUrl } from "@/urls";
+import pic from '@/Photos/wardendash5.jpg'
 
 const WCalendar = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -59,8 +60,15 @@ const WCalendar = () => {
   );
 
   return (
-    <div className="container mx-auto p-4 max-w-6xl">
-      <h1 className="text-3xl font-bold text-center mb-8 text-blue-600">
+    <div className="h-screen mt-20 mb-12"
+    style={{
+      backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(${pic})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundAttachment: 'fixed',
+    }}>
+      <div className="container mx-auto p-4 max-w-6xl">
+      <h1 className="text-3xl font-bold text-center mb-12 text-white">
         Mess Warden Calendar
       </h1>
       <div className="grid md:grid-cols-2 gap-8">
@@ -79,7 +87,7 @@ const WCalendar = () => {
           </div>
           <div className="flex justify-center">
             <button
-              className="px-6 py-2 bg-blue-500 text-white rounded-md shadow-md hover:bg-blue-600 transition duration-300 ease-in-out transform hover:-translate-y-1"
+              className="px-6 py-2 bg-violet-500 text-white rounded-md shadow-md hover:bg-violet-700 transition duration-300 ease-in-out transform hover:-translate-y-1"
               onClick={toggleForm}
             >
               {showForm ? "Cancel" : "Add Event"}
@@ -94,6 +102,7 @@ const WCalendar = () => {
         <div className="bg-white p-6 rounded-lg shadow-md">
           <EventListComponent events={filteredEvents} />
         </div>
+      </div>
       </div>
     </div>
   );

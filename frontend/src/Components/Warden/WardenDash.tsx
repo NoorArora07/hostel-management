@@ -4,9 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { checkWarden } from '../../store/fetchdata';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Calendar, Clock, FileText, Menu, MessageSquare, User } from 'lucide-react';
-import { baseUrl } from '@/urls';
-
+import { Calendar, Clock, FileText, MessageSquare, User, LogOut } from 'lucide-react';
 import { Button } from "@/Components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/Components/ui/card";
 import {
@@ -17,7 +15,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/Components/ui/dropdown-menu";
-import { ScrollArea } from "@/Components/ui/scroll-area";
+import pic from '@/Photos/wardendash6.jpg';
+import { CircleUserRoundIcon } from 'lucide-react';
 
 const WardenDash = () => {
   const navigate = useNavigate();
@@ -48,98 +47,114 @@ const WardenDash = () => {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-blue-500 to-purple-600">
-        <div className="w-16 h-16 border-4 border-white border-dashed rounded-full animate-spin"></div>
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-purple-900 to-black">
+        <div className="w-16 h-16 border-4 border-purple-500 border-dashed rounded-full animate-spin"></div>
       </div>
     );
   }
 
   return (
-    <div className="mt-24 min-h-screen bg-gradient-to-r from-blue-500 to-purple-600 text-white">
-      <header className="p-4 flex justify-between items-center">
-        <h1 className="text-2xl font-bold">Warden Dashboard</h1>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon">
-              <User className="h-5 w-5" />
-              <span className="sr-only">User menu</span>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>My Account</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Profile</DropdownMenuItem>
-            <DropdownMenuItem>Log out</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </header>
-
-      <main className="container mx-auto p-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <Card>
-              <CardHeader>
-                <CardTitle>Leaves Management</CardTitle>
-                <CardDescription>Manage student leaves</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Button className="w-full mb-2" onClick={() => handleNavigation('/LongLeavesApprove')}>
-                  <FileText className="mr-2 h-4 w-4" /> Long Leaves
-                </Button>
-                <Button className="w-full" onClick={() => handleNavigation('/LateLeavesApprove')}>
-                  <Clock className="mr-2 h-4 w-4" /> Late Leaves
-                </Button>
-              </CardContent>
-            </Card>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-          >
-            <Card>
-              <CardHeader>
-                <CardTitle>Mess Schedule</CardTitle>
-                <CardDescription>View and manage mess schedules</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Button className="w-full" onClick={() => handleNavigation('/mess-schedule-warden')}>
-                  <Calendar className="mr-2 h-4 w-4" /> View Schedule
-                </Button>
-              </CardContent>
-            </Card>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            <Card>
-              <CardHeader>
-                <CardTitle>Complaints</CardTitle>
-                <CardDescription>Address student complaints</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Button className="w-full" onClick={() => handleNavigation('/complaintsviewwarden')}>
-                  <MessageSquare className="mr-2 h-4 w-4" /> View Complaints
-                </Button>
-              </CardContent>
-            </Card>
-          </motion.div>
+    <div
+      className="mt-20 min-h-screen bg-gradient-to-r from-purple-900 to-black text-white"
+      style={{
+        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(${pic})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed',
+      }}
+    >
+      <header className="sticky top-0 z-50 p-4 md:p-6 flex items-center justify-center shadow-lg">
+        <div className="mt-3 flex items-center space-x-4">
+          <CircleUserRoundIcon className="w-8 h-8" />
+          <h1 className="text-center text-2xl md:text-3xl font-bold text-purple-200">Warden Dashboard</h1>
         </div>
 
+        <div className="absolute right-4 md:right-6">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="lg" className="text-black bg-purple-200 hover:bg-purple-800 hover:text-white transition-colors duration-200">
+                <User className="h-6 w-6" />
+                <span className="sr-only">User menu</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="bg-purple-700 text-white border-none rounded-lg shadow-lg">
+              <DropdownMenuLabel className="text-purple-300">Warden</DropdownMenuLabel>
+              <DropdownMenuSeparator className="bg-purple-700" />
+
+              <DropdownMenuItem
+                className="hover:bg-purple-700 hover:text-white transition-colors duration-200"
+                onClick={() => handleNavigation('/')}
+              >
+                <LogOut className="mr-2 h-4 w-4" /> Log out
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      </header>
+
+      <main className="container mx-auto p-4 md:p-6">
         <motion.div
-          className="mt-8"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
+          transition={{ duration: 0.5 }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
         >
+          <Card className="bg-white/10 backdrop-blur-lg text-white shadow-lg rounded-lg overflow-hidden transform hover:scale-105 transition-transform duration-200">
+            <CardHeader>
+              <CardTitle className="text-xl font-semibold text-white">Leaves Management</CardTitle>
+              <CardDescription className="text-violet-100">Manage student leaves</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4 p-6">
+              <Button
+                className="w-full bg-violet-600 border border-white hover:bg-violet-800 text-white shadow-md transition-colors duration-200"
+                onClick={() => handleNavigation('/LongLeavesApprove')}
+              >
+                <FileText className="mr-2 h-5 w-5" /> Long Leaves
+              </Button>
+              <Button
+                className="w-full bg-violet-600 border border-white hover:bg-violet-800 text-white shadow-md transition-colors duration-200"
+                onClick={() => handleNavigation('/LateLeavesApprove')}
+              >
+                <Clock className="mr-2 h-5 w-5" /> Late Leaves
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-white/10 backdrop-blur-lg text-white shadow-lg rounded-lg overflow-hidden transform hover:scale-105 transition-transform duration-200">
+            <CardHeader>
+              <CardTitle className="text-xl font-semibold text-white">Mess Schedule</CardTitle>
+              <CardDescription className="text-violet-100">View and manage mess schedules</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4 p-6">
+              <Button
+                className="w-full bg-violet-600 border border-white hover:bg-violet-800 text-white shadow-md transition-colors duration-200"
+                onClick={() => handleNavigation('/mess-schedule-warden')}
+              >
+                <Calendar className="mr-2 h-5 w-5" /> View Schedule
+              </Button>
+              <Button
+                className="w-full bg-violet-600 border border-white hover:bg-violet-800 text-white shadow-md transition-colors duration-200"
+                onClick={() => handleNavigation('/add-mess-fee')}
+              >
+                <FileText className="mr-2 h-5 w-5" /> Add Mess Fee
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-white/10 backdrop-blur-lg text-white shadow-lg rounded-lg overflow-hidden transform hover:scale-105 transition-transform duration-200">
+            <CardHeader>
+              <CardTitle className="text-xl font-semibold text-white">Complaints</CardTitle>
+              <CardDescription className="text-violet-100">Address student complaints</CardDescription>
+            </CardHeader>
+            <CardContent className="p-6">
+              <Button
+                className="w-full bg-violet-600 border border-white hover:bg-violet-800 text-white shadow-md transition-colors duration-200"
+                onClick={() => handleNavigation('/complaintsviewwarden')}
+              >
+                <MessageSquare className="mr-2 h-5 w-5" /> View Complaints
+              </Button>
+            </CardContent>
+          </Card>
         </motion.div>
       </main>
     </div>

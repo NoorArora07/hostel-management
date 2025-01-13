@@ -6,6 +6,7 @@ import { Input } from "@/Components/ui/input";
 import { AuroraBackground } from "../ui/aurora-background";
 import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
 import { baseUrl } from '@/urls.jsx';
+import { useNavigate } from 'react-router-dom';
 
 export default function ComplaintsForm() {
     const [formData, setFormData] = useState({
@@ -28,6 +29,7 @@ export default function ComplaintsForm() {
     };
 
     const handleSubmit = async (event) => {
+        const navigate = useNavigate();
         event.preventDefault();
 
         if (!formData.title.trim() || !formData.description.trim()) {
@@ -38,6 +40,7 @@ export default function ComplaintsForm() {
         try {
             const response = await postToBackend(`${baseUrl}/api/complaint/add`, formData);
             alert(`${response.data.message}`);
+            navigate('/Homepage')
         } catch (error) {
             console.error('Error submitting complaint:', error);
             alert('An error occurred while submitting your complaint.');

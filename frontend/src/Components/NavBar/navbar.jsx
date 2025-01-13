@@ -79,6 +79,9 @@ const Navbar = () => {
         case "mess_payDetails":
           navigate("/view-mess-fee");
           break;
+        case "rooM":
+          navigate("/RoomsView");
+          break;
         default:
           break;
       }

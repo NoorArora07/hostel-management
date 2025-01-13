@@ -84,8 +84,8 @@ export default function ComplaintsViewW() {
   }  
 
   return (
-    <div className="mt-40 mb-20 px-4">
-      <Card className="w-full mb-8">
+    <div className="mt-20 mb-20 px-4 bg-black">
+      <Card className="mt-12 w-full mb-8">
         <CardHeader>
           <CardTitle className="text-2xl font-bold">Pending Complaints</CardTitle>
         </CardHeader>

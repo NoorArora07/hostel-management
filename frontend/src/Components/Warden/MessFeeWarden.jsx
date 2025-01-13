@@ -64,8 +64,9 @@ export default function MessFeeForm() {
     
 
     return (
+        <div>
         <form onSubmit={handleSubmit}>
-            <div className="p-5 mb-10 space-y-12 mt-32 bg-white placeholder-slate-100 rounded-xl border-green-600 border-2">
+            <div className="p-5 mb-14 space-y-12 mt-52 bg-white placeholder-slate-100 rounded-xl border-green-600 border-2">
                 <div className="border-b border-gray-900/10 pb-12">
                     <h2 className="text-base/7 font-bold text-gray-900">Update Mess Fee Details:</h2>
 
@@ -137,5 +138,6 @@ export default function MessFeeForm() {
                 </div>
             </div>
         </form>
+        </div>
     );
 }

@@ -3,6 +3,7 @@ import { getFromBackend, patchToBackend } from '../../store/fetchdata';
 import { checkWarden } from '../../store/fetchdata';
 import { useNavigate } from 'react-router-dom';
 import { baseUrl } from '@/urls';
+import pic from '@/Photos/wardendash3.jpg'
 
 const LateLeavesApprove = () => {
   const [applications, setApplications] = useState([]);
@@ -92,7 +93,13 @@ const LateLeavesApprove = () => {
   };
 
   return (
-    <div className="min-h-screen pt-20 pb-6">
+    <div className="min-h-screen pt-20 pb-6"
+    style={{
+      backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(${pic})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundAttachment: 'fixed',
+    }}>
       <div className="max-w-6xl mx-auto p-6 bg-white rounded-lg shadow-md mt-6">
         <h1 className="text-3xl font-bold text-center mb-8">Late Leave Applications</h1>
 
