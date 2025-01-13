@@ -12,7 +12,7 @@ import jwt from 'jsonwebtoken';
 import { JWT_SECRET } from '../middleware/verifyToken.js';
 
 export const sendOTP = async (req, res) => {
-  const { email } = req.body;
+  const { email} = req.body;
 
   try {
     // Generate OTP
@@ -20,15 +20,15 @@ export const sendOTP = async (req, res) => {
     console.log("otp : ",otp);
     const expires = Date.now() + 10 * 60 * 1000; // OTP expires in 10 minutes
 
-    //creating temporary jwt token for password reset 
-    const tempToken = jwt.sign({email},JWT_SECRET,{expiresIn:'15m'});
-    console.log("Temp token generated:", tempToken);
+    // //creating temporary jwt token for password reset 
+    // const tempToken = jwt.sign({email},JWT_SECRET,{expiresIn:'15m'});
+    // console.log("Temp token generated:", tempToken);
 
     const passwordReset = new Pw_Reset({
       email,
       otp,
-      expires,
-      tempToken
+      expires
+     // tempToken
     });
     console.log("saving otp");
     await passwordReset.save();
@@ -56,10 +56,10 @@ export const sendOTP = async (req, res) => {
       if (error) {
         return res.status(500).json({ message: 'Error sending OTP' });
       } else {
-        console.log("temp token : ", tempToken);
+       // console.log("temp token : ", tempToken);
         return res.status(200).json({ 
-          message: 'OTP sent successfully', 
-          tempToken 
+          message: 'OTP sent successfully'
+          //,tempToken 
         });
       }
     });
@@ -71,13 +71,13 @@ export const sendOTP = async (req, res) => {
 
 
 export const verifyOTP = async (req, res) => {
-  const { otp } = req.body;
-  const tempToken = req.headers.authorization.split(' ')[1]; // Extract token from Authorization header
+  const { otp,email } = req.body;
+ // const tempToken = req.headers.authorization.split(' ')[1]; // Extract token from Authorization header
 
   try {
     // Verify temporary token
-    const decoded = jwt.verify(tempToken,JWT_SECRET); // Make sure JWT_SECRET is correctly defined in your environment variables
-    const email = decoded.email;
+    // const decoded = jwt.verify(tempToken,JWT_SECRET); // Make sure JWT_SECRET is correctly defined in your environment variables
+    // const email = decoded.email;
 
     const record = await Pw_Reset.findOne({ email, otp });
 
@@ -98,13 +98,13 @@ export const verifyOTP = async (req, res) => {
 
 
 export const resetPassword = async (req, res) => {
-  const { password } = req.body;
-  const tempToken = req.headers.authorization.split(' ')[1]; // Extract token from Authorization header
+  const { email,password } = req.body;
+  //const tempToken = req.headers.authorization.split(' ')[1]; // Extract token from Authorization header
 
   try {
-    // Verify temporary token
-    const decoded = jwt.verify(tempToken,JWT_SECRET); // Use environment variable
-    const email = decoded.email;
+    // // Verify temporary token
+    // const decoded = jwt.verify(tempToken,JWT_SECRET); // Use environment variable
+    // const email = decoded.email;
   
     // Hash the new password
     const hashedPassword = await bcrypt.hash(password, 10);

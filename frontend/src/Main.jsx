@@ -9,16 +9,13 @@ import SignUp2 from './Components/Login/SignUp2.jsx'
 import Homepage from './Components/HomePage/homepage.jsx'
 import { AuthProvider } from './store/auth.jsx'
 import { reinitializeSocket } from "./store/socket.jsx";
-import { ForgotPasswordProvider } from './store/otpauth.jsx'
 
 reinitializeSocket();
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <ForgotPasswordProvider>
   <AuthProvider>
     <React.StrictMode>
       <App />
     </React.StrictMode>
   </AuthProvider>
-  </ForgotPasswordProvider>
 );

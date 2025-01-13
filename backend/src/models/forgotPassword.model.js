@@ -14,10 +14,10 @@ const pass_reset = new mongoose.Schema({
       type: Date,
       required: true,
     },
-    tempToken:{
-      type:String,
-      required:true,
-    }
+    // tempToken:{
+    //   type:String,
+    //   required:true,
+    // }
   });
 
 export default mongoose.model("Pw_Reset", pass_reset);

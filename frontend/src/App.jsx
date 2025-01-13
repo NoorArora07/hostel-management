@@ -82,7 +82,7 @@ function App() {
     },
     {
       path: "/otp-page",
-      element: <><Navbar /><OtpVerificationPage /><Footer /></>
+      element: <><OtpVerificationPage /><Footer /></>
     },
     {
       path: "/new-password-page",
