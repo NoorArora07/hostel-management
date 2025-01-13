@@ -5,7 +5,6 @@ import { Button } from '@/Components/ui/button';
 import { Card, CardHeader, CardContent, CardTitle, CardFooter } from '@/Components/ui/card';
 import { Label } from '@/Components/ui/label';
 import { baseUrl } from '@/urls';
-import { postToBackend } from '@/store/fetchdata';
 
 const OtpVerificationPage = () => {
   const [otp, setOtp] = useState('');
@@ -18,11 +17,11 @@ const OtpVerificationPage = () => {
 
   const verifyOtp = async () => {
     try {
-      const response = await postToBackend(`${baseUrl}/api/pass_reset/verify-otp`, { email, otp });
+      const response = await axios.post(`${baseUrl}/api/pass_reset/verify-otp`, { email, otp });
       const data = response.data;
       console.log("response mil gaya: ", response)
 
-      if (data.success) {
+      if (data.message == 'OTP verified successfully') {
         navigate('/new-password-page');
       } else {
         setError('Invalid OTP. Please try again.');

@@ -8,21 +8,20 @@ import { Card, CardHeader, CardContent, CardFooter, CardTitle } from '@/Componen
 import { Label } from '@/Components/ui/label'
 import { Alert, AlertDescription } from '@/Components/ui/alert'
 import { baseUrl } from '@/urls'
-import { postToBackend } from '@/store/fetchdata'
 
 export default function ChangePasswordPage() {
   const [email, setEmail] = useState('')
-  const [newPassword, setNewPassword] = useState('')
+  const [password, setpassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [error, setError] = useState('')
   const navigate = useNavigate()
 
   const handleEmailChange = (e) => setEmail(e.target.value)
-  const handleNewPasswordChange = (e) => setNewPassword(e.target.value)
+  const handlepasswordChange = (e) => setpassword(e.target.value)
   const handleConfirmPasswordChange = (e) => setConfirmPassword(e.target.value)
 
   const changePassword = async () => {
-    if (newPassword !== confirmPassword) {
+    if (password !== confirmPassword) {
       setError('Passwords do not match.')
       return
     }
@@ -30,12 +29,10 @@ export default function ChangePasswordPage() {
     setError('')
 
     try {
-      const response = await postToBackend(`${baseUrl}/api/pass_reset/reset-password`, { email, newPassword })
+      const response = await axios.post(`${baseUrl}/api/pass_reset/reset-password`, { email, password })
       const data = response.data;
 
-      console.log("response mil gaya: ", response)
-
-      if (data.success) {
+      if (data.message == 'Password reset successful') {
         alert('Password Change Successful!')
         navigate('/')
       } else {
@@ -69,8 +66,8 @@ export default function ChangePasswordPage() {
               id="new-password"
               type="password"
               placeholder="Enter new password"
-              value={newPassword}
-              onChange={handleNewPasswordChange}
+              value={password}
+              onChange={handlepasswordChange}
             />
           </div>
           <div className="space-y-2">

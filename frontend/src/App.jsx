@@ -110,7 +110,7 @@ function App() {
     },
     {
       path: "/add-mess-fee",
-      element: <><Navbar /><MessFeeForm/><Footer /></>
+      element: <><WardenNavbar /><MessFeeForm/><Footer /></>
     },
     {
       path: "/mess-leave-view",

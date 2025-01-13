@@ -100,7 +100,7 @@ export const verifyOTP = async (req, res) => {
 export const resetPassword = async (req, res) => {
   const { email,password } = req.body;
   //const tempToken = req.headers.authorization.split(' ')[1]; // Extract token from Authorization header
-
+  console.log('password ', password)
   try {
     // // Verify temporary token
     // const decoded = jwt.verify(tempToken,JWT_SECRET); // Use environment variable
@@ -108,7 +108,7 @@ export const resetPassword = async (req, res) => {
   
     // Hash the new password
     const hashedPassword = await bcrypt.hash(password, 10);
-
+    console.log('hashed-password ', hashedPassword)
     // Update the user's password
     await User.updateOne({ email }, { password: hashedPassword });
 
