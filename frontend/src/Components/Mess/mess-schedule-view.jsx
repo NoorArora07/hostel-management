@@ -52,7 +52,7 @@ const MyCalendar = () => {
       backgroundAttachment: 'fixed',
     }}>
       <div className="container mx-auto p-4 max-w-4xl mt-20 mb-5">
-      <h1 className="text-4xl font-bold text-center mb-12 text-black">
+      <h1 className="p-3 text-4xl font-bold bg-white text-center mb-12 text-black">
         Mess Calendar
       </h1>
       <div className="grid md:grid-cols-2 gap-8">
