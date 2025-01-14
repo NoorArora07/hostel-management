@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "@/Components/ui/button";
 import { ClipboardList, PlusCircle } from "lucide-react";
 import pic from "@/Photos/complaints.jpg";
 import { AuroraBackground } from '../ui/aurora-background.tsx';
