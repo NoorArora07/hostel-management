@@ -88,8 +88,10 @@ export const initiatePayment = async (req, res) => {
         name,
         amount,
       }, 
-      success_url: "http://localhost:5173/hostel_success?session_id={CHECKOUT_SESSION_ID}",
-      cancel_url: "http://localhost:5173/hostel_cancel",
+      success_url: "https://dormify-sigma.vercel.app/hostel_success?session_id={CHECKOUT_SESSION_ID}",
+      //"http://localhost:5173/hostel_success?session_id={CHECKOUT_SESSION_ID}",
+      cancel_url: "https://dormify-sigma.vercel.app/hostel_cancel",
+      //"http://localhost:5173/hostel_cancel",
 
     }); 
     console.log("done");
@@ -124,10 +126,10 @@ export const updateFeeStatus = async (req, res) => {
       );  
     
       console.log(`Fee status updated to 'paid' for studentId: ${studentId}`);
-      res.redirect('http://localhost:5173/hostel_success');
+      res.redirect('https://dormify-sigma.vercel.app/hostel_success');
     } else {
       console.log('Payment not completed for sessionId:', sessionId);
-      res.redirect('http://localhost:5173/hostel_cancel');
+      res.redirect('https://dormify-sigma.vercel.app/hostel_cancel');
     }
   } catch (err) {
     console.error(`Failed to update payment status: ${err.message}`);
