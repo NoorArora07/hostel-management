@@ -9,6 +9,7 @@ import { baseUrl } from '@/urls.jsx';
 import { useNavigate } from 'react-router-dom';
 
 export default function ComplaintsForm() {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         roomNumber: '',
         title: '',
@@ -29,7 +30,6 @@ export default function ComplaintsForm() {
     };
 
     const handleSubmit = async (event) => {
-        const navigate = useNavigate();
         event.preventDefault();
 
         if (!formData.title.trim() || !formData.description.trim()) {
@@ -39,13 +39,15 @@ export default function ComplaintsForm() {
 
         try {
             const response = await postToBackend(`${baseUrl}/api/complaint/add`, formData);
+            console.log(response);
             alert(`${response.data.message}`);
-            navigate('/Homepage')
+            navigate('/Homepage');
         } catch (error) {
             console.error('Error submitting complaint:', error);
             alert('An error occurred while submitting your complaint.');
         }
     };
+
 
     return (
         <div className="relative min-h-screen bg-gray-50">

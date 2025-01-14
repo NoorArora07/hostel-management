@@ -1,44 +1,61 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { postToBackend } from '@/store/fetchdata';
+import { postToBackend, getFromBackend } from '@/store/fetchdata';
 import { loadStripe } from '@stripe/stripe-js';
 import photo from "@/Photos/hostel-fee.jpg";
 
 export default function HostelPayment() {
-
   const [error, setError] = useState('');
+  const [userFeeStatus, setUserFeeStatus] = useState(null);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const fetchUserFeeStatus = async () => {
+      try {
+        const response = await getFromBackend('http://127.0.0.1:5090/api/hostelFee/status');
+        if (response.status !== 200) {
+          throw new Error('Failed to fetch user fee status');
+        }
+
+        const data = response.data;
+        setUserFeeStatus(data.status); // Assuming `data.status` contains 'p
+        // 
+        // 
+        // 
+        // aid' or 'unpaid'
+      } catch (error) {
+        console.error('Error fetching user fee status:', error);
+      }
+    };
+
+    fetchUserFeeStatus();
+  }, []);
+
   const handleSubmit = async () => {
+    if (userFeeStatus === 'paid') {
+      setError('Payment has already been completed.');
+      return;
+    }
 
     setError('');
     try {
-      const response = await postToBackend(
-        'http://127.0.0.1:5090/api/hostelFee/paynow'
-      );
-
-      console.log(response);
-
+      const response = await postToBackend('http://127.0.0.1:5090/api/hostelFee/paynow');
       if (!response?.data?.id) {
-        console.error('Invalid response from backend:', response);
         alert('Failed to initiate payment. Please try again.');
         return;
       }
 
       const stripe = await loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
       if (!stripe) {
-        console.error('Stripe initialization failed');
         alert('Payment system is currently unavailable. Please try again later.');
         return;
       }
 
       const result = await stripe.redirectToCheckout({ sessionId: response.data.id });
       if (result?.error) {
-        console.error('Error during checkout redirect:', result.error.message);
         alert(`Error: ${result.error.message}`);
       }
     } catch (error) {
-      console.error('Error initiating payment:', error.response ? error.response.data : error.message);
       alert('An error occurred while processing your payment. Please try again later.');
     }
   };
@@ -47,19 +64,6 @@ export default function HostelPayment() {
     <div className="bg-white w-full">
       <div className="mx-auto py-24 sm:px-6 sm:py-32 lg:px-8 w-screen">
         <div className="relative isolate overflow-hidden bg-gray-900 px-6 pt-16 shadow-2xl sm:rounded-3xl sm:px-16 md:pt-24 lg:flex lg:gap-x-20 lg:px-24 lg:pt-0">
-          <svg
-            viewBox="0 0 1024 1024"
-            aria-hidden="true"
-            className="absolute left-1/2 top-1/2 -z-10 size-[64rem] -translate-y-1/2 [mask-image:radial-gradient(closest-side,white,transparent)] sm:left-full sm:-ml-80 lg:left-1/2 lg:ml-0 lg:-translate-x-1/2 lg:translate-y-0"
-          >
-            <circle r={512} cx={512} cy={512} fill="url(#gradient)" fillOpacity="0.7" />
-            <defs>
-              <radialGradient id="gradient">
-                <stop stopColor="#7775D6" />
-                <stop offset={1} stopColor="#E935C1" />
-              </radialGradient>
-            </defs>
-          </svg>
           <div className="mx-auto max-w-md text-center lg:mx-0 lg:flex-auto lg:py-32 lg:text-left">
             <h2 className="text-balance text-3xl font-semibold tracking-tight text-white sm:text-4xl">
               Pay your Hostel Fee <br /> in seconds.
@@ -75,8 +79,11 @@ export default function HostelPayment() {
                 Payment Details
               </a>
               <button
-                className="text-sm/6 font-semibold text-white"
+                className={`text-sm/6 font-semibold ${
+                  userFeeStatus === 'paid' ? 'text-gray-500 cursor-not-allowed' : 'text-white'
+                }`}
                 onClick={handleSubmit}
+                disabled={userFeeStatus === 'paid'}
               >
                 Complete Payment <span aria-hidden="true">→</span>
               </button>

@@ -74,9 +74,9 @@ export const initiatePayment = async (req, res) => {
       line_items: [
         {
           price_data: {
-            currency: 'USD',
+            currency: 'INR',
             product_data: {
-              name: `Mess Fee Payment - Student ID: ${studentId}`, 
+              name:`Mess Fee Payment - Student ID: ${studentId}`, 
             },
             unit_amount: amount * 100,
           },
@@ -200,4 +200,3 @@ export const getFeeStatus = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-

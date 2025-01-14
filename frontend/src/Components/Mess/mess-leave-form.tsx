@@ -45,6 +45,7 @@ const MessLeaveForm = () => {
       firstMeal,
     };
 
+
     try {
       const result = await postToBackend(`${baseUrl}/api/mess/off`, messData);
       console.log(`Application data`, messData, result);
@@ -52,8 +53,13 @@ const MessLeaveForm = () => {
       navigate('/Homepage');
     } catch (error) {
       console.error('Error submitting leave request:', error);
-      setError('There was an error submitting the leave request.');
-    }
+      if (axios.isAxiosError(error) && error.response && error.response.status === 400 && error.response.data === "Overlapping leave dates. Please submit valid leave dates!") {
+          setError("Your leave dates overlap with an existing leave. Please choose different dates.");
+      } else {
+          setError('The date of returning is before date of leaving!');
+      }
+   }
+   
   };
 
   return (
