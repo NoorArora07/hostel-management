@@ -1,6 +1,6 @@
 'use client'
 import { useEffect, useState } from "react"
-import { Button } from "@/components/ui/button"
+import { Button } from "@/Components/ui/button"
 import {
   Table,
   TableBody,
@@ -8,10 +8,10 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
+} from "@/Components/ui/table"
 import { getFromBackend, postToBackend, patchToBackend,checkWarden } from "@/store/fetchdata"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
+import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card"
+import { Badge } from "@/Components/ui/badge"
 import { Loader2 } from 'lucide-react'
 import { baseUrl } from "@/urls"
 import { useNavigate } from "react-router-dom"
