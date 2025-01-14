@@ -10,8 +10,8 @@ import SignUp2 from './Components/Login/SignUp2';
 import Homepage from './Components/HomePage/homepage';
 import Profile from './Components/Profile/Profile';
 import NoPage from './Components/Login/NoPage';
-import Navbar from './Components/Navbar/Navbar';
-import Footer from './Components/NavBar/Footer';
+import Navbar from './Components/navigation-bar/Navbar';
+import Footer from './Components/navigation-bar/Footer';
 import Photo from '@/Components/Profile/imageadd'
 //warden
 import WardenNavbar from './Components/Warden/WardenNavbar';

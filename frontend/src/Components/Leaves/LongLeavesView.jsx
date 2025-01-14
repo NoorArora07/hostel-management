@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { getFromBackend } from "../../store/fetchdata";
 import { Button } from "@/Components/ui/button";
 import { AuroraBackground } from "../ui/aurora-background.tsx";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
 import { baseUrl } from "@/urls";
 
 const LongLeavesView = () => {
