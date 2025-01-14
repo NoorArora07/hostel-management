@@ -2,7 +2,7 @@
 import React from "react";
 import { PencilSquareIcon, BanknotesIcon, ClipboardDocumentCheckIcon } from '@heroicons/react/20/solid';
 import { Button } from "@/Components/ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/Components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import messPic from '@/Photos/mess-pic.jpg';
 import { useNavigate } from 'react-router-dom';
 import { AuroraBackground } from "../ui/aurora-background";

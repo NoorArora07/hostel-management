@@ -106,7 +106,6 @@ export default function MessFeeForm() {
                 <div className="max-w-4xl bg-white p-6 shadow-lg rounded-md">
                     <h1 className="text-2xl font-bold mb-6 text-black text-center">Update Mess Fee Details</h1>
                     <form onSubmit={handleSubmit} className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                        {/* Month Field */}
                         <div className="col-span-2">
                             <label htmlFor="month" className="block text-sm font-medium text-gray-700">
                                 Enter the month
@@ -128,7 +127,6 @@ export default function MessFeeForm() {
                             </div>
                         </div>
 
-                        {/* Year Field */}
                         <div className="col-span-2">
                             <label htmlFor="year" className="block text-sm font-medium text-gray-700">
                                 Year
@@ -147,7 +145,6 @@ export default function MessFeeForm() {
                             </div>
                         </div>
 
-                        {/* Amount Field */}
                         <div className="col-span-2">
                             <label htmlFor="amount" className="block text-sm font-medium text-gray-700">
                                 Total Fee for the Month
@@ -166,7 +163,6 @@ export default function MessFeeForm() {
                             </div>
                         </div>
 
-                        {/* Submit Button */}
                         <div className="col-span-2">
                             <button
                                 type="submit"

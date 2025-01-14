@@ -1,23 +1,3 @@
-// export const postToBackend = async (link, data) => {
-//   try {
-//     const token = localStorage.getItem('token'); // Ensure token is retrieved
-//     if (!token) {
-//       throw new Error('No token found in localStorage');
-//     }
-
-//     const response = await axios.post(link, data, {
-//       headers: {
-//         'Authorization': Bearer ${token},
-//         'Content-Type': 'application/json'
-//       },
-//     });
-//     return response; // Return the full Axios response object
-//   } catch (error) {
-//     console.error('Request Error:', error.response ? error.response.data : error.message);
-//     throw error; // Rethrow to allow handling at the calling site
-//   }
-// };
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { postToBackend } from '@/store/fetchdata';
@@ -152,38 +132,3 @@ const Stripe = () => {
 };
 
 export default Stripe;
-
-
-// const Stripe = () => {
-//   const [amount, setAmount] = useState('');
-//   const navigate = useNavigate();
-
-//   const handlePayment = async () => {
-//     try {
-//       const response = await postToBackend('http://127.0.0.1:5090/api/payments/paynow', { amount });
-//       console.log("post ho gaya")
-//       if (response.data.success) {
-//         const sessionId = response.data.id;
-//         navigate(https://checkout.stripe.com/pay/${sessionId});
-//       }
-//     } catch (error) {
-//       console.error("Error initiating payment:", error);
-//       alert('Payment initiation failed!');
-//     }
-//   };
-
-//   return (
-//     <div>
-//       <h1>Mess Fee Payment</h1>
-//       <input
-//         type="number"
-//         value={amount}
-//         onChange={(e) => setAmount(e.target.value)}
-//         placeholder="Enter amount"
-//       />
-//       <button onClick={handlePayment}>Pay Now</button>
-//     </div>
-//   );
-// };
-
-// export default Stripe;

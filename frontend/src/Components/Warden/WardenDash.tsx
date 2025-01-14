@@ -7,14 +7,6 @@ import { motion } from 'framer-motion';
 import { Calendar, Clock, FileText, MessageSquare, User, LogOut } from 'lucide-react';
 import { Button } from "@/Components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/Components/ui/card";
-// import {
-//   DropdownMenu,
-//   DropdownMenuContent,
-//   DropdownMenuItem,
-//   DropdownMenuLabel,
-//   DropdownMenuSeparator,
-//   DropdownMenuTrigger,
-// } from "@/Components/ui/dropdown-menu";
 import pic from '@/Photos/wardendash6.jpg';
 import { CircleUserRoundIcon } from 'lucide-react';
 
@@ -68,28 +60,6 @@ const WardenDash = () => {
           <CircleUserRoundIcon className="w-8 h-8" />
           <h1 className="text-center text-2xl md:text-3xl font-bold text-purple-200">Warden Dashboard</h1>
         </div>
-
-        {/* <div className="absolute right-4 md:right-6">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="lg" className="text-black bg-purple-200 hover:bg-purple-800 hover:text-white transition-colors duration-200">
-                <User className="h-6 w-6" />
-                <span className="sr-only">User menu</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="bg-purple-700 text-white border-none rounded-lg shadow-lg">
-              <DropdownMenuLabel className="text-purple-300">Warden</DropdownMenuLabel>
-              <DropdownMenuSeparator className="bg-purple-700" />
-
-              <DropdownMenuItem
-                className="hover:bg-purple-700 hover:text-white transition-colors duration-200"
-                onClick={() => handleNavigation('/')}
-              >
-                <LogOut className="mr-2 h-4 w-4" /> Log out
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div> */}
       </header>
 
       <main className="container mx-auto p-4 md:p-6">

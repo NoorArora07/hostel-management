@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { postToBackend, getFromBackend } from '@/store/fetchdata';
 import { loadStripe } from '@stripe/stripe-js';
 import photo from "@/Photos/hostel-fee.jpg";
+import { baseUrl } from '@/urls';
 
 export default function HostelPayment() {
   const [error, setError] = useState('');
@@ -12,7 +13,7 @@ export default function HostelPayment() {
   useEffect(() => {
     const fetchUserFeeStatus = async () => {
       try {
-        const response = await getFromBackend('http://127.0.0.1:5090/api/hostelFee/status');
+        const response = await getFromBackend(`${baseUrl}/api/hostelFee/status`);
         if (response.status !== 200) {
           throw new Error('Failed to fetch user fee status');
         }
@@ -39,7 +40,7 @@ export default function HostelPayment() {
 
     setError('');
     try {
-      const response = await postToBackend('http://127.0.0.1:5090/api/hostelFee/paynow');
+      const response = await postToBackend(`${baseUrl}/api/hostelFee/paynow`);
       if (!response?.data?.id) {
         alert('Failed to initiate payment. Please try again.');
         return;
