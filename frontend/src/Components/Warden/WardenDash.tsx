@@ -7,14 +7,14 @@ import { motion } from 'framer-motion';
 import { Calendar, Clock, FileText, MessageSquare, User, LogOut } from 'lucide-react';
 import { Button } from "@/Components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/Components/ui/card";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/Components/ui/dropdown-menu";
+// import {
+//   DropdownMenu,
+//   DropdownMenuContent,
+//   DropdownMenuItem,
+//   DropdownMenuLabel,
+//   DropdownMenuSeparator,
+//   DropdownMenuTrigger,
+// } from "@/Components/ui/dropdown-menu";
 import pic from '@/Photos/wardendash6.jpg';
 import { CircleUserRoundIcon } from 'lucide-react';
 
@@ -69,7 +69,7 @@ const WardenDash = () => {
           <h1 className="text-center text-2xl md:text-3xl font-bold text-purple-200">Warden Dashboard</h1>
         </div>
 
-        <div className="absolute right-4 md:right-6">
+        {/* <div className="absolute right-4 md:right-6">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="lg" className="text-black bg-purple-200 hover:bg-purple-800 hover:text-white transition-colors duration-200">
@@ -89,7 +89,7 @@ const WardenDash = () => {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-        </div>
+        </div> */}
       </header>
 
       <main className="container mx-auto p-4 md:p-6">

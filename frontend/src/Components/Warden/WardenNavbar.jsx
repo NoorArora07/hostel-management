@@ -2,25 +2,25 @@ import React, { useState, useEffect, useRef } from 'react';
 import { NavLink } from 'react-router-dom';
 import { User, LogOut } from 'lucide-react';
 import { Button } from "@/Components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import logo from '../../Photos/dormify-logo.jpg';
 import { useNavigate } from 'react-router-dom';
 
 const WardenNavbar = () => {
-  const [dropdownOpen, setDropdownOpen] = useState(false); // For profile dropdown
   const [leavesDropdownOpen, setLeavesDropdownOpen] = useState(false); // For leaves dropdown
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
 
-  // Toggles the profile dropdown
-  const toggleProfileDropdown = () => {
-    setDropdownOpen(!dropdownOpen);
-    setLeavesDropdownOpen(false); // Close leaves dropdown if open
-  };
-
   // Toggles the leaves dropdown
   const toggleLeavesDropdown = () => {
     setLeavesDropdownOpen(!leavesDropdownOpen);
-    setDropdownOpen(false); // Close profile dropdown if open
   };
 
   const handleLogout = () => {
@@ -32,7 +32,6 @@ const WardenNavbar = () => {
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setDropdownOpen(false);
         setLeavesDropdownOpen(false);
       }
     };
@@ -118,25 +117,32 @@ const WardenNavbar = () => {
             </ul>
 
             {/* Profile Icon with Dropdown */}
-            <Button
-              variant="ghost"
-              size="lg"
-              className="text-black bg-purple-200 hover:bg-purple-800 hover:text-white transition-colors duration-200"
-              onClick={toggleProfileDropdown}
-            >
-              <User className="h-6 w-6" />
-            </Button>
-            {dropdownOpen && (
-              <div className="absolute right-0 mt-2 bg-purple-700 text-white rounded-lg shadow-lg w-48 z-50">
-                <div className="px-4 py-2 text-purple-300">Warden</div>
-                <button
-                  onClick={handleLogout}
-                  className="block px-4 py-2 text-sm font-medium hover:bg-purple-800"
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="lg"
+                  className="text-black bg-purple-200 hover:bg-purple-800 hover:text-white transition-colors duration-200"
                 >
-                  <LogOut className="mr-2 h-4 w-4" /> Log out
-                </button>
-              </div>
-            )}
+                  <User className="h-6 w-6" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56" align="end" forceMount>
+                <DropdownMenuLabel className="font-normal">
+                  <div className="flex flex-col space-y-1">
+                    <p className="text-sm font-medium leading-none">Warden</p>
+                    <p className="text-xs leading-none text-muted-foreground">
+                      warden@dormify.com
+                    </p>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleLogout}>
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Log out</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
       </div>
