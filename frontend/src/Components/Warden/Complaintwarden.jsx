@@ -9,15 +9,32 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { getFromBackend, postToBackend, patchToBackend } from "@/store/fetchdata"
+import { getFromBackend, postToBackend, patchToBackend,checkWarden } from "@/store/fetchdata"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Loader2 } from 'lucide-react'
 import { baseUrl } from "@/urls"
+import { useNavigate } from "react-router-dom"
 
 export default function ComplaintsViewW() {
   const [complaints, setComplaints] = useState([])
   const [loading, setLoading] = useState(false)
+  const navigate = useNavigate();
+
+  useEffect(() => {
+      const verifyAccess = async () => {
+        try {
+          const message = await checkWarden();
+          if (message === "access denied!") {
+            navigate('/AccessDenied');
+          }
+        } catch (error) {
+          console.error("Error while checking access:", error);
+          navigate('/AccessDenied');
+        } 
+      };
+      verifyAccess();
+    }, [navigate]);
 
   useEffect(() => {
     const fetchComplaints = async () => {

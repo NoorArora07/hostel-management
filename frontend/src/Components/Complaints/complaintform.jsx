@@ -41,7 +41,7 @@ export default function ComplaintsForm() {
             const response = await postToBackend(`${baseUrl}/api/complaint/add`, formData);
             console.log(response);
             alert(`${response.data.message}`);
-            navigate('/Homepage');
+            navigate('/complaintsview');
         } catch (error) {
             console.error('Error submitting complaint:', error);
             alert('An error occurred while submitting your complaint.');

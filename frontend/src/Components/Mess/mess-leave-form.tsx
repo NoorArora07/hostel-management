@@ -50,7 +50,7 @@ const MessLeaveForm = () => {
       const result = await postToBackend(`${baseUrl}/api/mess/off`, messData);
       console.log(`Application data`, messData, result);
       console.log('Mess leave request submitted successfully');
-      navigate('/Homepage');
+      navigate('/mess-leave-view');
     } catch (error) {
       console.error('Error submitting leave request:', error);
       if (axios.isAxiosError(error) && error.response && error.response.status === 400 && error.response.data === "Overlapping leave dates. Please submit valid leave dates!") {
