@@ -96,20 +96,20 @@ const Navbar = () => {
     setShowNotifications((prev) => !prev);
   };
 
-  // const checkRoomAllocationStatus = async () => {
-  //   try {
-  //     const response = await getFromBackend(`${baseUrl}/api/hostelFee/status`);
-  //     const status = response.data.status;
+  const checkRoomAllocationStatus = async () => {
+    try {
+      const response = await getFromBackend(`${baseUrl}/api/hostelFee/status`);
+      const status = response.data.status;
 
-  //     if (status === "paid") {
-  //       navigate("/RoomsView");
-  //     } else {
-  //       setShowPopup(true);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error checking room allocation status:", error);
-  //   }
-  // };
+      if (status === "paid") {
+        navigate("/RoomsView");
+      } else {
+        setShowPopup(true);
+      }
+    } catch (error) {
+      console.error("Error checking room allocation status:", error);
+    }
+  };
 
   const handlePopupClose = () => {
     setShowPopup(false);
@@ -154,8 +154,7 @@ const Navbar = () => {
               ))}
               <li>
                 <button
-                  onClick={() =>navigate("/RoomsView")}
-                  // {checkRoomAllocationStatus} 
+                  onClick={checkRoomAllocationStatus}
                   className="text-base font-semibold px-3 py-2 rounded-lg text-blue-100 hover:bg-violet-500 hover:text-white transition-colors duration-150 ease-in-out"
                 >
                   Room Allocation
