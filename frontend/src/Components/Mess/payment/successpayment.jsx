@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { postToBackend } from '@/store/fetchdata';
-import { Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { BadgeDollarSign } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 import { baseUrl } from '@/urls';
+import { useNavigate } from 'react-router-dom';
 
 const PaymentSuccess = () => {
   const [session, setSession] = useState(null);
   const location = useLocation(); 
   const params = new URLSearchParams(location.search);
   const sessionId = params.get('session_id'); 
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (sessionId) {
@@ -48,12 +49,11 @@ const PaymentSuccess = () => {
           <p className="text-center text-gray-600 mb-8">Your payment was processed successfully.</p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="/stripe" className="inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-400 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-600 transition-colors duration-200">
-              Try Again
-            </a>
-            <a href="/mess" className="inline-flex justify-center items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-600 transition-colors duration-200">
+            <button 
+              onClick ={() => navigate('/view-mess-fee')}
+              className="inline-flex justify-center items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-600 transition-colors duration-200">
               Go to Mess
-            </a>
+            </button>
           </div>
         </div>
         <motion.div 

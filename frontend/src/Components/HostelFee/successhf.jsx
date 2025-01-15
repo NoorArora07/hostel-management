@@ -20,7 +20,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { postToBackend } from '@/store/fetchdata';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { BadgeDollarSign } from 'lucide-react';
 import { useLocation } from 'react-router-dom'; // for getting query params
@@ -31,6 +31,7 @@ const PaymentSuccesshf = () => {
   const location = useLocation(); // Hook to get current location
   const params = new URLSearchParams(location.search); // Get query params
   const sessionId = params.get('session_id'); // Get session_id from URL
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (sessionId) {
@@ -66,12 +67,11 @@ const PaymentSuccesshf = () => {
           <p className="text-center text-gray-600 mb-8">Your payment was processed successfully.</p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="/stripehf" className="inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-400 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-600 transition-colors duration-200">
-              Try Again
-            </a>
-            <a href="/Homepage" className="inline-flex justify-center items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-600 transition-colors duration-200">
+            <button 
+              onClick={()=>navigate('/Homepage')}
+              className="inline-flex justify-center items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-600 transition-colors duration-200">
               Go to Home Page
-            </a>
+            </button>
           </div>
         </div>
         <motion.div 
