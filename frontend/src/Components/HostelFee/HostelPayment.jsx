@@ -73,12 +73,12 @@ export default function HostelPayment() {
               Stripe is a payment processing platform that handles billions of dollars safely every year. You can trust us with your fee and expect efficient services.
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6 lg:justify-start">
-              <a
-                href="/view-hostel-fee"
+              <button
+                onClick={() => navigate("/view-hostel-fee")}
                 className="rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
               >
                 Payment Details
-              </a>
+              </button>
               <button
                 className={`text-sm/6 font-semibold ${
                   userFeeStatus === 'paid' ? 'text-gray-500 cursor-not-allowed' : 'text-white'
