@@ -2,6 +2,7 @@ import HostelFee from '../../models/hostelFees.model.js';
 import Stripe from 'stripe';
 import dotenv from 'dotenv';
 import crypto from 'crypto';
+import { baseUrl } from '../../url.js';
 
 dotenv.config();
 
@@ -88,9 +89,9 @@ export const initiatePayment = async (req, res) => {
         name,
         amount,
       }, 
-      success_url: "https://dormify-sigma.vercel.app/hostel_success?session_id={CHECKOUT_SESSION_ID}",
+      success_url: `${baseUrl}/hostel_success?session_id={CHECKOUT_SESSION_ID}`,
       //"http://localhost:5173/hostel_success?session_id={CHECKOUT_SESSION_ID}",
-      cancel_url: "https://dormify-sigma.vercel.app/hostel_cancel",
+      cancel_url: `${baseUrl}/hostel_cancel`,
       //"http://localhost:5173/hostel_cancel",
 
     }); 
@@ -126,10 +127,10 @@ export const updateFeeStatus = async (req, res) => {
       );  
     
       console.log(`Fee status updated to 'paid' for studentId: ${studentId}`);
-      res.redirect('https://dormify-sigma.vercel.app/hostel_success');
+      res.redirect(`${baseUrl}/hostel_success`);
     } else {
       console.log('Payment not completed for sessionId:', sessionId);
-      res.redirect('https://dormify-sigma.vercel.app/hostel_cancel');
+      res.redirect(`${baseUrl}/hostel_cancel`);
     }
   } catch (err) {
     console.error(`Failed to update payment status: ${err.message}`);
