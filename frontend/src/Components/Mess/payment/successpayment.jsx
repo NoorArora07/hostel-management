@@ -17,6 +17,7 @@ const PaymentSuccess = () => {
     if (sessionId) {
       const sendPaymentSuccess = async () => {
         try {
+          console.log("sessionid: ", sessionId)
           const response = await postToBackend(`${baseUrl}/api/payments/updateStatus`, {
             success: true,
             sessionId,  // send sessionId
