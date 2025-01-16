@@ -1,3 +1,4 @@
 # hostel-management
-<h1>This is the Git repository for our ideathon 4.0 project.</h1>
-<h2>Vidhi, Diya, Noor, Mithas </h2>
+<h2>Streamlining all hostel activities.</h2>
+<h2>Website: <a href="https://dormify-sigma.vercel.app/">Dormify</a></h2>
+<h4>Contributors: Vidhi, Diya, Noor, Mithas </h4>
